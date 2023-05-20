@@ -4,7 +4,7 @@ import 'element-plus/dist/index.css'
 import App from './App'
 import router from './router/index';
 
-
+import store from './store/store'
 const debounce = (fn, delay) => {
     let timer = null;
     return function () {
@@ -26,4 +26,4 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
 }
 
 
-createApp(App).use(ElementPlus).use(router).mount('#app')
+createApp(App).use(ElementPlus).use(router).use(store).mount('#app')

@@ -78,31 +78,17 @@ export default {
                         account: this.ruleForm.account,
                         password: this.ruleForm.password
                     }).then((response) => {
-                        console.log("登陆后的response："+response.data);
-                        let user  = response.data.user;
-                        console.log("=====user:==="+user+"=========");
-                        const jwt = response.headers['authorization']
-                        console.log("====jwt:=== "+jwt);
-                        if(response.data.code == 200){
-                            console.log("登录成功");
-                            console.log(response);
-                            const jwt = response.headers['authorization']
-                            console.log("====jwt:=== "+jwt);
-                            // //把数据共享出去
-                            _this.$store.commit("SET_TOKEN", jwt)
-                            console.log("===localStorage.getItem(\"token\")==="+localStorage.getItem("token")+"==");
-                            _this.$store.commit("SET_USERINFO", response.data.user);
-                            console.log("=====response.data.user====="+response.data.user.manage+"========")
+                        if(response.code == 200){//根据状态码进入下一步
+                            const jwt =response.headers['Authorization'];//获取令牌
 
-                            if(response.data.user.manage){
+                            _this.$store.commit("SET_TOKEN", jwt)//将获取的令牌作为整个路由通行令牌
+
+                            if(response.msg=="success"){
                                 this.$message({
                                     type: 'success',
                                     message: "登录成功！",
                                     duration: 1000
                                 })
-                                setTimeout(() => {
-                                    this.$router.push({path:'/admin/home'});
-                                }, 1000);
                             }else {
                                 this.$message({
                                     type: 'success',
@@ -113,8 +99,6 @@ export default {
                                     this.$router.push({path:'/user/userCenter'});
                                 }, 1000);
                             }
-                            console.log("返回来的SET_USERINFO:"+response.data.userInfo)
-                            this.$router.push({path:'/devHome/appList'});
                         }else {
                             this.$message({
                                 type: 'waring',

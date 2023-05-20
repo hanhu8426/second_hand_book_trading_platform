@@ -29,16 +29,16 @@ function ajax1 (url, data={}, method='GET') {
     })
 }
 import ajax from "./ajax";
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://localhost:8082'
 
 //登录
-export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
+export const reqLogin = ({account, password}) => ajax1('http://localhost:8082/Login', {account, password}, 'POST')
 
 // 检测该邮箱账号是否已经被注册
 export const reqAccountVerify = ({account})=>ajax(BASE_URL+'/user/accountVerify',{account})
 
 // 注册账号
-export const reqRegister = (account,password)=>ajax(BASE_URL+'/user/register',{account,password})
+export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})
 
 //getUserList得到用户列表
 export const reqGetUserList = (page,pageSize)=>ajax(BASE_URL+'/getUserList',{page,pageSize})

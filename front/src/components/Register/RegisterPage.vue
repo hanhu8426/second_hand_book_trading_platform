@@ -105,7 +105,7 @@ export default {
                             })
                             setTimeout(() => {
                                 this.$router.push({path:'/login'});
-                            }, 1000);
+                            }, 1000);//停滞一段时间后跳转到登录界面
                         }else{
                             this.$message({
                                 type: 'waring',

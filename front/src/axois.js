@@ -4,7 +4,10 @@ import router from './router'
 import store from './store/store'
 import { Message } from 'element-plus'
 
-axios.defaults.baseURL = "http://localhost:8080"
+axios.defaults.baseURL = "http://localhost:8082"
+// main.js
+
+// 设置默认请求头
 
 // 前置拦截
 axios.interceptors.request.use(config => {

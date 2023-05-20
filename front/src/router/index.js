@@ -47,15 +47,13 @@ const routes =[
                 path: 'userOrder',
                 component: ()=>import('../components/UserHome/order/UseOrder.vue')
             },
-            {
-                path: 'userOrderDetail',
-                component: ()=>import('../components/UserHome/order/UseOrderDetail.vue')
-            },
-
         ]
     },
 
-
+    // {
+    //     path: '/adminPage',
+    //     component: ()=>import('../components/bookStall.vue')
+    // },
 
     // {
     //     path:'*' , redirect :'/'

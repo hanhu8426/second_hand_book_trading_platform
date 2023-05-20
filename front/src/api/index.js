@@ -1,6 +1,6 @@
 import ajax from './ajax'
 
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://localhost:8082'
 
 // 1、登录
 export const reqLogin = ({account, password}) => ajax(BASE_URL+'/getBook', {account, password},"POST")
