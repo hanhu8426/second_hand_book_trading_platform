@@ -12,68 +12,62 @@
             </div>
             <div class="user_action">
                 <p> <span>账号安全:</span><span>普通</span></p>
-                <p> <span>绑定手机:</span><span>18370098989</span></p>
-                <p> <span>绑定邮箱:</span><span>123@qq.com</span></p>
+                <p> <span>绑定手机:</span><span>{{ this.form_1.phone }}</span></p>
+                <p> <span>余额:</span><span>{{ this.balance }}</span></p>
             </div>
         </div>
 
         <div class="box_info">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
                 <el-tab-pane label="账号安全" name="first">
                     <div class="tab_box">
-                        <div class="secure_box">
-                            <div class="secure_logo">
-                                <i class="el-icon-lock"></i>
-                            </div>
-                            <div class="secure_title">
-                                <h3>账号密码</h3>
-                                <p class="text_msg">用于保护帐号信息和登录安全</p>
-                            </div>
-                            <div class="secure_action">
-                                <el-button plain>修改</el-button>
-                            </div>
-                        </div>
-                        <div class="secure_box">
-                            <div class="secure_logo">
-                                <i class="el-icon-message"></i>
-                            </div>
-                            <div class="secure_title">
-                                <h3>安全邮箱</h3>
-                                <p class="text_msg">安全邮箱将可用于登录小米帐号和重置密码</p>
-                            </div>
-                            <div class="secure_action">
-                                <el-button plain>修改</el-button>
-                            </div>
-                        </div>
-                        <div class="secure_box">
-                            <div class="secure_logo">
-                                <i class="el-icon-phone-outline"></i>
-                            </div>
-                            <div class="secure_title">
-                                <h3>安全手机</h3>
-                                <p class="text_msg">安全手机可以用于登录小米帐号，重置密码或其他安全验证</p>
-                            </div>
-                            <div class="secure_action">
-                                <el-button plain>修改</el-button>
-                            </div>
-                        </div>
+                        <div class="modify_box">
+                            <el-form :model="form_1" status-icon ref="form_1" label-width="80px">
+
+                                <el-form-item prop="phone" label="电话号码">
+                                    <el-input type="number" placeholder="输入你的手机号码"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="charge" label="充值">
+                                    <el-input type="number" placeholder="输入本次充值的数额"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>
+                                </el-form-item>
+                            </el-form>
+                    </div>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="个人信息" name="second">
                     <div class="tab_box">
                         <div class="modify_box">
-                            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="80px">
-                                <el-form-item prop="account" label="昵称">
-                                    <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="请输入手机号或者邮箱"></el-input>
+                            <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
+                                <el-form-item prop="gender" label="性别">
+                                    <el-dropdown  style="width: 100%;">
+                                        <el-checkbox-group  v-model="gender" @change="genderChange">
+                                            <el-checkbox
+                                                v-for="item in genderOption"
+                                                :key="item.type"
+                                                :label="item.value"
+                                            ></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-dropdown>
                                 </el-form-item>
-                                <el-form-item prop="password" label="出生日期">
-                                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.account" style="width: 100%;"></el-date-picker>
+                                <el-form-item prop="area" label="校区">
+                                    <el-dropdown  style="width: 100%;">
+                                        <el-checkbox-group  v-model="area" @change="areaChange">
+                                        <el-checkbox
+                                            v-for="item in checkBoxOption"
+                                            :key="item.value"
+                                            :label="item.value"
+                                        ></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-dropdown>
                                 </el-form-item>
-                                <el-form-item prop="password" label="简介">
-                                    <el-input type="textarea" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
+                                <el-form-item prop="introduction" label="简介">
+                                    <el-input type="textarea" placeholder="说两句介绍自己吧"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" style="width: 120px;">确认修改</el-button>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>
                                 </el-form-item>
                             </el-form>
                         </div>
@@ -86,6 +80,8 @@
 
 <script>
 // <!--用户中心-->
+import {reqModUserInfo_1, reqModUserInfo_2} from "@/api/user";
+
 export default {
     name: "UserInfo",
     data () {
@@ -103,7 +99,7 @@ export default {
         };
         var validatePass = (rule, value, callback) => {
             if (value === '') {
-                callback(new Error('请输入密码'));
+                callback(new Error('请输入对应信息'));
             } else {
                 callback();
             }
@@ -117,8 +113,9 @@ export default {
             imgS4: require('../../../assets/image/apple.png'),
             activeName: 'first',
             currentPage: 1,
-            page_size: 5,
+            page_size: 2,
             total:20,
+            balance:[],
             ruleForm: {
                 account: '',
                 password: '',
@@ -130,6 +127,39 @@ export default {
                 password: [
                     { validator: validatePass, trigger: 'blur' }
                 ],
+
+            },
+
+            form_1: {
+                phone: '',
+                charge:'',
+            },
+
+            form_2:{
+            area:[],
+            checkBoxOption:[
+               {
+                   value:"四牌楼校区"
+               },
+               {
+                   value:"九龙湖校区"
+               },
+               {
+                   value:"丁家桥校区"
+               },
+           ],
+            gender:[],
+            genderOption:[
+                {
+                    value:"男",
+                    type:0,
+                },
+                {
+                    value: "女",
+                    type: 1,
+                }
+            ],
+                introduction:[],
             }
         }
     },
@@ -140,6 +170,105 @@ export default {
         handleClick(tab, event) {
             console.log(tab, event);
         },
+
+        areaChange(){
+            if(this.area.length > 1){
+                this.area.splice(0,1)
+            }
+        },
+        genderChange(){
+            if(this.gender.length > 1){
+                this.gender.splice(0,1)
+            }
+        },
+        submitForm_1(){
+            let _this = this;
+            this.$refs["form_1"].validate((valid) => {
+                if (valid) {
+                    console.log("=====上传表格1=======")
+                    reqModUserInfo_1({
+                        phone: _this.form_1.phone,
+                        charge: _this.form_1.charge,
+                    }).then((response) => {
+                        if(response.code == 200){//根据状态码进入下一步
+                            console.log("=====上传成功=======")
+                            let balanceNum=response.data.balance
+                            this.balance =balanceNum
+                            if(response.msg=="success"){
+                                this.$message({
+                                    type: 'success',
+                                    message: "上传成功！",
+                                    duration: 1000
+                                })
+                            }else {
+                                this.$message({
+                                    type: 'success',
+                                    message: "上传成功！",
+                                    duration: 1000
+                                })
+                                setTimeout(() => {
+                                    this.$router.push({path:'/user/userCenter'});
+                                }, 1000);
+                            }
+                        }else {
+                            this.$message({
+                                type: 'waring',
+                                message: "登录失败"
+                            })
+                        }
+                    }).catch(() => {
+                        // this.$message.error("登录失败")
+                    })
+                } else {
+                    //数据校验失败，不可以进行提交
+                    this.$message.error("账号密码不符合要求，登陆失败");
+                }
+            });
+        },
+        submitForm_2(){
+            let _this = this;
+            this.$refs["form_2"].validate((valid) => {
+                if (valid) {
+                    console.log("=====上传表格2=======")
+                    reqModUserInfo_2({
+                        area:_this.form_2.area,
+                        gender:_this.form_2.gender,
+                        introduction: _this.form_2.introduction
+                    }).then((response) => {
+                        if(response.code == 200){//根据状态码进入下一步
+                            console.log("=====上传成功=======")
+
+                            if(response.msg=="success"){
+                                this.$message({
+                                    type: 'success',
+                                    message: "上传成功！",
+                                    duration: 1000
+                                })
+                            }else {
+                                this.$message({
+                                    type: 'success',
+                                    message: "上传成功！",
+                                    duration: 1000
+                                })
+                                setTimeout(() => {
+                                    this.$router.push({path:'/user/userCenter'});
+                                }, 1000);
+                            }
+                        }else {
+                            this.$message({
+                                type: 'waring',
+                                message: "登录失败"
+                            })
+                        }
+                    }).catch(() => {
+                        // this.$message.error("登录失败")
+                    })
+                } else {
+                    //数据校验失败，不可以进行提交
+                    this.$message.error("账号密码不符合要求，登陆失败");
+                }
+            });
+        }
     }
 }
 </script>
@@ -195,7 +324,7 @@ h1{
     width: 960px;
     margin: 15px auto;
 }
-/deep/ .el-tabs__item {
+.el-tabs__item {
     height: 50px;
     line-height: 50px;
     font-size: 16px;

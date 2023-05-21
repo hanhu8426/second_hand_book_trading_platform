@@ -81,7 +81,7 @@ export default {
                         if(response.code == 200){//根据状态码进入下一步
                             const jwt =response.headers['Authorization'];//获取令牌
 
-                            _this.$store.commit("SET_TOKEN", jwt)//将获取的令牌作为整个路由通行令牌
+                            _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
 
                             if(response.msg=="success"){
                                 this.$message({

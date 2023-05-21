@@ -29,7 +29,7 @@ function ajax1 (url, data={}, method='GET') {
     })
 }
 import ajax from "./ajax";
-const BASE_URL = 'http://localhost:8082'
+const BASE_URL = 'http://localhost:8080'
 
 //登录
 export const reqLogin = ({account, password}) => ajax1('http://localhost:8082/Login', {account, password}, 'POST')
@@ -50,5 +50,8 @@ export const reqModifyUserStatus = (id,status)=>ajax(BASE_URL+'/modifyUserStatus
 export const reqGetUserInfo = (account)=>ajax(BASE_URL+'/getUserInfo',{account})
 
 //修改密码
-export const reqModUserPwd = (account,oldPassword,newPassword)=>ajax(BASE_URL+'/modifyUserPwd',{account,oldPassword,newPassword})
+export const reqModUserPwd = (account,oldPassword,newPassword)=>ajax(BASE_URL+'/user/userInfo',{account,oldPassword,newPassword})
 
+//修改用户的基本信息
+export const reqModUserInfo_1 = (phone,charge)=>ajax(BASE_URL+'/user/userInfo',{phone,charge})
+export const reqModUserInfo_2 = (area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{area,gender,introduction})

@@ -97,14 +97,14 @@ export default {
                     //数据校验成功，可以进行提交操作
                     reqRegister(this.ruleForm.account,this.ruleForm.password).then((response)=>{
                         if(response.code==200){
-                            console.log("=====注册成功=====");
+
                             this.$message({
                                 type: 'success',
                                 message: response.message,
                                 duration: 1000
                             })
                             setTimeout(() => {
-                                this.$router.push({path:'/login'});
+                                this.$router.push({path:'/Login'});
                             }, 1000);//停滞一段时间后跳转到登录界面
                         }else{
                             this.$message({
