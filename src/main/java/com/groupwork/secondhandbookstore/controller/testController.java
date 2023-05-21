@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class testController {
+//    @RequestMapping("/testing")
+//    public Result testing1(){
+//        return Result.success("this is a testing");
+//    }
     @RequestMapping("/testing")
-    public Result testing1(){
-        return Result.success("this is a testing");
+    public String view(){
+        System.out.println("testing");
+        return "testing";
     }
 }

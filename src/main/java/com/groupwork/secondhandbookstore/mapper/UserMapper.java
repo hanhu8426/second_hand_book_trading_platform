@@ -1,7 +1,6 @@
 package com.groupwork.secondhandbookstore.mapper;
 
 import com.groupwork.secondhandbookstore.pojo.User;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -10,12 +9,14 @@ public interface UserMapper {
 //            @Result(column = "username",property = "account.username"),
 //            @Result(column = "password",property = "account.password")
 //    })
-@Select("select * from User where username = #{username} and password = #{password}")
-User getByUserNameAndPassword(User user);
+    @Select("select * from user where account = #{account} and password = #{password}")
+    User getByAccountAndPassword(User user);
 
-    @Insert("insert into user(username, password) values (#{username},#{password})")
+    @Insert("insert into user(account, password) values (#{account},#{password})")
     void register(User user);
 
-    @Select("select * from user where username = #{username}")
-    User getUserByUserName(String username);
+    @Select("select * from user where account = #{account}")
+    User getByAccount(String account);
+    @Select("select * from user where id = #{id}")
+    User getById(String id);
 }

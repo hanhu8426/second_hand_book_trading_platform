@@ -11,14 +11,18 @@ public class UserService implements com.groupwork.secondhandbookstore.service.Us
     @Autowired
     private UserMapper userMapper;
     public User login(User user){
-        return userMapper.getByUserNameAndPassword(user);
+        return userMapper.getByAccountAndPassword(user);
     }
 
     public void register(User user) {
         userMapper.register(user);
     }
 
-    public User getUserByUserName(String username) {
-        return userMapper.getUserByUserName(username);
+    public User getByAccount(String account) {
+        return userMapper.getByAccount(account);
+    }
+
+    public User showUserById(String id) {
+        return userMapper.getById(id);
     }
 }
