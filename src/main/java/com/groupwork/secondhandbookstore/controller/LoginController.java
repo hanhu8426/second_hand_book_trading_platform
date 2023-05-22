@@ -30,7 +30,6 @@ public class LoginController {
             //将jwt令牌添加到响应头
             rs.addHeader("Access-Control-Expose-Headers","authorization");
             rs.addHeader("authorization",jwt);
-
             //return Result.success();
         }
         //return Result.error("用户名或密码错误");
