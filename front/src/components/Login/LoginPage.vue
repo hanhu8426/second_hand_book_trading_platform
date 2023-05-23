@@ -74,20 +74,27 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     console.log("=====开始登陆=======")
+                    console.log("这是最新的测试，但是这里还没发请求")
                     reqLogin({
                         account: this.ruleForm.account,
                         password: this.ruleForm.password
                     }).then((response) => {
-                        if(response.code == 200){//根据状态码进入下一步
+                        console.log("收到返回的response,接下来检测状态码")
+                        console.log("再次修改")
+                        if(response.data.code == 1){//根据状态码进入下一步
                             const jwt =response.headers['Authorization'];//获取令牌
 
                             _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
 
-                            if(response.msg=="success"){
+                            let user = response.data.user
+
+                            _this.$store.commit("SET_USERINFO", user)
+                            if(response.data.msg=="success"){
+                                console.log("已收到令牌，登陆成功")
                                 this.$message({
                                     type: 'success',
                                     message: "登录成功！",
-                                    duration: 1000
+                                    duration: 10,
                                 })
                             }else {
                                 this.$message({
@@ -97,16 +104,17 @@ export default {
                                 })
                                 setTimeout(() => {
                                     this.$router.push({path:'/user/userCenter'});
-                                }, 1000);
+                                }, 10);
                             }
                         }else {
+                            console.log("状态码错误，登录失败")
                             this.$message({
                                 type: 'waring',
                                 message: "登录失败"
                             })
                         }
                     }).catch(() => {
-                        // this.$message.error("登录失败")
+                        this.$message.error("登录失败")
                     })
                 } else {
                     //数据校验失败，不可以进行提交

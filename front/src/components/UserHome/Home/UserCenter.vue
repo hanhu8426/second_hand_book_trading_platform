@@ -7,13 +7,12 @@
                           fit="fill"></el-image>
                 <div class="user_card_info">
                     <p style="font-size: 22px;color: #616161">{{user.name}}</p>
-                    <p><span class="link">修改个人信息></span></p>
+                    <p><span class="link" @click="gotoModUserInfo">修改个人信息></span></p>
                 </div>
             </div>
             <div class="user_action">
-                <p> <span>账号安全:</span><span>普通</span></p>
-                <p> <span>绑定手机:</span><span>18370098989</span></p>
-                <p> <span>绑定邮箱:</span><span>{{user.account}}</span></p>
+                <p> <span>余额</span><span></span></p>
+                <p> <span>绑定手机:</span><span></span></p>
             </div>
         </div>
         <div class="portal-sub">
@@ -46,6 +45,8 @@
 <script>
 // <!--用户中心-->
 
+import {reqGetUserInfo} from "@/api/user";
+
 export default {
     name: "UserCenter",
     data () {
@@ -73,33 +74,33 @@ export default {
     // created(){
     //     this.initUserCenter();
     // },
-    // methods: {
-    //     initUserCenter(){
-    //         reqGetUserInfo(this.$store.getters.getUser.account).then(response=>{
-    //             console.log(response);
-    //             if(response.code==200){
-    //                 this.user = response.user;
-    //             }else{
-    //                 this.$message({
-    //                     message: response.message,
-    //                     type: "warning"
-    //                 })
-    //             }
-    //             // eslint-disable-next-line no-unused-vars
-    //         }).catch(err=>{
-    //             this.$message({
-    //                 message: "获取数据错误了，请检查网络是否连接",
-    //                 type: "warning"
-    //             })
-    //         })
-    //     },
-    //     //操作表格
-    //     gotoModUserInfo(){
-    //         this.$router.push({
-    //             path: "/user/userInfo",
-    //         })
-    //     },
-    // }
+    methods: {
+        initUserCenter(){
+            reqGetUserInfo(this.$store.getters.getUser.account).then(response=>{
+                console.log(response);
+                if(response.code==1){
+                    this.user = response.data.user;
+                }else{
+                    this.$message({
+                        message: response.message,
+                        type: "warning"
+                    })
+                }
+                // eslint-disable-next-line no-unused-vars
+            }).catch(err=>{
+                this.$message({
+                    message: "获取数据错误了，请检查网络是否连接",
+                    type: "warning"
+                })
+            })
+        },
+        //操作表格
+        gotoModUserInfo(){
+            this.$router.push({
+                path: "/user/userInfo",
+            })
+        },
+    }
 }
 </script>
 

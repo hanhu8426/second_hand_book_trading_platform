@@ -22,7 +22,7 @@
         </div>
 
         <!--添加图书的弹出框-->
-        <el-dialog title="添加收货地址" v-model:value="dialogVisible" width="30%"  center>
+        <el-dialog title="添加收货地址" v-model="dialogVisible" width="30%"  center>
             <el-form ref="form" :model="address" >
                 <el-form-item>
                     <el-input placeholder="姓名" v-model="address.name"></el-input>
@@ -37,10 +37,11 @@
                     <el-input placeholder="地址标签" v-model="address.label"></el-input>
                 </el-form-item>
             </el-form>
+            <template v-slot:footer>
             <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
-      </span>
+            </span></template>
         </el-dialog>
 
     </div>
@@ -85,6 +86,7 @@ export default {
             },
         };
     },
+    //初始化构建组件
     // created(){
     //     this.address.account = this.$store.getters.getUser.account;
     //     console.log("=========this.address.account:============"+this.address.account+"===")

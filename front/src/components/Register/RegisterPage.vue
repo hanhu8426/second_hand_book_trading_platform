@@ -36,24 +36,24 @@
 <script>
 import Nav from "../../components/Common/NavGation.vue";
 import Footer from "../../components/Common/FooTer.vue";
-import {reqRegister,reqAccountVerify} from "../../api/user";
+import {reqRegister} from "../../api/user";
 
 export default {
     name: "RegisterPage",
     components: {Nav,Footer},
     data() {
-        let checkAccount = (rule, value, callback) => {
-            reqAccountVerify(value).then((response)=>{
-                if(response.data.code==200){
-                    callback();
-                }else{
-                    callback(response.data.message);
-                }
-                // eslint-disable-next-line no-unused-vars
-            }).catch(err=>{
-                callback();
-            })
-        };
+        // let checkAccount = (rule, value, callback) => {
+        //     reqAccountVerify(value).then((response)=>{
+        //         if(response.data.code==200){
+        //             callback();
+        //         }else{
+        //             callback(response.data.message);
+        //         }
+        //         // eslint-disable-next-line no-unused-vars
+        //     }).catch(err=>{
+        //         callback();
+        //     })
+        // };
         let validatePass = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入密码'));
@@ -78,7 +78,7 @@ export default {
             },
             rules: {
                 account: [
-                    { validator: checkAccount, trigger: 'blur' },
+                    // { validator: checkAccount, trigger: 'blur' },
                     { type: 'email', required: true, message: '请输入正确格式邮箱', trigger: 'change'},
                 ],
                 password: [
@@ -96,7 +96,7 @@ export default {
                 if (valid) {
                     //数据校验成功，可以进行提交操作
                     reqRegister(this.ruleForm.account,this.ruleForm.password).then((response)=>{
-                        if(response.code==200){
+                        if(response.data.code==1){
 
                             this.$message({
                                 type: 'success',
@@ -104,9 +104,11 @@ export default {
                                 duration: 1000
                             })
                             setTimeout(() => {
+                                console.log("注册成功")
                                 this.$router.push({path:'/Login'});
-                            }, 1000);//停滞一段时间后跳转到登录界面
+                            }, 10);//停滞一段时间后跳转到登录界面
                         }else{
+                            console.log("状态码错误")
                             this.$message({
                                 type: 'waring',
                                 message: response.message,
@@ -115,7 +117,9 @@ export default {
                         }
                         // eslint-disable-next-line no-unused-vars
                     }).catch(err=>{
+                        console.log("其他错误")
                         this.$message({
+
                             type: 'waring',
                             message: "注册失败",
                             duration: 1000

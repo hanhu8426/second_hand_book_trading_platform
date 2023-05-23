@@ -32,7 +32,7 @@ import ajax from "./ajax";
 const BASE_URL = 'http://localhost:8080'
 
 //登录
-export const reqLogin = ({account, password}) => ajax1('http://localhost:8082/Login', {account, password}, 'POST')
+export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
 
 // 检测该邮箱账号是否已经被注册
 export const reqAccountVerify = ({account})=>ajax(BASE_URL+'/user/accountVerify',{account})
@@ -53,5 +53,5 @@ export const reqGetUserInfo = (account)=>ajax(BASE_URL+'/getUserInfo',{account})
 export const reqModUserPwd = (account,oldPassword,newPassword)=>ajax(BASE_URL+'/user/userInfo',{account,oldPassword,newPassword})
 
 //修改用户的基本信息
-export const reqModUserInfo_1 = (phone,charge)=>ajax(BASE_URL+'/user/userInfo',{phone,charge})
-export const reqModUserInfo_2 = (area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{area,gender,introduction})
+export const reqModUserInfo_1 = (charge)=>ajax(BASE_URL+'/user/userInfo/ModUserInfo_1',{charge})
+export const reqModUserInfo_2 = (avatar,phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{avatar,phone,area,gender,introduction})

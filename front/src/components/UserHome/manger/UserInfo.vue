@@ -19,16 +19,12 @@
 
         <div class="box_info">
             <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
-                <el-tab-pane label="账号安全" name="first">
+                <el-tab-pane label="账号充值" name="first">
                     <div class="tab_box">
                         <div class="modify_box">
                             <el-form :model="form_1" status-icon ref="form_1" label-width="80px">
-
-                                <el-form-item prop="phone" label="电话号码">
-                                    <el-input type="number" placeholder="输入你的手机号码"></el-input>
-                                </el-form-item>
                                 <el-form-item prop="charge" label="充值">
-                                    <el-input type="number" placeholder="输入本次充值的数额"></el-input>
+                                    <el-input  type="number"  @input="changeInput" v-model="form_1.charge"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>
@@ -37,15 +33,21 @@
                     </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="个人信息" name="second">
+                <el-tab-pane label="个人信息" name="second" style="height: 500px">
                     <div class="tab_box">
                         <div class="modify_box">
                             <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
+                                <el-form-item prop="avater" label="头像上传">
+                                    <el-input type="url">上传你的头像</el-input>
+                                </el-form-item>
+                                <el-form-item prop="phone" label="电话号码">
+                                    <el-input  placeholder="输入你的手机号码" type="number"  @input="changeInput" v-model="form_1.phone"></el-input>
+                                </el-form-item>
                                 <el-form-item prop="gender" label="性别">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="gender" @change="genderChange">
+                                        <el-checkbox-group  v-model="form_2.gender" @change="genderChange">
                                             <el-checkbox
-                                                v-for="item in genderOption"
+                                                v-for="item in form_2.genderOption"
                                                 :key="item.type"
                                                 :label="item.value"
                                             ></el-checkbox>
@@ -54,9 +56,9 @@
                                 </el-form-item>
                                 <el-form-item prop="area" label="校区">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="area" @change="areaChange">
+                                        <el-checkbox-group  v-model="form_2.area" @change="areaChange">
                                         <el-checkbox
-                                            v-for="item in checkBoxOption"
+                                            v-for="item in form_2.checkBoxOption"
                                             :key="item.value"
                                             :label="item.value"
                                         ></el-checkbox>
@@ -64,7 +66,7 @@
                                     </el-dropdown>
                                 </el-form-item>
                                 <el-form-item prop="introduction" label="简介">
-                                    <el-input type="textarea" placeholder="说两句介绍自己吧"></el-input>
+                                    <el-input type="textarea" placeholder="说两句介绍自己吧" @input="changeInput" v-model="form_2.introduction"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>
@@ -90,8 +92,8 @@ export default {
                 return callback(new Error('账号不能为空'));
             }
             setTimeout(() => {
-                if(value.length>13){
-                    callback(new Error('账号不能大于13位'));
+                if(value.length>20){
+                    callback(new Error('账号不能大于20位'));
                 }else {
                     callback();
                 }
@@ -115,7 +117,7 @@ export default {
             currentPage: 1,
             page_size: 2,
             total:20,
-            balance:[],
+            balance:'',
             ruleForm: {
                 account: '',
                 password: '',
@@ -131,11 +133,13 @@ export default {
             },
 
             form_1: {
-                phone: '',
+
                 charge:'',
             },
 
             form_2:{
+            avatar:'',
+            phone: '',
             area:[],
             checkBoxOption:[
                {
@@ -167,18 +171,21 @@ export default {
 
     },
     methods: {
+        changeInput() {
+            this.$forceUpdate();
+        },
         handleClick(tab, event) {
             console.log(tab, event);
         },
 
         areaChange(){
-            if(this.area.length > 1){
-                this.area.splice(0,1)
+            if(this.form_2.area.length > 1){
+                this.form_2.area.splice(0,1)
             }
         },
         genderChange(){
-            if(this.gender.length > 1){
-                this.gender.splice(0,1)
+            if(this.form_2.gender.length > 1){
+                this.form_2.gender.splice(0,1)
             }
         },
         submitForm_1(){
@@ -187,13 +194,12 @@ export default {
                 if (valid) {
                     console.log("=====上传表格1=======")
                     reqModUserInfo_1({
-                        phone: _this.form_1.phone,
                         charge: _this.form_1.charge,
                     }).then((response) => {
-                        if(response.code == 200){//根据状态码进入下一步
+                        if(response.data.code == 1){//根据状态码进入下一步
                             console.log("=====上传成功=======")
                             let balanceNum=response.data.balance
-                            this.balance =balanceNum
+                            _this.balance =balanceNum
                             if(response.msg=="success"){
                                 this.$message({
                                     type: 'success',
@@ -217,7 +223,7 @@ export default {
                             })
                         }
                     }).catch(() => {
-                        // this.$message.error("登录失败")
+                         this.$message.error("登录失败")
                     })
                 } else {
                     //数据校验失败，不可以进行提交
@@ -231,11 +237,13 @@ export default {
                 if (valid) {
                     console.log("=====上传表格2=======")
                     reqModUserInfo_2({
+                        avatar: _this.form_2.avatar,
+                        phone: _this.form_2.phone,
                         area:_this.form_2.area,
                         gender:_this.form_2.gender,
                         introduction: _this.form_2.introduction
                     }).then((response) => {
-                        if(response.code == 200){//根据状态码进入下一步
+                        if(response.data.code == 1){//根据状态码进入下一步
                             console.log("=====上传成功=======")
 
                             if(response.msg=="success"){
