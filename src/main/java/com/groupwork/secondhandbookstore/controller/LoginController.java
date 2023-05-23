@@ -20,7 +20,7 @@ public class LoginController {
     @Autowired
     private UserService userService;
     @RequestMapping  ("/Login")
-    public void login(@RequestBody User user, HttpServletResponse rs){
+    public Result login(@RequestBody User user, HttpServletResponse rs){
         log.info("员工登录:{}",user);
         User login = userService.login(user);
         if(login!=null){
@@ -30,8 +30,9 @@ public class LoginController {
             //将jwt令牌添加到响应头
             rs.addHeader("Access-Control-Expose-Headers","authorization");
             rs.addHeader("authorization",jwt);
-            //return Result.success();
+
+            return Result.success();
         }
-        //return Result.error("用户名或密码错误");
+        return Result.error("用户名或密码错误");
     }
 }

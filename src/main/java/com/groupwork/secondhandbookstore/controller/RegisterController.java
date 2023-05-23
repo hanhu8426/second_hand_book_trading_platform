@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterController {
     @Autowired
     private UserService userService;
-    @RequestMapping("/user/register")
+    @RequestMapping("/Register")
     public Result register(@RequestParam String account,@RequestParam String password){
         log.info("用户注册:{}",account);
 

@@ -29,7 +29,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return true;
         }
         //判断请求中是否包含register，如果包含则说明是注册操作，放行
-        if(url.contains("register")){
+        if(url.contains("Register")){
             log.info("注册操作，放行...");
             return true;
         }
