@@ -76,7 +76,7 @@
             <version>0.9.1</version>
         </dependency>
 
-<!--        生成jwt时出现问题，以下为为解决问题导入的jar包-->
+        <!--        生成jwt时出现问题，以下为为解决问题导入的jar包-->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -103,7 +103,7 @@
             <version>1.2.4</version>
         </dependency>
 
-<!--        华为云bucket-->
+        <!--        华为云bucket-->
         <dependency>
             <groupId>com.huaweicloud</groupId>
             <artifactId>esdk-obs-java-bundle</artifactId>
