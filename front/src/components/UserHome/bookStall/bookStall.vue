@@ -1,14 +1,14 @@
 <template>
     <div class="content">
-        <h1>收货地址</h1>
+        <h1>我的书摊</h1>
         <div class="box_info">
-            <div class="address_list">
+            <div class="book_list">
                 <div class="add" @click="handleAdd">
                     <i class="el-icon-edit"></i>
-                    <p style="font-size: 14px">添加新地址</p>
+                    <p style="font-size: 14px">添加新的书籍</p>
                 </div>
             </div>
-            <div class="address_list" v-for="address in addressList" :key="address.id">
+            <div class="book_list" v-for="book in bookList" :key="book.id">
                 <div class="name">{{address.name}}
                     <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
                 </div>

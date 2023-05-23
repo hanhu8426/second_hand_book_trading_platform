@@ -39,7 +39,6 @@ export default {
                                 <ul class="uc-nav-list">
                                     <a href="#/user/userCenter"><li>我的个人中心</li></a>
                                     <a href="#/user/mesNotice"><li>消息通知</li></a>
-                                    <a href="#/user/Address"><li>收货地址</li></a>
                                 </ul>
                             </div>
                         </div>
@@ -56,8 +55,7 @@ export default {
                             <div class="box-hd">书摊管理</div>
                             <div class="box-bd">
                                 <ul class="uc-nav-list">
-                                    <a href="#"><li>上传书籍</li></a>
-                                    <a href="#"><li>查看书摊</li></a>
+                                    <a href="#/user/bookStall"><li>上传书籍</li></a>
                                 </ul>
                             </div>
                         </div>

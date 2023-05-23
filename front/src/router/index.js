@@ -24,10 +24,6 @@ const routes =[
         path:'/user',component: ()=>import('../components/UserPage.vue'),
         children:[
             {
-                path: 'Address',
-                component: ()=>import('../components/UserHome/Home/Address.vue')
-            },
-            {
                 path: 'userCenter',
                 component: ()=>import('../components/UserHome/Home/UserCenter.vue')
             },
@@ -47,13 +43,14 @@ const routes =[
                 path: 'userOrder',
                 component: ()=>import('../components/UserHome/order/UseOrder.vue')
             },
+            {
+                path: 'bookStall',
+                component: ()=>import('../components/UserHome/bookStall/bookStall.vue')
+            },
+
         ]
     },
 
-    // {
-    //     path: '/adminPage',
-    //     component: ()=>import('../components/bookStall.vue')
-    // },
 
     // {
     //     path:'*' , redirect :'/'

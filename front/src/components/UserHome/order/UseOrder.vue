@@ -131,15 +131,14 @@
 <script>
 // <!--  reqUserGetOrderList-->
 // import {reqModOrderStatus} from "../../../api/order";
-import address from "@/components/UserHome/Home/Address.vue";
 // <!--用户订单页面-->
 export default {
     name: "UserOrder",
-    computed: {
-        address() {
-            return address
-        }
-    },
+    // computed: {
+    //     address() {
+    //         return address
+    //     }
+    // },
     data() {
         return {
             activeName: 'first',
