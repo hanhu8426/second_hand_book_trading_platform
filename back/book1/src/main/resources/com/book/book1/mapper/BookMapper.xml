@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.book1.mapper.BookMapper">
+
+    <!--条件查询-->
+    <select id="pageList" resultType="com.book.book1.pojo.book.Book">
+        select *
+        from book
+        <where>
+            <if test="type!=null">
+                type=#{type}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{type},'%')
+            </if>
+
+            <if test="author!=null">
+                and author like concat('%',#{author},'%')
+            </if>
+
+<!--            <if test="priceBegin!=0 and priceEnd!=0">
+                and price between #{priceBegin} and #{priceEnd}
+            </if>-->
+        </where>
+    </select>
+
+
+    <!--批量删除操作-->
+    <delete id="deleteBatch">
+        delete
+        from book
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
