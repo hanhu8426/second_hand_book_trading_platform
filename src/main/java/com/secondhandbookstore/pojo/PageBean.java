@@ -1,4 +1,4 @@
-package com.book.book1.pojo;
+package com.secondhandbookstore.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

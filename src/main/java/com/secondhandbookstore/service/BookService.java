@@ -1,7 +1,7 @@
-package com.book.book1.service;
+package com.secondhandbookstore.service;
 
-import com.book.book1.pojo.PageBean;
-import com.book.book1.pojo.book.Book;
+import com.secondhandbookstore.pojo.PageBean;
+import com.secondhandbookstore.pojo.book.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface BookService {
      * @param pageSize
      * @return
      */
-    PageBean page(Integer page, Integer pageSize,short type,String name,String author);
+    PageBean page(Integer page, Integer pageSize,Short type,String name,String author);
 
     /**
      * 批量删除操作

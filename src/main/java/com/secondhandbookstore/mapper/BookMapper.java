@@ -1,6 +1,6 @@
-package com.book.book1.mapper;
+package com.secondhandbookstore.mapper;
 
-import com.book.book1.pojo.book.Book;
+import com.secondhandbookstore.pojo.book.Book;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -55,7 +55,7 @@ public interface BookMapper {
      * @return
      */
     //@Select("select * from book.book")
-    public List<Book> pageList(short type,String name,String author);
+    public List<Book> pageList(Short type,String name,String author);
 
     /**
      * 批量删除操作

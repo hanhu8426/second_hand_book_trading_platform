@@ -1,4 +1,4 @@
-package com.book.book1.pojo.book;
+package com.secondhandbookstore.pojo.book;
 
 /**
  * @author: 沈三
@@ -18,14 +18,14 @@ public class Book {
     private String name;
     private String author;
     private String isbn;
-    private short type;
+    private Short type;
     private String description;
-    private boolean status;
+    private Boolean status;
     private String image;
-    private short campus;
-    private float price;
-    private boolean newProduct;
-    private boolean recommend;
+    private Short campus;
+    private Float price;
+    private Boolean newProduct;
+    private Boolean recommend;
     //private String buyerID;
     private String sellerID;
     //private int bookSort[];

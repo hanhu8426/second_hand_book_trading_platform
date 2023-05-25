@@ -1,9 +1,9 @@
-package com.book.book1.service.impl;
+package com.secondhandbookstore.service.impl;
 
-import com.book.book1.mapper.BookMapper;
-import com.book.book1.pojo.PageBean;
-import com.book.book1.pojo.book.Book;
-import com.book.book1.service.BookService;
+import com.secondhandbookstore.mapper.BookMapper;
+import com.secondhandbookstore.pojo.PageBean;
+import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.service.BookService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
     }*/
 
     @Override
-    public PageBean page(Integer page, Integer pageSize,short type,String name,String author) {
+    public PageBean page(Integer page, Integer pageSize,Short type,String name,String author) {
         //1. 设置分页参数
         PageHelper.startPage(page,pageSize);
 

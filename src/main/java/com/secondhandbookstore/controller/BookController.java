@@ -1,14 +1,15 @@
-package com.book.book1.controller;
+package com.secondhandbookstore.controller;
 
-import com.book.book1.pojo.PageBean;
-import com.book.book1.pojo.Result;
-import com.book.book1.pojo.book.Book;
-import com.book.book1.service.BookService;
+import com.secondhandbookstore.pojo.PageBean;
+import com.secondhandbookstore.pojo.Result;
+import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 //一个完整的请求路径，应该是类上的@RequestMapping的value属性+方法上的@RequestMapping的value属性
 @Slf4j
 @RestController
@@ -74,12 +75,12 @@ public class BookController {
     @GetMapping("/getPages")
     public Result page(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer pageSize,
-                       short type,
+                       Short type,
                        String name,
                        String author
-                       ){
+    ){
         //默认值设置
-//        if(page==null) page=1;
+        if(type==null) type=1;
 //        if(pageSize==null) pageSize=10;
         log.info("分页查询，参数：{},{},{},{},{},{},{}",page,pageSize,type,name,author);
         //调用service分页查询
