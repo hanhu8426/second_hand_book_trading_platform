@@ -30,4 +30,13 @@ public interface BookService {
      * @param ids
      */
     void deleteBatch(List<Integer> ids);
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    Book getById(Integer id);
+
+    void update(Book book);
 }

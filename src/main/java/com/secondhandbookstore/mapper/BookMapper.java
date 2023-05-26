@@ -62,4 +62,13 @@ public interface BookMapper {
      * @param ids
      */
     void deleteBatch(List<Integer> ids);
+
+    @Select("select * from  book where id=#{id}")
+    Book getById(Integer id);
+
+    /**
+     * 更新员工
+     * @param book
+     */
+    void update(Book book);
 }

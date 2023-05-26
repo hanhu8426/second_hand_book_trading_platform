@@ -56,7 +56,7 @@ public class BookController {
      */
     @PostMapping("/addBooks")
     public Result add(@RequestBody Book book){
-        log.info("新增部门：{}",book);
+        log.info("新增书籍：{}",book);
         //调用service新增书籍
         bookService.add(book);
         return Result.success();
@@ -78,9 +78,9 @@ public class BookController {
                        Short type,
                        String name,
                        String author
-    ){
+                       ){
         //默认值设置
-        if(type==null) type=1;
+//        if(type==null) type=1;
 //        if(pageSize==null) pageSize=10;
         log.info("分页查询，参数：{},{},{},{},{},{},{}",page,pageSize,type,name,author);
         //调用service分页查询
@@ -88,10 +88,25 @@ public class BookController {
         return Result.success(pageBean);
     }
 
-    @DeleteMapping("deleteBooks/{ids}")
+    @DeleteMapping("/deleteBooks/{ids}")
     public Result delete(@PathVariable List<Integer> ids){
         log.info("批量删除操作，ids: {}",ids);
         bookService.deleteBatch(ids);
         return Result.success();
     }
+
+    @GetMapping("/getBook/{id}")
+    public Result getById(@PathVariable Integer id){
+        log.info("根据ID查询员工，id:{}",id);
+        Book book=bookService.getById(id);
+        return Result.success(book);
+    }
+
+    @PutMapping("/update")
+    public Result update(@RequestBody Book book){
+        log.info("更新书籍信息：{}",book);
+        bookService.update(book);
+        return Result.success();
+    }
+
 }

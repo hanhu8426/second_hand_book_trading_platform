@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Slf4j
 @Service
 public class BookServiceImpl implements BookService {
@@ -48,7 +49,7 @@ public class BookServiceImpl implements BookService {
     }*/
 
     @Override
-    public PageBean page(Integer page, Integer pageSize,Short type,String name,String author) {
+    public PageBean page(Integer page, Integer pageSize, Short type, String name, String author) {
         //1. 设置分页参数
         PageHelper.startPage(page,pageSize);
 
@@ -64,5 +65,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBatch(List<Integer> ids) {
         bookMapper.deleteBatch(ids);
+    }
+
+    @Override
+    public Book getById(Integer id) {
+        return bookMapper.getById(id);
+    }
+
+    @Override
+    public void update(Book book) {
+        bookMapper.update(book);
     }
 }
