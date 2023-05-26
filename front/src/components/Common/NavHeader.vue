@@ -1,4 +1,5 @@
 <script>
+
 export default {
     name: "HeadNav",
     data() {
@@ -11,7 +12,15 @@ export default {
             imgS: require('../../assets/image/logo-250.png')
         }
     },
-    computed: {
+    methods: {
+      search() {
+        this.$router.push({
+          path:'/search',
+          query:{
+            input:this.input
+          }
+        });
+      },
         //第三种方法
         getImgS(){
             let imgUrl = "logo-250.png";
@@ -36,11 +45,9 @@ export default {
                     <el-option label="作者" value="2"></el-option>
                     <el-option label="出版社" value="3"></el-option>
                 </el-select>
-                <el-input v-model="input" placeholder="书名、作者、出版社、ISBN" class="input-with-select" style="width: 400px;height: 40px;">
-
+                <el-input v-model="input" placeholder="书名、作者" class="input-with-select" style="width: 400px;height: 40px;">
                 </el-input>
-                <el-button icon="el-icon-search" class="search-button">搜索</el-button>
-
+                <el-button icon="el-icon-search" class="search-button" @click="search">搜索</el-button>
             </div>
         </div>
     </div>

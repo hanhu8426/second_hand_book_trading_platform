@@ -1,6 +1,6 @@
 import ajax from "./ajax";
 
-const BASE_URL = 'http://localhost:8082'
+const BASE_URL = 'http://localhost:8080'
 
 //添加地址
 export const reqAddAddress = (address) => ajax(BASE_URL+'/addUserAddress', {
