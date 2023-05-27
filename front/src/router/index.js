@@ -47,11 +47,12 @@ const routes =[
                 path: 'bookStall',
                 component: ()=>import('../components/UserHome/bookStall/bookStall.vue')
             },
-
+            {
+                path: 'addressPage',
+                component: ()=>import('../components/UserHome/Home/addressPage.vue')
+            },
         ]
     },
-
-
     // {
     //     path:'*' , redirect :'/'
     // },

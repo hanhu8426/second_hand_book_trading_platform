@@ -39,6 +39,7 @@ export default {
                                 <ul class="uc-nav-list">
                                     <a href="#/user/userCenter"><li>我的个人中心</li></a>
                                     <a href="#/user/mesNotice"><li>消息通知</li></a>
+                                    <a href="#/user/addressPage"><li>收货地址</li></a>
                                 </ul>
                             </div>
                         </div>

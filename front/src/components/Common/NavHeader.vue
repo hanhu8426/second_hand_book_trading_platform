@@ -1,26 +1,3 @@
-<script>
-export default {
-    name: "HeadNav",
-    data() {
-        return {
-            input: "",
-            select: '',
-            //第一种设置图片的方法
-            // imgS: "static/image/logo-250.png"
-            //第二种设置图片的方法
-            imgS: require('../../assets/image/logo-250.png')
-        }
-    },
-    computed: {
-        //第三种方法
-        getImgS(){
-            let imgUrl = "logo-250.png";
-            let imgSrc = require('../../assets/image/'+imgUrl);
-            return imgSrc;
-        }
-    }
-}
-</script>
 
 <template>
     <div class="headNav">
@@ -31,12 +8,10 @@ export default {
                 </div>
             </div>
             <div style="float: right;">
-                <el-select v-model="select"  placeholder="请选择" class="search-type">
-                    <el-option label="书名" value="1"></el-option>
-                    <el-option label="作者" value="2"></el-option>
-                    <el-option label="出版社" value="3"></el-option>
+                <el-select v-model="select" placeholder="请选择" class="search-type" @change="handleOptionChange">
+                    <el-option v-for="type in type_list" :key="type.value" :value="type.typeName">{{type.typeName}}</el-option>
                 </el-select>
-                <el-input v-model="input" placeholder="书名、作者、出版社、ISBN" class="input-with-select" style="width: 400px;height: 40px;">
+                <el-input v-model="input" placeholder="书名、作者" class="input-with-select" style="width: 400px;height: 40px;">
 
                 </el-input>
                 <el-button icon="el-icon-search" class="search-button">搜索</el-button>
@@ -45,6 +20,50 @@ export default {
         </div>
     </div>
 </template>
+
+
+
+<script>
+export default {
+    name: "HeadNav",
+    data() {
+        return {
+            rel:'',
+            input: "",
+            select: '',
+            type_list:[
+                {
+                    typeName: '书名',
+                    value: '0',
+                },
+                {
+                    typeName: '作者',
+                    value: '1',
+                }
+            ],
+            imgS: require('../../assets/image/logo-250.png')
+        }
+    },
+    computed: {
+    },
+    methods:{
+        handleOptionChange(value) {
+            if (value === 'option1') {
+                this.handleOption1();
+            } else if (value === 'option2') {
+                this.handleOption2();
+            }
+        },
+        handleOption1(){
+            this.select=0
+        },
+        handleOption2(){
+            this.select=1
+        },
+    }
+}
+</script>
+
 
 <style scoped>
 .headNav{

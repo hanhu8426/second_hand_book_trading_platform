@@ -9,32 +9,46 @@
                 </div>
             </div>
             <div class="book_list" v-for="book in bookList" :key="book.id">
-                <div class="name">{{address.name}}
-                    <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
+                <div class="bookCover">
+                    <el-image  src="src/assets/image/20.jpg"> alt="书籍封面"></el-image>
                 </div>
-                <div class="tel">{{address.phone}}</div>
-                <div class="detail">{{address.addr}}</div>
+                <div class="bookName">{{book.name}}
+                    <span style="float: right;font-size: 14px;color: #757575;">{{book.type}}</span>
+                </div>
+                <div class="author">{{book.author}}</div>
+                <div class="Description">{{book.description}}</div>
                 <div class="foot">
-                    <span style="float: right" @click="delAddress(address.id)">删除</span>
-                    <span style="float: right;margin-right: 10px" @click="handleMod(address)">修改</span>
+                    <span style="float: right" @click="delAddress(book.id)">删除</span>
+                    <span style="float: right;margin-right: 10px" @click="handleMod(book.id)">修改</span>
                 </div>
             </div>
         </div>
 
         <!--添加图书的弹出框-->
-        <el-dialog title="添加收货地址" v-model="dialogVisible" width="30%"  center>
-            <el-form ref="form" :model="address" >
+        <el-dialog title="添加新的书籍" v-model="dialogVisible" width="50%"  center>
+            <el-form ref="form" :model="book">
                 <el-form-item>
-                    <el-input placeholder="姓名" v-model="address.name"></el-input>
+                    <el-upload
+                        action={{this.book.image}}
+                    :on-success="handleUploadSuccess"
+                    :before-upload="beforeUpload"
+                    accept="image/*"
+                    :show-file-list="false"
+                    >
+                    <el-button>选择图片</el-button>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="手机号" v-model="address.phone"></el-input>
+                    <el-input placeholder="书名" v-model="book.name"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
+                    <el-input placeholder="类别" ></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="地址标签" v-model="address.label"></el-input>
+                    <el-input type="textarea" placeholder="简介"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="价格"></el-input>
                 </el-form-item>
             </el-form>
             <template v-slot:footer>
@@ -48,41 +62,63 @@
 </template>
 
 <script>
-import {reqDelAddress,reqAddAddress,reqGetAddressList,reqModAddress} from "../../../api/address.js";
 // <!--用户地址页面-->
+import {uploadImage} from "@/api/book";
+
 export default {
     name: "AddressPage",
     data() {
         return {
             dialogVisible: false,
-            isEdit:false,//用来判断是添加地址还是修改地址 false:添加 true:修改
-            addressList:[
+            isEdit:false,//用来判断是添加书还是修改书 false:添加 true:修改
+            bookList:[
                 {
                     id: 1,
-                    account: "黄小龙",
-                    name: "小胖",
-                    phone: "18988798892",
-                    addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                    label: "家",
-                    off: false,
+                    name: "黄哥的恋爱节奏",
+                    author: "黄文敬",
+                    isbn: "",
+                    type: "文学",
+                    description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
+                    status:"",
+                    image:"",
+                    campus:"",
+                    price:"",
+                    newProduct:"",
+                    recommend:"",
+                    sellerID:"",
                 },
                 {
                     id: 2,
-                    account: "黄小龙",
-                    name: "小胖",
-                    phone: "18988798892",
-                    addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                    label: "家",
-                    off: false,
+                    name: "算出来的秘密爱情",
+                    author: "胡丹婷",
+                    isbn: "",
+                    type: "小说",
+                    description: "",
+                    status:"",
+                    image:"",
+                    campus:"",
+                    price:"",
+                    newProduct:"",
+                    recommend:"",
+                    sellerID:"",
                 },
+
             ],
-            address:{
+
+            book:{
                 id: null,
-                account: "黄小龙",
                 name: "",
-                phone: "",
-                addr: "",
-                label: "",
+                author: "",
+                isbn: "",
+                type: "",
+                description: "",
+                status:"",
+                image:"",
+                campus:"",
+                price:"",
+                newProduct:"",
+                recommend:"",
+                sellerID:"",
             },
         };
     },
@@ -93,21 +129,74 @@ export default {
     //     this.getAddressList();
     // },
     methods: {
+        //有关图片上传的方法
+        handleUploadSuccess(response, file) {
+            console.log('上传成功', response);
+            // 获取上传文件的名称和大小
+            const fileName = file.name;
+            const fileSize = file.size;
+
+            console.log('文件名:', fileName);
+            console.log('文件大小:', fileSize);
+            // 假设服务器返回的响应数据为以下格式：
+            // {
+            //   "imageUrl": "http://example.com/uploads/image.jpg",
+            //   "name": "image.jpg",
+            //   "size": 1024
+            // }
+            const imageUrl = response.imageUrl;
+            const name = response.name;
+            const size = response.size;
+
+            console.log('图片地址:', imageUrl);
+            console.log('文件名:', name);
+            console.log('文件大小:', size);
+        },
+        beforeUpload(file) {
+            // 在上传之前的钩子函数
+            // 可以在此处进行一些验证操作
+            this.convertToDataURI(file);
+            return false; // 阻止自动上传
+        },
+        convertToDataURI(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const imageData = event.target.result;
+                this.uploadImage(imageData);
+            };
+            reader.readAsDataURL(file);
+        },
+        uploadImage(imageData) {
+            // 在这里执行上传图片的操作，将imageData发送到服务器
+            console.log('数据流', imageData);
+
+            // 准备发送到服务器的数据
+            const formData = new FormData();
+            formData.append('image', imageData); // 将数据流添加到FormData对象中，使用'image'作为字段名
+
+            // 发送POST请求
+            uploadImage(formData).then(response => {
+                    // 上传成功，处理服务器返回的响应数据
+                    console.log('上传成功', response.data.img);
+                    // 可以根据需要进行后续的操作，比如显示上传成功的提示信息或更新页面中的数据等
+                })
+                .catch(error => {
+                    // 上传失败，处理错误情况
+                    console.error('上传失败', error);
+                    // 可以根据需要进行后续的操作，比如显示上传失败的提示信息或进行错误处理等
+                });
+        },
+
+
+
         //处理添加操作
         handleAdd(){
             this.dialogVisible = true;
             this.isEdit = false;
         },
         //处理修改
-        handleMod(addr){
-            this.dialogVisible = true;
-            this.isEdit = true;
-            this.address.id = addr.id;
-            this.address.account = addr.account;
-            this.address.name = addr.name;
-            this.address.phone = addr.phone;
-            this.address.addr = addr.addr;
-            this.address.label = addr.label;
+        handleMod(){
+
         },
 
         //提交处理
@@ -133,98 +222,10 @@ export default {
             });
         },
 
-        //得到用户地址列表
-        getAddressList(){
-            console.log("===获取的地址列表：==="+this.$store.getters.getUser.account+"=====");
-            reqGetAddressList(this.$store.getters.getUser.account).then(response=>{
-                console.log(response);
-                if(response.code==200){
-                    this.addressList = response.addressList;
-                    console.log("===response.addressList.length==="+response.addressList.length);
-                }else{
-                    this.$message({
-                        message: response.message,
-                        type: "warning"
-                    })
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
-        },
+    },
 
-        //添加地址
-        addAddress(){
-            reqAddAddress(this.address).then(response=>{
-                console.log(response);
-                if(response.code==200){
-                    this.$message({
-                        message: response.message,
-                        type: "success"
-                    });
-                    this.dialogVisible = false;
-                    this.getAddressList();
-                }else{
-                    this.$message({
-                        message: response.message,
-                        type: "warning"
-                    })
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
-        },
 
-        //修改地址
-        modifyAddress(){
-            reqModAddress(this.address).then(response=>{
-                console.log(response);
-                if(response.code==200){
-                    this.$message({
-                        message: response.message,
-                        type: "success"
-                    });
-                    this.dialogVisible = false;
-                    this.getAddressList();
-                }else{
-                    this.$message({
-                        message: response.message,
-                        type: "warning"
-                    })
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
-        },
-        //处理删除地址
-        delAddress(id){
-            this.$confirm('是否要进行删除操作?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                reqDelAddress(id).then(response=>{
-                    console.log(response);
-                    if(response.code==200){
-                        this.$message({
-                            message: response.message,
-                            type: "success"
-                        });
-                        this.getAddressList();
-                    }else{
-                        this.$message({
-                            message: response.message,
-                            type: "warning"
-                        })
-                    }
-                }).catch(err=>{
-                    console.log(err);
-                })
-            }).catch(()=>{
-                console.log("取消删除了");
-            });
-        },
 
-    }
 }
 </script>
 
@@ -244,7 +245,7 @@ h1{
     width: 960px;
     margin: 10px auto;
 }
-.address_list{
+.book_list{
     width: 280px;
     height: 180px;
     border: 1px solid #cacaca;
@@ -254,18 +255,18 @@ h1{
     padding: 20px;
     vertical-align: top;
 }
-.name{
+.bookName{
     width: 240px;
     height: 40px;
     font-size: 18px;
 }
-.tel{
+.author{
     width: 240px;
     height: 30px;
     font-size: 14px;
     color: #757575;
 }
-.detail{
+.Description{
     width: 240px;
     height: 30px;
     font-size: 14px;

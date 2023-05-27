@@ -3,11 +3,7 @@ import 'element-plus/dist/index.css'
 import router from './router'
 import store from './store/store'
 import { Message } from 'element-plus'
-
-axios.defaults.baseURL = "http://localhost:8082"
-// main.js
-
-// 设置默认请求头
+axios.defaults.baseURL = "http://localhost:8080"
 
 // 前置拦截
 axios.interceptors.request.use(config => {
@@ -15,13 +11,10 @@ axios.interceptors.request.use(config => {
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-
+        console.log("在请求头中放入令牌")
         const token = localStorage.getItem("token");
         console.log("发送前的token:"+token);
         config.headers.Authorization = token;
-
-        console.log("config.headers.Authorization:"+config.headers.Authorization);
-        token && (config.headers.Authorization = token);
         return config;
     },
     error => {
@@ -38,7 +31,7 @@ axios.interceptors.response.use(
         console.log("response.data"+response.data);
         console.log("response.data.code"+data.code);
         switch(response.data.code){
-            case 401:
+            case 0:
                 console.log("=======后端返回的编码是401=======")
                 this.$store.commit("REMOVE_INFO");//清空本地信息
                 store.state.token = ''
@@ -70,7 +63,7 @@ axios.interceptors.response.use(
                 })
                 setTimeout(() => {
                     router.replace({
-                        path: '/login',
+                        path: '/Login',
                         query: {
                             redirect: router.currentRoute.fullPath
                         }
@@ -99,6 +92,7 @@ axios.interceptors.response.use(
         // console.log(403);
         console.log("error:"+error);
         const status = error.response ? error.response.status : null
+        console.log("令牌是空的，没办法执行")
         console.log("error.response:"+error.response);
         console.log("status:"+status);
         // if(error.response.data) {

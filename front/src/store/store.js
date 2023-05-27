@@ -6,7 +6,6 @@ export default new Vuex.Store({
         token: '',
         userInfo: JSON.parse(sessionStorage.getItem("userInfo"))
         // userInfo: null,
-
     },
     mutations: {
         // set

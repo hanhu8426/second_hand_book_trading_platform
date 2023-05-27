@@ -86,7 +86,7 @@ export default {
 
                             _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
 
-                            let user = response.data.user
+                            let user = response.data
 
                             _this.$store.commit("SET_USERINFO", user)
                             if(response.data.msg=="success"){
@@ -95,12 +95,6 @@ export default {
                                     type: 'success',
                                     message: "登录成功！",
                                     duration: 10,
-                                })
-                            }else {
-                                this.$message({
-                                    type: 'success',
-                                    message: "登录成功！",
-                                    duration: 1000
                                 })
                                 setTimeout(() => {
                                     this.$router.push({path:'/user/userCenter'});

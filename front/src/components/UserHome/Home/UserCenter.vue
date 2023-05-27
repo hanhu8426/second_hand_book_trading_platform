@@ -3,18 +3,21 @@
         <div class="info">
             <div class="user_card">
                 <el-image style="width: 160px; height: 160px;vertical-align: middle;border-radius: 50%;float: left;margin: 20px 10px"
-                          :src="user.imgUrl"
+                          :src="user.img"
                           fit="fill"></el-image>
                 <div class="user_card_info">
-                    <p style="font-size: 22px;color: #616161">{{user.name}}</p>
+                    <p style="font-size: 22px;color: #616161">{{user.account}}</p>
                     <p><span class="link" @click="gotoModUserInfo">修改个人信息></span></p>
                 </div>
             </div>
             <div class="user_action">
-                <p> <span>余额</span><span></span></p>
-                <p> <span>绑定手机:</span><span></span></p>
+                <p> <span>余额:</span><span>{{user.balance}}</span></p>
+                <p> <span>绑定手机:</span><span>{{user.phone}}</span></p>
+                <p> <span>校区:</span><span>{{user.area}}</span></p>
+                <p> <span>简介:</span><span>{{user.introduction}}</span></p>
             </div>
         </div>
+
         <div class="portal-sub">
             <div class="info-list">
                 <el-image style="width: 120px; height: 120px;vertical-align: middle;border-radius: 50%;float: left;margin: 15px 10px"
@@ -60,12 +63,15 @@ export default {
             user:{
                 id: null,
                 account: "",
-                name: "",
+                password:"",
+                manage: false,
+                img:"",
                 gender: "",
-                enable: false,
-                info: "",
-                imgUrl: "",
-                registerTime: null,
+                balance: "",
+                area: null,
+                address:"",
+                phone:"",
+                introduction:"",
             }
         }
     },
@@ -76,13 +82,13 @@ export default {
     // },
     methods: {
         initUserCenter(){
-            reqGetUserInfo(this.$store.getters.getUser.account).then(response=>{
+            reqGetUserInfo().then(response=>{
                 console.log(response);
                 if(response.code==1){
-                    this.user = response.data.user;
+                    this.user = response.data.data;
                 }else{
                     this.$message({
-                        message: response.message,
+                        message: response.msg,
                         type: "warning"
                     })
                 }
@@ -114,7 +120,7 @@ export default {
 
 .info{
     width: 940px;
-    height: 200px;
+    height: 300px;
     margin:auto;
     background-color: #ffffff;
     border-bottom: 1px solid #d9d9d9;
@@ -122,7 +128,7 @@ export default {
 
 .user_card{
     width: 540px;
-    height: 200px;
+    height: 300px;
     float: left;
 }
 
@@ -136,7 +142,7 @@ export default {
 .user_action{
     float: left;
     width: 400px;
-    height: 200px;
+    height: 300px;
     padding-top: 65px;
 }
 .link{

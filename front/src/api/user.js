@@ -47,11 +47,11 @@ export const reqGetUserList = (page,pageSize)=>ajax(BASE_URL+'/getUserList',{pag
 export const reqModifyUserStatus = (id,status)=>ajax(BASE_URL+'/modifyUserStatus',{id,status})
 
 //得到用户的基本信息getUserInfo
-export const reqGetUserInfo = (account)=>ajax(BASE_URL+'/getUserInfo',{account})
+export const reqGetUserInfo = ()=>ajax(BASE_URL+'/getUserInfo',{})
 
 //修改密码
-export const reqModUserPwd = (account,oldPassword,newPassword)=>ajax(BASE_URL+'/user/userInfo',{account,oldPassword,newPassword})
+export const reqModUserPwd = (oldPassword,newPassword)=>ajax(BASE_URL+'/user/PwdManage',{oldPassword,newPassword},'POST')
 
 //修改用户的基本信息
 export const reqModUserInfo_1 = (charge)=>ajax(BASE_URL+'/user/userInfo/ModUserInfo_1',{charge})
-export const reqModUserInfo_2 = (avatar,phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{avatar,phone,area,gender,introduction})
+export const reqModUserInfo_2 = (avatar,phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{avatar,phone,area,gender,introduction},"POST")

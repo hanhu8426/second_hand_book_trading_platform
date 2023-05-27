@@ -1,6 +1,12 @@
 import axios from 'axios'
 
+
+
 // 包装的axios ajax请求接口
+// axios.default.headers.post['Authorization'] = localStorage.getItem('token')
+// axios.default.headers.get['Authorization'] =localStorage.getItem('token')
+
+
 export default function ajax (url, data={}, method='GET') {
     return new Promise(function (resolve, reject) {
         let promise
@@ -15,7 +21,6 @@ export default function ajax (url, data={}, method='GET') {
                 dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
                 url = url + '?' + dataStr
             }
-
             promise = axios.get(url)
         } else {
             promise = axios.post(url, data)

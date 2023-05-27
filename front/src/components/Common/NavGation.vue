@@ -16,7 +16,7 @@
                         <template v-slot:title>登陆|注册</template>
                         <el-menu-item index="/Login">登录</el-menu-item>
                         <el-menu-item index="/Register">注册</el-menu-item>
-                        <el-menu-item index="/adminPage">发布</el-menu-item>
+                        <el-menu-item index="/user/bookStall">发布</el-menu-item>
 
                     </el-submenu>
                     <el-menu-item index="/user/mesNotice">消息</el-menu-item>

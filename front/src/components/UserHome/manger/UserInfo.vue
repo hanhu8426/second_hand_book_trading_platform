@@ -1,21 +1,6 @@
 <template>
     <div class="content">
-        <div class="info">
-            <div class="user_card">
-                <el-image style="width: 160px; height: 160px;vertical-align: middle;border-radius: 50%;float: left;margin: 20px 10px"
-                          :src="imgS"
-                          fit="fill"></el-image>
-                <div class="user_card_info">
-                    <p style="font-size: 22px;color: #616161">一条小黄龙</p>
-                    <p style="color: #757575">修改头像</p>
-                </div>
-            </div>
-            <div class="user_action">
-                <p> <span>账号安全:</span><span>普通</span></p>
-                <p> <span>绑定手机:</span><span>{{ this.form_1.phone }}</span></p>
-                <p> <span>余额:</span><span>{{ this.balance }}</span></p>
-            </div>
-        </div>
+
 
         <div class="box_info">
             <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
@@ -37,9 +22,19 @@
                     <div class="tab_box">
                         <div class="modify_box">
                             <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
-                                <el-form-item prop="avater" label="头像上传">
-                                    <el-input type="url">上传你的头像</el-input>
-                                </el-form-item>
+                                <el-upload
+                                    class="upload-demo"
+                                    action="/upload"
+                                    :on-success="handleSuccess"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :before-upload="beforeUpload"
+                                    multiple
+                                    :limit="3"
+                                    :auto-upload="false">
+                                    <el-button  size="small" type="primary">上传头像</el-button>
+                                    <div  class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                </el-upload>
                                 <el-form-item prop="phone" label="电话号码">
                                     <el-input  placeholder="输入你的手机号码" type="number"  @input="changeInput" v-model="form_1.phone"></el-input>
                                 </el-form-item>
@@ -138,7 +133,7 @@ export default {
             },
 
             form_2:{
-            avatar:'',
+            img:'',
             phone: '',
             area:[],
             checkBoxOption:[
@@ -171,6 +166,9 @@ export default {
 
     },
     methods: {
+        handleSuccess(){
+
+        },
         changeInput() {
             this.$forceUpdate();
         },
@@ -198,7 +196,7 @@ export default {
                     }).then((response) => {
                         if(response.data.code == 1){//根据状态码进入下一步
                             console.log("=====上传成功=======")
-                            let balanceNum=response.data.balance
+                            let balanceNum=response.data.data
                             _this.balance =balanceNum
                             if(response.msg=="success"){
                                 this.$message({
@@ -237,7 +235,7 @@ export default {
                 if (valid) {
                     console.log("=====上传表格2=======")
                     reqModUserInfo_2({
-                        avatar: _this.form_2.avatar,
+                        img: _this.form_2.img,
                         phone: _this.form_2.phone,
                         area:_this.form_2.area,
                         gender:_this.form_2.gender,
