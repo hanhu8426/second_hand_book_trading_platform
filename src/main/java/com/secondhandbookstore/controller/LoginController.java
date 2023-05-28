@@ -4,7 +4,7 @@ import com.secondhandbookstore.pojo.Result;
 import com.secondhandbookstore.pojo.User;
 import com.secondhandbookstore.service.UserService;
 import com.secondhandbookstore.utils.JwtUtils;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

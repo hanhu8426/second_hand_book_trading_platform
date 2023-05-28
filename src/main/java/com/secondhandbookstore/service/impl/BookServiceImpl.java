@@ -2,7 +2,7 @@ package com.secondhandbookstore.service.impl;
 
 import com.secondhandbookstore.mapper.BookMapper;
 import com.secondhandbookstore.pojo.PageBean;
-import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.pojo.Book;
 import com.secondhandbookstore.service.BookService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -75,5 +75,29 @@ public class BookServiceImpl implements BookService {
     @Override
     public void update(Book book) {
         bookMapper.update(book);
+    }
+
+    @Override
+    public PageBean getPagesByType(Integer page, Integer pageSize, Short type) {
+        //1.设置分页参数
+        PageHelper.startPage(page,pageSize);
+        //2.执行查询
+        List<Book> bookList=bookMapper.pageListByType(type);
+        Page<Book> p=(Page<Book>) bookList;
+        //3.封装PageBean对象
+        PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
+        return pageBean;
+    }
+
+    @Override
+    public PageBean getPagesByRecommend(Integer page, Integer pageSize, Boolean recommend) {
+        //1.设置分页参数
+        PageHelper.startPage(page,pageSize);
+        //2.执行查询
+        List<Book> bookList=bookMapper.pageListByRecommend(recommend);
+        Page<Book> p=(Page<Book>) bookList;
+        //3.封装PageBean对象
+        PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
+        return pageBean;
     }
 }

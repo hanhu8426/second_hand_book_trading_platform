@@ -1,6 +1,6 @@
 package com.secondhandbookstore.mapper;
 
-import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.pojo.Book;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface BookMapper {
     /**
-     * 查询全部部门
+     * 查询全部书籍
      * @return
      */
     @Select("select * from book")
@@ -19,36 +19,20 @@ public interface BookMapper {
 
 
     /**
-     * 根据ID删除部门
+     * 根据ID删除书籍
      * @param id
      */
     @Delete("delete from book where id=#{id}")
     void deleteById(Integer id);
 
     /**
-     * 新增部门
+     * 新增书籍
      * @param book
      */
     @Insert("insert into book(name, author, isbn, type, description, status, image, campus, price, newProduct, recommend, sellerID) " +
             "values (#{name},#{author},#{isbn},#{type},#{description},#{status},#{image},#{campus},#{price},#{newProduct},#{recommend},#{sellerID})")
     void insert(Book book);
 
-/*    *//**
-     * 查询总记录数
-     * @return
-     *//*
-    @Select("select count(*) from book")
-    public Long count();
-
-
-    *//**
-     * 分页查询，获取列表数据
-     * @param start
-     * @param pageSize
-     * @return
-     *//*
-    @Select("select * from book.book limit #{start},#{pageSize}")
-    public List<Book> page(Integer start,Integer pageSize);*/
 
     /**
      * 书籍信息查询分页展示 插件
@@ -71,4 +55,9 @@ public interface BookMapper {
      * @param book
      */
     void update(Book book);
+
+    List<Book> pageListByType(Short type);
+
+    @Select("select * from book where recommend=#{recommend}")
+    List<Book> pageListByRecommend(Boolean recommend);
 }

@@ -1,7 +1,7 @@
 package com.secondhandbookstore.service;
 
 import com.secondhandbookstore.pojo.PageBean;
-import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.pojo.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,4 +39,8 @@ public interface BookService {
     Book getById(Integer id);
 
     void update(Book book);
+
+    PageBean getPagesByType(Integer page, Integer pageSize, Short type);
+
+    PageBean getPagesByRecommend(Integer page, Integer pageSize, Boolean recommend);
 }
