@@ -1,4 +1,5 @@
 <script>
+import {reqGetRecBookList} from "@/api/book";
 
 export default {
     name: "GalleryBook",
@@ -72,6 +73,28 @@ export default {
             ]
         };
     },
+  methods: {
+    getBookList(){
+      reqGetRecBookList("newPut").then(response=>{
+        if(response.code==200){
+          this.bookList = response.bookList;
+        }else{
+          this.$message({
+            type: 'warning',
+            message: response.message
+          })
+        }
+      }).catch(()=>{
+        this.$message({
+          type: 'warning',
+          message: "获取图书列表数据失败"
+        })
+      })
+    }
+  },
+  created() {
+    this.getBookList();
+  }
 }
 
 </script>
@@ -80,6 +103,7 @@ export default {
     <div class="gallery-book">
         <div class="gallery-book_list">
             <div class="gallery-book_card" v-for="item in bookList" :key="item.id">
+              <router-link :to= "{path: '/BookInfo',query:{id:item.id}}">
                     <el-image
                             style="width: 82%; height: 190px;margin:5px 9%"
                             :src="item.coverImg"
@@ -96,6 +120,7 @@ export default {
                             {{item.price}}
                         </div>
                     </div>
+              </router-link>
             </div>
         </div>
     </div>

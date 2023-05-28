@@ -32,7 +32,7 @@ export default{
             activeName:'first',
             imgS:[],
             bookSortList:['小说','文学','地理','教科书','生物','科学','玄幻','言情','计算机','男频','女频'],
-            options:['文学 艺术','军事 小说','军事 小说','军事 小说','军事 小说','军事 小说','军事 小说',],
+            options:['历史 |  政治', '文学 |  艺术', '科学 | 艺术', '商业  |  经济', '心理 | 自助', '旅游 | 地理', '宗教 | 哲学',],
         };
 
     },
@@ -59,7 +59,6 @@ export default{
 
 <template>
     <div >
-
         <NavGation></NavGation>
         <NavHeader></NavHeader>
         <div class="first_content">
@@ -69,21 +68,13 @@ export default{
                         <el-tab-pane label="首页" name="first">
                             <div class="content_main_left">
                                 <div class="tab">
-                                    <div v-if="single==0">
-                                        <div v-for="(item,index) in options" :key="index" class="tab_list" @mouseenter="enter(index)" @mouseleave="out(index)">
-                                        <div>
-                                            <span style="color: black">{{item}}</span>
-                                        </div>
-                                        </div>
+                                  <div v-for="(item,index) in options" :key="index" class="tab_list" >
+                                    <div>
+                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" >
+                                        <span style="color: black">{{item}}</span>
+                                      </router-link>
                                     </div>
-                                    <div v-if="single==1">
-                                        <div v-for="(item,index) in options" :key="index" class="tab_list" @mouseenter="enter(index)" @mouseleave="out(index)">
-                                            <div v-if="item.length<2">
-                                                <!--                          {{item[0].label}}-->
-                                                <span style="color: black">{{item[0].label}}</span>
-                                            </div>
-                                       </div>
-                                    </div>
+                                  </div>
                                     <div class="communicate">
                                         <i class="el-icon-phone"></i><span>书店客服中心</span><br>
                                         <span>预约电话 123-321-123</span>

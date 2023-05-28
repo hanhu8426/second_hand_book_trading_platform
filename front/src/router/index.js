@@ -53,9 +53,14 @@ const routes =[
             },
         ]
     },
-    // {
-    //     path:'*' , redirect :'/'
-    // },
+    {
+        path:'/BookInfo', component: ()=>import('../components/Book/BookInfo.vue')
+    },
+    {
+        path:'/search/:selectResult?/:inputContent?',
+        name:'Search',
+        component: () => import('../components/Search/search.vue')
+    },
 ]
 
 const router = createRouter(
