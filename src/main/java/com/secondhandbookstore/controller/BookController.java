@@ -13,7 +13,7 @@ import java.util.List;
 //一个完整的请求路径，应该是类上的@RequestMapping的value属性+方法上的@RequestMapping的value属性
 @Slf4j
 @RestController
-@RequestMapping("books")
+@RequestMapping("book")
 public class BookController {
     @Autowired
     private BookService bookService;
@@ -129,10 +129,11 @@ public class BookController {
      * @param type
      * @return
      */
-    @GetMapping("getBooksByType")
+    @GetMapping("/getBookListBySort")
     public Result getPagesByType(@RequestParam(defaultValue = "1") Integer page,
                                  @RequestParam(defaultValue = "10") Integer pageSize,
                                  Short type){
+        System.out.println("testing");
         log.info("分页查询，参数：{},{},{}",page, pageSize, type);
         PageBean pageBean=bookService.getPagesByType(page,pageSize,type);
         return Result.success(pageBean);
