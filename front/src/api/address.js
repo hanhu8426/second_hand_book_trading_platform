@@ -3,7 +3,7 @@ import ajax from "./ajax";
 const BASE_URL = 'http://localhost:8080'
 
 //添加地址
-export const reqAddAddress = (address) => ajax(BASE_URL+'/addUserAddress', {
+export const reqAddAddress = (address) => ajax(BASE_URL+'/Address', {
     name: address.name,
     phone: address.phone,
     address: address.address,

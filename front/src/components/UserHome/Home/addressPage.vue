@@ -80,6 +80,7 @@ export default {
                 phone: "",
                 addr: "",
                 area: "",
+                off:false,
             },
         };
     },
@@ -113,19 +114,6 @@ export default {
             }else {
                 this.addAddress();
             }
-
-            // this.$refs[formName].validate((valid)=>{
-            //     // console.log(this.publish.isShow);
-            //     if(valid){
-            //         if(this.isEdit){
-            //             this.modifyAddress();
-            //         }else {
-            //             this.addAddress();
-            //         }
-            //     }else {
-            //         this.$message.error("地址信息不符合要求，请重试");
-            //     }
-            // });
         },
 
         //得到用户地址列表
