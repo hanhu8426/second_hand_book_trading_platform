@@ -60,7 +60,7 @@ export const reqModifyRec = (bookId,recommend)=>ajax(BASE_URL+'/modifyRec',{book
 export const reqModifyNew = (bookId,newProduct)=>ajax(BASE_URL+'/modifyNew',{bookId,newProduct})
 
 //getSortBookList
-export const reqGetSortBookList = (sortId)=>ajax(BASE_URL+'/getSortBookList',{sortId})
+export const reqGetSortBookList = (type)=>ajax(BASE_URL+'/getSortBookList',{type})
 
 //getSortBookListBySort
-export const reqGetBookListBySort = (sortId,page,pageSize)=>ajax(BASE_URL+'/getBookListBySort',{sortId,page, pageSize})
+export const reqGetBookListBySort = (type,page,pageSize)=>ajax(BASE_URL+'/getBookListBySort',{type,page, pageSize})
