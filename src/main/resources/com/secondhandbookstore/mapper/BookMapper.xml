@@ -21,9 +21,9 @@
                 and author like concat('%',#{author},'%')
             </if>
 
-<!--            <if test="priceBegin!=0 and priceEnd!=0">
-                and price between #{priceBegin} and #{priceEnd}
-            </if>-->
+            <!--            <if test="priceBegin!=0 and priceEnd!=0">
+                            and price between #{priceBegin} and #{priceEnd}
+                        </if>-->
         </where>
     </select>
 
@@ -37,4 +37,7 @@
             #{id}
         </foreach>
     </delete>
+
+
+
 </mapper>

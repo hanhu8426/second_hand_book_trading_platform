@@ -80,7 +80,7 @@ public class BookController {
                        String author
     ){
         //默认值设置
-        if(type==null) type=1;
+        //if(type==null) type=1;
 //        if(pageSize==null) pageSize=10;
         log.info("分页查询，参数：{},{},{},{},{},{},{}",page,pageSize,type,name,author);
         //调用service分页查询

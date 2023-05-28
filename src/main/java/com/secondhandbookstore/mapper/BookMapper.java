@@ -62,4 +62,6 @@ public interface BookMapper {
      * @param ids
      */
     void deleteBatch(List<Integer> ids);
+
+    //Book pageList();
 }
