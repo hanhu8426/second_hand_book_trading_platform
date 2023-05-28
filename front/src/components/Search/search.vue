@@ -81,6 +81,16 @@ export default {
       ],
       bookList: [],
       sortId:null,
+      recInput:null,
+      recSelect:null,
+    }
+  },
+  computed:{
+    selectResult(){
+      return this.$route.params.selectResult;
+    },
+    inputContent(){
+      return this.$route.params.inputContent;
     }
   },
   methods: {

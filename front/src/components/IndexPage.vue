@@ -59,7 +59,6 @@ export default{
 
 <template>
     <div >
-
         <NavGation></NavGation>
         <NavHeader></NavHeader>
         <div class="first_content">
@@ -71,7 +70,7 @@ export default{
                                 <div class="tab">
                                   <div v-for="(item,index) in options" :key="index" class="tab_list" >
                                     <div>
-                                      <router-link :to="{ path: '/search', query: { name: item.label } }" >
+                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" >
                                         <span style="color: black">{{item}}</span>
                                       </router-link>
                                     </div>
