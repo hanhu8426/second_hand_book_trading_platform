@@ -5,10 +5,12 @@ const routes =[
 
     {
         path: '/',
-        name: 'Index',
         component:()=>import('../components/IndexPage.vue')
     },
-
+    {
+        path: '/Index',
+        component:()=>import('../components/IndexPage.vue')
+    },
     {
     path:'/Login',component:()=> import('../components/Login/LoginPage.vue')
     },
@@ -61,6 +63,7 @@ const routes =[
         name:'Search',
         component: () => import('../components/Search/search.vue')
     },
+
 ]
 
 const router = createRouter(

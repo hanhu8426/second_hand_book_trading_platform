@@ -222,7 +222,7 @@ export default{
   height: 40px;
   line-height: 40px;
   background-color: #f3f0e9;
-  margin: 1px 0px;
+  margin: 1px ;
 }
 .tab_list{
   padding-left: 5px;
@@ -230,7 +230,7 @@ export default{
   height: 40px;
   line-height: 40px;
   background-color: #ffffff;
-  margin: 1px 0px;
+  margin: 1px ;
 }
 .tab_list:hover{
   background-color: #a0a9b1;

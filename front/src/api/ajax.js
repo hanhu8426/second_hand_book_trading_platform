@@ -1,5 +1,4 @@
-import axios from 'axios'
-
+import axios from "@/axois";
 
 
 // 包装的axios ajax请求接口
