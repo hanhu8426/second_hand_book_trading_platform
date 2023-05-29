@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhandbookstore.mapper.OrderMapper">
+    <update id="updateOrder">
+        update order
+        <set>
+            <if test="buyerId!=null and buyerId!=''">
+                buyerId=#{buyerId},
+            </if>
+            <if test="sellerId!=null and sellerId!=''">
+                sellerId=#{sellerId},
+            </if>
+            <if test="deliveryAddress!=null and deliveryAddress!=''">
+                deliveryAddress=#{deliveryAddress},
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                beginTime=#{beginTime},
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                endTime=#{endTime}
+            </if>
+        </set>
+        where orderId=#{orderId}
+    </update>
+
+    <select id="pageList" resultType="com.secondhandbookstore.pojo.Order">
+        select * from order
+        <where>
+            <if test="deliveryAddress!=null and deliveryAddress!=''">
+                deliveryAddress like concat('%',#{deliveryAddress},'%')
+            </if>
+            <if test="beginTime!=null and endTime!=null">
+                and beginTime between #{beginTime} and #{endTime}
+            </if>
+        </where>
+        order by orderId desc
+    </select>
+</mapper>

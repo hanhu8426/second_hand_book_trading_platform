@@ -1,7 +1,7 @@
 package com.secondhandbookstore.service;
 
 import com.secondhandbookstore.pojo.PageBean;
-import com.secondhandbookstore.pojo.book.Book;
+import com.secondhandbookstore.pojo.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,4 +30,17 @@ public interface BookService {
      * @param ids
      */
     void deleteBatch(List<Integer> ids);
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    Book getById(Integer id);
+
+    void update(Book book);
+
+    PageBean getPagesByType(Integer page, Integer pageSize, Short type);
+
+    PageBean getPagesByRecommend(Integer page, Integer pageSize, Boolean recommend);
 }
