@@ -63,7 +63,7 @@
 
 <script>
 // <!--用户地址页面-->
-import {uploadImage} from "@/api/book";
+import {uploadImage} from "@/api/bookStall";
 
 export default {
     name: "AddressPage",

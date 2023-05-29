@@ -1,4 +1,6 @@
 import axios from 'axios'
+import ajax from "./ajax";
+const BASE_URL = 'http://localhost:8080'
 
 // 包装的axios ajax请求接口
 function ajax1 (url, data={}, method='GET') {
@@ -28,8 +30,6 @@ function ajax1 (url, data={}, method='GET') {
         })
     })
 }
-import ajax from "./ajax";
-const BASE_URL = 'http://localhost:8080'
 
 //登录
 export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
