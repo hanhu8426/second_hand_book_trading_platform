@@ -1,10 +1,5 @@
 import axios from 'axios'
-
-
-
 // 包装的axios ajax请求接口
-// axios.default.headers.post['Authorization'] = localStorage.getItem('token')
-// axios.default.headers.get['Authorization'] =localStorage.getItem('token')
 
 
 export default function ajax (url, data={}, method='GET') {

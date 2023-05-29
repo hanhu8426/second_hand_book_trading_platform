@@ -2,21 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5b645ab-6983-4853-a92b-62d8bf030374" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/front/build/build.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/check-versions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/vue-loader.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/webpack.base.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/webpack.dev.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/build/webpack.prod.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/components/bookStall.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/dist.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/api/ajax.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/ajax.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/axois.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/axois.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/Common/NavGation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Common/NavGation.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/Register/RegisterPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Register/RegisterPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +42,12 @@
       <option name="presentableId" value="Default" />
       <updated>1684551504789</updated>
       <workItem from="1684551510626" duration="8000" />
+      <workItem from="1685282047602" duration="41000" />
+      <workItem from="1685325092692" duration="16000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

@@ -75,11 +75,11 @@ export default {
             }
         }
     },
-    // mounted(){
-    // },
-    // created(){
-    //     this.initUserCenter();
-    // },
+    mounted(){
+    },
+    created(){
+        this.initUserCenter();
+    },
     methods: {
         initUserCenter(){
             reqGetUserInfo().then(response=>{

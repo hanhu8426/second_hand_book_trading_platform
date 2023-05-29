@@ -3,7 +3,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import App from './App'
 import router from './router/index';
-// import axios from "axios";
+
 import store from './store/store'
 import "./axois.js"
 import axios from 'axios'
@@ -47,6 +47,8 @@ axios.interceptors.request.use(config => {
         const token = localStorage.getItem("token");
         console.log("发送前的token:"+token);
         config.headers.Authorization = token;
+        config("输出请求头中的令牌")
+        config(config.headers.Authorization)
         return config;
     },
     error => {
@@ -86,7 +88,7 @@ axios.interceptors.response.use(
                 }, 1000);
                 return Promise.reject(response);
 
-            case 403:
+            case 1:
                 console.log("返回403");
                 Message({
                     type: 'waring',

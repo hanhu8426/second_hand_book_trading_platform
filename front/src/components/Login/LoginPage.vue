@@ -85,12 +85,12 @@ export default {
                             const jwt =response.headers['Authorization'];//获取令牌
 
                             _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
-
+                            console.log("已经拿到令牌并存到本地，且令牌内容为")
+                            console.log(localStorage.getItem('token'))
                             let user = response.data
 
                             _this.$store.commit("SET_USERINFO", user)
                             if(response.data.msg=="success"){
-                                console.log("已收到令牌，登陆成功")
                                 this.$message({
                                     type: 'success',
                                     message: "登录成功！",

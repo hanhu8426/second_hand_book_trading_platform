@@ -3,10 +3,12 @@ import 'element-plus/dist/index.css'
 import router from './router'
 import store from './store/store'
 import { Message } from 'element-plus'
-axios.defaults.baseURL = "http://localhost:8080"
-
+// 创建一个 Axios 实例
+const instance = axios.create({
+    baseURL: 'http://localhost:8080', // 根据你的实际情况设置基本URL
+});
 // 前置拦截
-axios.interceptors.request.use(config => {
+instance.interceptors.request.use(config => {
         // 登录流程控制中，根据本地是否存在token判断用户的登录情况
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
@@ -24,7 +26,7 @@ axios.interceptors.request.use(config => {
 )
 
 
-axios.interceptors.response.use(
+instance.interceptors.response.use(
     response => {
          console.log("返回的response:"+response);
         let data = response.data;
@@ -108,3 +110,5 @@ axios.interceptors.response.use(
     }
 )
 
+
+export default instance;
