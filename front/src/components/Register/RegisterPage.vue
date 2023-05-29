@@ -96,7 +96,7 @@ export default {
                 if (valid) {
                     //数据校验成功，可以进行提交操作
                     reqRegister(this.ruleForm.account,this.ruleForm.password).then((response)=>{
-                        if(response.data.code == 1){
+                        if(response.data.code===1){
                             this.$message({
                                 type: 'success',
                                 message: response.message,

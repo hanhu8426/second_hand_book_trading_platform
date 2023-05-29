@@ -35,7 +35,7 @@ const BASE_URL = 'http://localhost:8080'
 export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
 
 // 检测该邮箱账号是否已经被注册
-export const reqAccountVerify = ({account})=>ajax(BASE_URL+'/user/accountVerify',{account})
+export const reqAccountVerify = ({account})=>ajax1(BASE_URL+'/user/accountVerify',{account})
 
 // 注册账号
 export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})
