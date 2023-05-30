@@ -82,13 +82,15 @@ export default {
                         console.log("收到返回的response,接下来检测状态码")
                         console.log("再次修改")
                         if(response.data.code == 1){//根据状态码进入下一步
-                            const jwt =response.headers['Authorization'];//获取令牌
-
-                            _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
-                            console.log("已经拿到令牌并存到本地，且令牌内容为")
-                            console.log(localStorage.getItem('token'))
-                            let user = response.data
-
+                           let token =response.headers.authorization;//获取令牌
+                            console.log(response.headers)//
+                            localStorage.setItem("token",token)
+                            _this.$store.commit("SET_TOKEN", token)//将获取的令牌作为整个路由通行令牌
+                            console.log("我存了令牌，开始打印")
+                            let test =localStorage.getItem("token")
+                            console.log(test)
+                            let user = response.data.data
+                            console.log(user)
                             _this.$store.commit("SET_USERINFO", user)
                             if(response.data.msg=="success"){
                                 this.$message({
