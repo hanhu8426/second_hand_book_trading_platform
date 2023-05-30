@@ -1,51 +1,5 @@
-<script >
-// <!--用户书摊页面-->
-
-<<<<<<< HEAD
-        <!--添加图书的弹出框-->
-        <el-dialog title="添加新的书籍" v-model="dialogVisible" width="50%"  center>
-            <el-form ref="form" :model="book">
-                <el-form-item>
-                    <el-upload
-                        action={{this.book.image}}
-                    :on-success="handleUploadSuccess"
-                    :before-upload="beforeUpload"
-                    accept="image/*"
-                    :show-file-list="false"
-                    >
-                    <el-button>选择图片</el-button>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item>
-                    <el-input placeholder="书名" v-model="book.name"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input placeholder="类别" ></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input type="textarea" placeholder="简介"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input placeholder="价格"></el-input>
-                </el-form-item>
-            </el-form>
-            <template v-slot:footer>
-            <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
-            </span></template>
-        </el-dialog>
-
-    </div>
-</template>
-
 <script>
-// <!--用户地址页面-->
-import {uploadImage} from "@/api/bookStall";
-=======
 import UploadPage from "@/components/Common/Upload_2.vue";
->>>>>>> lgl_2
-
 export default {
     name: "AddressPage",
     components: {UploadPage},
@@ -113,49 +67,37 @@ export default {
     // },
     methods: {
         //处理添加操作
-        handleAdd(){
+        handleAdd() {
             this.dialogVisible = true;
             this.isEdit = false;
         },
         //处理修改
-        handleMod(book){
+        handleMod(book) {
             this.dialogVisible = true;
             this.isEdit = true;
-            this.book=book
+            this.book = book
         },
         //提交处理
         // eslint-disable-next-line no-unused-vars
         onSubmit(formName) {
-            if(this.isEdit){
+            if (this.isEdit) {
                 this.modifyAddress();
-            }else {
+            } else {
                 this.addAddress();
             }
 
-            this.$refs[formName].validate((valid)=>{
-                // console.log(this.publish.isShow);
-                if(valid){
-                    if(this.isEdit){
-                        this.modifyAddress();
-                    }else {
-                        this.addAddress();
-                    }
-                }else {
-                    this.$message.error("地址信息不符合要求，请重试");
-                }
-            });
-        },
+        }
 
 
 
         // getBookList(){
         //     const account = localStorage.getItem("user")
         // }
-    },
+    },}
 
 
 
-}
+
 </script>
 
 
