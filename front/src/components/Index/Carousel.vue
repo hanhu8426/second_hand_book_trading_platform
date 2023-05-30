@@ -9,7 +9,7 @@ export default {
     },
     data(){
         return{
-            imgS: ["src/assets/image/20.jpg",
+            imgS: ["./",
                 "src/assets/image/21.jpg",
                 "src/assets/image/22.jpg",
                 "src/assets/image/23.jpg"]

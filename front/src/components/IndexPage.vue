@@ -4,12 +4,12 @@ import NavHeader from "@/components/Common/NavHeader.vue";
 import FooTer from "@/components/Common/FooTer.vue";
 import Carousel from "@/components/Index/Carousel.vue";
 import GalleryBook from "@/components/Index/GalleryBook.vue";
-import SpikeBox from "@/components/Index/SpikeBox.vue";
+
 
 export default{
     name:"InDex",
     components:{
-        NavGation,NavHeader,FooTer,Carousel,GalleryBook,SpikeBox
+        NavGation,NavHeader,FooTer,Carousel,GalleryBook
     },
     data(){
         return{
@@ -87,11 +87,8 @@ export default{
                                     <span>最新出版</span>
                                 </div>
                                 <GalleryBook></GalleryBook>
-                                <SpikeBox></SpikeBox>
                             </div>
                         </el-tab-pane>
-                        <el-tab-pane label="新书区" name="second">新书区</el-tab-pane>
-                        <el-tab-pane label="书单区" name="third">书单区</el-tab-pane>
                     </el-tabs>
                 </div>
             </div>

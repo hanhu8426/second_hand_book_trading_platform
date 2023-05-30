@@ -24,10 +24,6 @@ const routes =[
         path:'/user',component: ()=>import('../components/UserPage.vue'),
         children:[
             {
-                path: 'Address',
-                component: ()=>import('../components/UserHome/Home/Address.vue')
-            },
-            {
                 path: 'userCenter',
                 component: ()=>import('../components/UserHome/Home/UserCenter.vue')
             },
@@ -48,10 +44,13 @@ const routes =[
                 component: ()=>import('../components/UserHome/order/UseOrder.vue')
             },
             {
-                path: 'userOrderDetail',
-                component: ()=>import('../components/UserHome/order/UseOrderDetail.vue')
+                path: 'bookStall',
+                component: ()=>import('../components/UserHome/bookStall/bookStall.vue')
             },
-
+            {
+                path: 'addressPage',
+                component: ()=>import('../components/UserHome/Home/addressPage.vue')
+            },
         ]
     },
     {
@@ -62,10 +61,6 @@ const routes =[
         name:'Search',
         component: () => import('../components/Search/search.vue')
     },
-
-    // {
-    //     path:'*' , redirect :'/'
-    // },
 ]
 
 const router = createRouter(

@@ -5,16 +5,16 @@
     <div class = "box book_box">
       <div class = "book_img">
         <!-- 放照片 -->
-        <CarouselBtn :imgList="book.imgSrc"></CarouselBtn>
+        <CarouselBtn :imgList="book.image"></CarouselBtn>
       </div>
       <div class="book_buy">
         <!-- 书籍的一些基本信息 -->
-        <div class="book_name">{{book.bookName}}</div>
+        <div class="book_name">{{book.name}}</div>
         <div class="book_content book_buy_content">
           <div class="book_list_content">作者： {{book.author}}</div>
-          <div class="book_list_content">出版社： {{book.publish}}</div>
-          <div class="book_list_content">类别： {{ book.category }}</div>
+          <div class="book_list_content">类别： {{ book.type}}</div>
           <div class="book_list_content">校区： {{ book.campus }}</div>
+          <div class="book_list_content">ISBN： {{ book.isbn }}</div>
         </div>
         <div class="book_content book_buy_price">
           <div class="book_buy_info">
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="book_content">
-          <el-button class="plainBtn" plain @click="goBuyPage(book.id)">立即购买</el-button>
+          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import Nav from "../../components/Common/NavGation"
 import NavHead from "../../components/Common/NavHeader"
 import Footer from "../../components/Common/FooTer"
@@ -85,8 +85,8 @@ export default{
   methods: {
     getSortList() {
       reqGetSortList().then(response => {
-        if(response.code==200){
-          this.sortList = response.sortResponseList;
+        if(response.data.code===1){
+          this.sortList = response.data.sortResponseList;
         }
       });
     },
@@ -98,16 +98,15 @@ export default{
         // console.log("this.book.imgSrc:"+response.book.imgSrc);
         let MarkdownIt = require("markdown-it");
         let md = new MarkdownIt();
-        let result = md.render(this.book.description);
-        this.book.description = result;
+        this.book.description = md.render(this.book.description);
       }).catch(err=>{
         console.log(err);
       })
     },
 
-    goBuyPage(id){
+    goBuyPage(bookId){
       let arr = [];
-      arr.push(id);
+      arr.push(bookId);
       arr.push(0);
       let ids = JSON.stringify(arr);
       this.$router.push({
@@ -119,7 +118,7 @@ export default{
     }
   },
   created() {
-    this.bookId = this.$route.query.id;
+    this.bookId = this.$route.query.bookId;
     this.getBook(this.bookId);
     this.getSortList();
   }

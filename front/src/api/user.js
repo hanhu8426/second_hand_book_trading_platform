@@ -38,7 +38,7 @@ export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Lo
 export const reqAccountVerify = ({account})=>ajax(BASE_URL+'/user/accountVerify',{account})
 
 // 注册账号
-export const reqRegister = (account,password)=>ajax(BASE_URL+'/user/register',{account,password})
+export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})
 
 //getUserList得到用户列表
 export const reqGetUserList = (page,pageSize)=>ajax(BASE_URL+'/getUserList',{page,pageSize})
@@ -47,8 +47,11 @@ export const reqGetUserList = (page,pageSize)=>ajax(BASE_URL+'/getUserList',{pag
 export const reqModifyUserStatus = (id,status)=>ajax(BASE_URL+'/modifyUserStatus',{id,status})
 
 //得到用户的基本信息getUserInfo
-export const reqGetUserInfo = (account)=>ajax(BASE_URL+'/getUserInfo',{account})
+export const reqGetUserInfo = ()=>ajax(BASE_URL+'/getUserInfo',{})
 
 //修改密码
-export const reqModUserPwd = (account,oldPassword,newPassword)=>ajax(BASE_URL+'/modifyUserPwd',{account,oldPassword,newPassword})
+export const reqModUserPwd = (oldPassword,newPassword)=>ajax(BASE_URL+'/user/PwdManage',{oldPassword,newPassword},'POST')
 
+//修改用户的基本信息
+export const reqModUserInfo_1 = (charge)=>ajax(BASE_URL+'/user/userInfo/ModUserInfo_1',{charge})
+export const reqModUserInfo_2 = (avatar,phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{avatar,phone,area,gender,introduction},"POST")

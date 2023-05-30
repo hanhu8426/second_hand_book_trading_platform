@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b5b645ab-6983-4853-a92b-62d8bf030374" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/front/build/build.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/check-versions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/vue-loader.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/webpack.base.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/webpack.dev.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/build/webpack.prod.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/bookStall.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/dist.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/axois.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/axois.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/Common/NavGation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Common/NavGation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Q2V8U4RBoRJ2BwodEEm2rIz56x" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "lgl",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5b645ab-6983-4853-a92b-62d8bf030374" name="Changes" comment="" />
+      <created>1684551504789</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1684551504789</updated>
+      <workItem from="1684551510626" duration="8000" />
+    </task>
+    <servers />
+  </component>
+</project>

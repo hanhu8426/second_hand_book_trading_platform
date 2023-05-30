@@ -73,6 +73,8 @@ export default {
 </script>
 
 
+
+
 <style scoped>
 .headNav{
   width: 100%;

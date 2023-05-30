@@ -74,55 +74,41 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     console.log("=====开始登陆=======")
+                    console.log("这是最新的测试，但是这里还没发请求")
                     reqLogin({
                         account: this.ruleForm.account,
                         password: this.ruleForm.password
                     }).then((response) => {
-                        console.log("登陆后的response："+response.data);
-                        let user  = response.data.user;
-                        console.log("=====user:==="+user+"=========");
-                        const jwt = response.headers['authorization']
-                        console.log("====jwt:=== "+jwt);
-                        if(response.data.code == 200){
-                            console.log("登录成功");
-                            console.log(response);
-                            const jwt = response.headers['authorization']
-                            console.log("====jwt:=== "+jwt);
-                            // //把数据共享出去
-                            _this.$store.commit("SET_TOKEN", jwt)
-                            console.log("===localStorage.getItem(\"token\")==="+localStorage.getItem("token")+"==");
-                            _this.$store.commit("SET_USERINFO", response.data.user);
-                            console.log("=====response.data.user====="+response.data.user.manage+"========")
+                        console.log("收到返回的response,接下来检测状态码")
+                        console.log("再次修改")
+                        if(response.data.code == 1){//根据状态码进入下一步
+                            const jwt =response.headers['Authorization'];//获取令牌
 
-                            if(response.data.user.manage){
+                            _this.$store.commit("SET_TOKE", jwt)//将获取的令牌作为整个路由通行令牌
+
+                            let user = response.data
+
+                            _this.$store.commit("SET_USERINFO", user)
+                            if(response.data.msg=="success"){
+                                console.log("已收到令牌，登陆成功")
                                 this.$message({
                                     type: 'success',
                                     message: "登录成功！",
-                                    duration: 1000
-                                })
-                                setTimeout(() => {
-                                    this.$router.push({path:'/admin/home'});
-                                }, 1000);
-                            }else {
-                                this.$message({
-                                    type: 'success',
-                                    message: "登录成功！",
-                                    duration: 1000
+                                    duration: 10,
                                 })
                                 setTimeout(() => {
                                     this.$router.push({path:'/user/userCenter'});
-                                }, 1000);
+                                }, 10);
                             }
-                            console.log("返回来的SET_USERINFO:"+response.data.userInfo)
-                            this.$router.push({path:'/devHome/appList'});
                         }else {
+                            console.log("状态码错误，登录失败")
                             this.$message({
                                 type: 'waring',
                                 message: "登录失败"
                             })
                         }
                     }).catch(() => {
-                        // this.$message.error("登录失败")
+                        this.$message.error("登录失败")
                     })
                 } else {
                     //数据校验失败，不可以进行提交
