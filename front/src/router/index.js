@@ -21,6 +21,9 @@ const routes =[
 
     },
     {
+        path:'/Upload',component:()=>import('../components/Common/Upload.vue')
+    },
+    {
         path:'/user',component: ()=>import('../components/UserPage.vue'),
         children:[
             {

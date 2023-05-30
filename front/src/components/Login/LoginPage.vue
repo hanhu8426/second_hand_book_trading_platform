@@ -89,8 +89,8 @@ export default {
                             console.log("我存了令牌，开始打印")
                             let test =localStorage.getItem("token")
                             console.log(test)
-                            let user = response.data
-                             console.log(user)
+                            let user = response.data.data
+                            console.log(user)
                             _this.$store.commit("SET_USERINFO", user)
                             if(response.data.msg=="success"){
                                 console.log("已收到令牌，登陆成功")

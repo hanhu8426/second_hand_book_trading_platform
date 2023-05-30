@@ -1,86 +1,11 @@
-<template>
-    <div class="content">
-
-
-        <div class="box_info">
-            <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
-                <el-tab-pane label="账号充值" name="first">
-                    <div class="tab_box">
-                        <div class="modify_box">
-                            <el-form :model="form_1" status-icon ref="form_1" label-width="80px">
-                                <el-form-item prop="charge" label="充值">
-                                    <el-input  type="number"  @input="changeInput" v-model="form_1.charge"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>
-                                </el-form-item>
-                            </el-form>
-                    </div>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="个人信息" name="second" style="height: 500px">
-                    <div class="tab_box">
-                        <div class="modify_box">
-                            <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
-                                <el-upload
-                                    class="upload-demo"
-                                    action="/upload"
-                                    :on-success="handleSuccess"
-                                    :on-preview="handlePreview"
-                                    :on-remove="handleRemove"
-                                    :before-upload="beforeUpload"
-                                    multiple
-                                    :limit="3"
-                                    :auto-upload="false">
-                                    <el-button  size="small" type="primary">上传头像</el-button>
-                                    <div  class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                                </el-upload>
-                                <el-form-item prop="phone" label="电话号码">
-                                    <el-input  placeholder="输入你的手机号码" type="number"  @input="changeInput" v-model="form_1.phone"></el-input>
-                                </el-form-item>
-                                <el-form-item prop="gender" label="性别">
-                                    <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="form_2.gender" @change="genderChange">
-                                            <el-checkbox
-                                                v-for="item in form_2.genderOption"
-                                                :key="item.type"
-                                                :label="item.value"
-                                            ></el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-dropdown>
-                                </el-form-item>
-                                <el-form-item prop="area" label="校区">
-                                    <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="form_2.area" @change="areaChange">
-                                        <el-checkbox
-                                            v-for="item in form_2.checkBoxOption"
-                                            :key="item.value"
-                                            :label="item.value"
-                                        ></el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-dropdown>
-                                </el-form-item>
-                                <el-form-item prop="introduction" label="简介">
-                                    <el-input type="textarea" placeholder="说两句介绍自己吧" @input="changeInput" v-model="form_2.introduction"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>
-                                </el-form-item>
-                            </el-form>
-                        </div>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
-        </div>
-    </div>
-</template>
-
 <script>
 // <!--用户中心-->
 import {reqModUserInfo_1, reqModUserInfo_2} from "@/api/user";
+import UploadPage from "@/components/Common/Upload.vue";
 
 export default {
     name: "UserInfo",
+    components: {UploadPage},
     data () {
         var checkAccount = (rule, value, callback) => {
             if (!value) {
@@ -133,31 +58,31 @@ export default {
             },
 
             form_2:{
-            img:'',
-            phone: '',
-            area:[],
-            checkBoxOption:[
-               {
-                   value:"四牌楼校区"
-               },
-               {
-                   value:"九龙湖校区"
-               },
-               {
-                   value:"丁家桥校区"
-               },
-           ],
-            gender:[],
-            genderOption:[
-                {
-                    value:"男",
-                    type:0,
-                },
-                {
-                    value: "女",
-                    type: 1,
-                }
-            ],
+                img:'',
+                phone: '',
+                area:[],
+                checkBoxOption:[
+                    {
+                        value:"四牌楼校区"
+                    },
+                    {
+                        value:"九龙湖校区"
+                    },
+                    {
+                        value:"丁家桥校区"
+                    },
+                ],
+                gender:[],
+                genderOption:[
+                    {
+                        value:"男",
+                        type:0,
+                    },
+                    {
+                        value: "女",
+                        type: 1,
+                    }
+                ],
                 introduction:[],
             }
         }
@@ -221,7 +146,7 @@ export default {
                             })
                         }
                     }).catch(() => {
-                         this.$message.error("登录失败")
+                        this.$message.error("登录失败")
                     })
                 } else {
                     //数据校验失败，不可以进行提交
@@ -278,6 +203,71 @@ export default {
     }
 }
 </script>
+
+
+<template>
+    <div class="content">
+        <div class="box_info">
+            <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
+                <el-tab-pane label="账号充值" name="first">
+                    <div class="tab_box">
+                        <div class="modify_box">
+                            <el-form :model="form_1" status-icon ref="form_1" label-width="80px">
+                                <el-form-item prop="charge" label="充值">
+                                    <el-input  type="number"  @input="changeInput" v-model="form_1.charge"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>
+                                </el-form-item>
+                            </el-form>
+                    </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="个人信息" name="second" style="height: 500px">
+                    <div class="tab_box">
+                        <div class="modify_box">
+                            <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
+                                <UploadPage><span>上传头像</span></UploadPage>
+                                <el-form-item prop="phone" label="电话号码">
+                                    <el-input  placeholder="输入你的手机号码" type="number"  @input="changeInput" v-model="form_1.phone"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="gender" label="性别">
+                                    <el-dropdown  style="width: 100%;">
+                                        <el-checkbox-group  v-model="form_2.gender" @change="genderChange">
+                                            <el-checkbox
+                                                v-for="item in form_2.genderOption"
+                                                :key="item.type"
+                                                :label="item.value"
+                                            ></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-dropdown>
+                                </el-form-item>
+                                <el-form-item prop="area" label="校区">
+                                    <el-dropdown  style="width: 100%;">
+                                        <el-checkbox-group  v-model="form_2.area" @change="areaChange">
+                                        <el-checkbox
+                                            v-for="item in form_2.checkBoxOption"
+                                            :key="item.value"
+                                            :label="item.value"
+                                        ></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-dropdown>
+                                </el-form-item>
+                                <el-form-item prop="introduction" label="简介">
+                                    <el-input type="textarea" placeholder="说两句介绍自己吧" @input="changeInput" v-model="form_2.introduction"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+</template>
+
 
 <style scoped>
 

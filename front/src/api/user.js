@@ -34,17 +34,9 @@ const BASE_URL = 'http://localhost:8080'
 //登录
 export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
 
-// 检测该邮箱账号是否已经被注册
-export const reqAccountVerify = ({account})=>ajax1(BASE_URL+'/user/accountVerify',{account})
 
 // 注册账号
 export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})
-
-//getUserList得到用户列表
-export const reqGetUserList = (page,pageSize)=>ajax(BASE_URL+'/getUserList',{page,pageSize})
-
-//修改用户的的禁用状态
-export const reqModifyUserStatus = (id,status)=>ajax(BASE_URL+'/modifyUserStatus',{id,status})
 
 //得到用户的基本信息getUserInfo
 export const reqGetUserInfo = ()=>ajax(BASE_URL+'/getUserInfo',{})

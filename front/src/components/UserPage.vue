@@ -10,7 +10,26 @@ export default {
         return{
 
         }
-    }
+    },
+    methods:{
+      logOut(){
+          let logout = null
+          localStorage.setItem("token",logout)
+          console.log("将令牌置空")
+          let token = localStorage.getItem("token")
+          console.log(token)
+           this.$message({
+                  type: 'success',
+                  message: "退出成功",
+                  duration: 1000
+              })
+          setTimeout(() => {
+                  console.log("注册成功")
+                  this.$router.push({path:'/Login'});
+              })
+        },
+
+    },
 }
 </script>
 
@@ -21,6 +40,7 @@ export default {
         <div class="content">
             <div class="title">
                 <a href="#">首页</a><span> / </span><span>个人中心</span>
+                <el-button @click="logOut">退出登录</el-button>
             </div>
             <div class="content_main">
                 <div class="content_main_left">
