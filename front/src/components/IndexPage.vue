@@ -16,12 +16,12 @@ export default{
             recommended:"recommend",
             newProduct:"newProduct",
             bookTopicList:[
-               "assets/image/20.jpg",
-                "assets/image/21.jpg",
+               "/src/assets/image/20.jpg",
+                "src/assets/image/21.jpg",
 
-                "assets/image/22.jpg",
+                "src/assets/image/22.jpg",
 
-                "assets/image/23.jpg",
+                "src/assets/image/23.jpg",
 
             ],
 
@@ -70,7 +70,7 @@ export default{
                                 <div class="tab">
                                   <div v-for="(item,index) in options" :key="index" class="tab_list" >
                                     <div>
-                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" >
+                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" class="custom-link">
                                         <span style="color: black">{{item}}</span>
                                       </router-link>
                                     </div>
@@ -216,6 +216,10 @@ export default{
     height: 60px;
     line-height: 60px;
     font-size: 20px;
+}
+
+.custom-link {
+  text-decoration: none; /* 移除下划线 */
 }
 
 </style>

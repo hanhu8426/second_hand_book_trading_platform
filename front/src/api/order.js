@@ -3,12 +3,12 @@ import ajax from "./ajax";
 const BASE_URL = 'http://localhost:8080'
 
 //初始化订单
-export const reqInitOrder = (ids,from,account) => ajax(BASE_URL+"/initOrder",{ids,from,account})
+// export const reqInitOrder = (ids,from,account) => ajax(BASE_URL+"/initOrder",{ids,from,account})
 
 //提交订单 addOrder
 export const reqAddOrder = (orderInitDto) => ajax(BASE_URL+"/addOrder", {
     account: orderInitDto.account,
-    bookList: orderInitDto.bookList,
+    // bookList: orderInitDto.bookList,
     expense: orderInitDto.expense,
     addressList: orderInitDto.addressList,
     address: orderInitDto.address

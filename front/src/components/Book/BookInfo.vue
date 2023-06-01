@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="book_content">
-          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
+          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId,book.price)">立即购买</el-button>
         </div>
       </div>
     </div>
@@ -44,7 +44,6 @@ import Nav from "../../components/Common/NavGation"
 import NavHead from "../../components/Common/NavHeader"
 import Footer from "../../components/Common/FooTer"
 import {reqGetBook} from "@/api/book";
-import {reqGetSortList} from "@/api/sort";
 import CarouselBtn from "@/components/Book/CarouselIBtn.vue";
 import 'github-markdown-css'
 
@@ -83,18 +82,10 @@ export default{
     }
   },
   methods: {
-    getSortList() {
-      reqGetSortList().then(response => {
-        if(response.data.code===1){
-          this.sortList = response.data.sortResponseList;
-        }
-      });
-    },
-
     getBook(bookId){
       reqGetBook(bookId).then(response=>{
         // console.log(response.book);
-        this.book = response.book;
+        this.book = response.data.data;
         // console.log("this.book.imgSrc:"+response.book.imgSrc);
         let MarkdownIt = require("markdown-it");
         let md = new MarkdownIt();
@@ -104,15 +95,11 @@ export default{
       })
     },
 
-    goBuyPage(bookId){
-      let arr = [];
-      arr.push(bookId);
-      arr.push(0);
-      let ids = JSON.stringify(arr);
+    goBuyPage(book){
       this.$router.push({
         path: "/buyPage",
         query: {
-          ids: ids
+          book: book
         }
       })
     }
@@ -120,7 +107,6 @@ export default{
   created() {
     this.bookId = this.$route.query.bookId;
     this.getBook(this.bookId);
-    this.getSortList();
   }
 }
 

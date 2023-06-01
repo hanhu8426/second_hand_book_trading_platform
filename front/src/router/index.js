@@ -61,6 +61,9 @@ const routes =[
         name:'Search',
         component: () => import('../components/Search/search.vue')
     },
+    {
+        path:'/buyPage', component:()=>import('../components/BuyPage/buyPage.vue')
+    }
 ]
 
 const router = createRouter(
