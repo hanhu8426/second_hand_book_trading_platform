@@ -4,6 +4,9 @@ import com.secondhandbookstore.pojo.Address;
 import com.secondhandbookstore.pojo.User;
 import org.apache.ibatis.annotations.*;
 
+import javax.swing.*;
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 //    @Results({
@@ -44,4 +47,10 @@ public interface UserMapper {
     @Update("update address set name = #{name},phone = #{phone}," +
             "address = #{address},area = #{area} where addId = #{addId}")
     void modifyUserAddress(Address modifyAddress);
+
+    @Select("select * from address where id = #{id};")
+    List<Address> getUserAddressList(Integer id);
+
+    @Delete("delete from address where addId = #{addId}")
+    void delUserAddressById(Integer addId);
 }

@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @Slf4j
@@ -20,7 +22,7 @@ public class UserController {
 
     //获取用户信息
     @RequestMapping("/getUserInfo")
-    public Result getUserInfo(@RequestHeader("token")String jwt){
+    public Result getUserInfo(@RequestHeader("Authorization")String jwt){
         Integer id=JwtUtils.parseJWTAndGenerateId(jwt);
         User show=userService.getById(id);
         log.info("查询用户信息:{}",show.getAccount());
@@ -28,15 +30,16 @@ public class UserController {
     }
 
     //修改用户信息一:修改用户余额
-    @RequestMapping("/user/userInfo/ModUserInfo_1")
-    public Result modifyUserBalance(@RequestParam("charge")String balance,@RequestHeader("token")String jwt){
-        float currentBalance = userService.modifyUserBalance(JwtUtils.parseJWTAndGenerateId(jwt),Float.parseFloat(balance));
+    @RequestMapping("/user/userInfoOne")
+    public Result modifyUserBalance(@RequestHeader("Authorization")String jwt,@RequestParam(value = "charge")String balance){
+        float currentBalance = userService.modifyUserBalance(JwtUtils.parseJWTAndGenerateId(jwt), Float.parseFloat(balance));
         return Result.success(currentBalance);
     }
+    //@RequestParam("charge")Object balance
 
     //修改用户信息二:添加一些用户的基础信息
     @RequestMapping("/user/userInfo")
-    public Result modifyUserInfo(@RequestHeader("token")String jwt,@RequestBody User userInfo){
+    public Result modifyUserInfo(@RequestHeader("Authorization")String jwt,@RequestBody User userInfo){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         userInfo.setId(id);
         userService.modifyUserInfo(userInfo);
@@ -44,7 +47,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/PwdManage")
-    public Result modifyPassword(@RequestHeader("token")String jwt,@RequestBody CollectPassword pwds){
+    public Result modifyPassword(@RequestHeader("Authorization")String jwt,@RequestBody CollectPassword pwds){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         User user=userService.getByIdAndPassword(id,pwds.getOldPassword());
         if(user!=null){
@@ -54,8 +57,8 @@ public class UserController {
             return Result.error("密码错误");
     }
 
-    @RequestMapping("/Address")
-    public Result addAddress(@RequestHeader("token")String jwt,@RequestBody Address address){
+    @RequestMapping("/addUserAddress")
+    public Result addAddress(@RequestHeader("Authorization")String jwt,@RequestBody Address address){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         address.setId(id);
         userService.addAddressList(address);
@@ -63,10 +66,23 @@ public class UserController {
     }
 
     @RequestMapping("/modifyUserAddress")
-    public Result modifyUserAddress(@RequestHeader("token")String jwt,@RequestBody Address modifyAdd){
+    public Result modifyUserAddress(@RequestHeader("Authorization")String jwt,@RequestBody Address modifyAdd){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         modifyAdd.setId(id);
         userService.modifyUserAddress(modifyAdd);
+        return Result.success();
+    }
+
+    @RequestMapping("/getUserAddress")
+    public Result getUserAddress(@RequestHeader("Authorization")String jwt){
+        Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
+        List<Address> addressList = userService.getUserAddressById(id);
+        return Result.success(addressList);
+    }
+
+    @RequestMapping("/delUserAddress")
+    public Result delUserAddress(Integer addId){
+        userService.delUserAddressById(addId);
         return Result.success();
     }
 }

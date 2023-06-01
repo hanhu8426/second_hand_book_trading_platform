@@ -12,6 +12,6 @@ public class Address {
     private String phone;
     private String address;
     private Integer id;
-    private Integer area;
+    private String area;
     private Integer addId;
 }

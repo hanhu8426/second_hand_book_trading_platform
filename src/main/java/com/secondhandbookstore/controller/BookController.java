@@ -80,7 +80,7 @@ public class BookController {
                        String name,
                        String author
                        ){
-        log.info("分页查询，参数：{},{},{},{},{},{},{}",page,pageSize,type,name,author);
+        log.info("分页查询，参数：{},{},{},{},{}",page,pageSize,type,name,author);
         //调用service分页查询
         PageBean pageBean=bookService.page(page,pageSize,type,name,author);
         return Result.success(pageBean);
