@@ -121,6 +121,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Float checkPrice(Integer bookId) {
+        return bookMapper.checkPrice(bookId);
+    }
+
+    @Override
+    public Integer checkSeller(Integer bookId) {
+        return bookMapper.checkSeller(bookId);
+    }
+
+    @Override
     public void add(Book book) {
         bookMapper.insert(book);
     }

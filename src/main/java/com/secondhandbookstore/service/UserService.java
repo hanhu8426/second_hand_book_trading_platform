@@ -29,4 +29,6 @@ public interface UserService {
 
     void delUserAddressById(Integer addId);
 
+
+    Float checkBalance(Integer buyerId);
 }

@@ -1,10 +1,7 @@
 package com.secondhandbookstore.mapper;
 
 import com.secondhandbookstore.pojo.Book;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -50,7 +47,7 @@ public interface BookMapper {
      */
     void deleteBatch(List<Integer> bookIds);
 
-    @Select("select * from  book where bookId=#{bookId}")
+    @Select("select * from book where bookId=#{bookId}")
     Book getById(Integer bookId);
 
     /**
@@ -61,17 +58,21 @@ public interface BookMapper {
 
     List<Book> pageListByType(Short type);
 
-
     List<Book> pageListByRecommend(Boolean recommend);
-
-
 
 
     //用户和书籍结合，书摊
     @Select("select * from book where sellerId=#{sellerId}")
     List<Book> listSellerBook(Integer sellerId);
 
-
-    @Delete("delete from book where sellerID=#{sellerId} and bookId=#{bookId}")
+    @Delete("delete from book where bookId=#{bookId}")
     void deleteSellerBook(Integer bookId);
+
+    void modifyBookStatus(Integer bookId);
+
+    @Select("select price from book where bookid=#{bookId}")
+    Float checkPrice(Integer bookId);
+
+    @Select("select sellerId from book where bookId=#{bookId}")
+    Integer checkSeller(Integer bookId);
 }

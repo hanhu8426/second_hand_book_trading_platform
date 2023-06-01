@@ -8,14 +8,14 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    @Select("select * from order")
+    @Select("select * from order1")
     List<Order> list();
 
-    @Delete("delete from order where orderId=#{orderId}")
+    @Delete("delete from order1 where orderId=#{orderId}")
     void delete(Integer orderId);
 
-    @Insert("insert into order (buyerId, sellerId, deliveryAddress, beginTime) values " +
-            "(#{buyerId},#{sellerId},#{deliveryAddress},#{beginTime})")
+    @Insert("insert into order1 (buyerId, sellerId,bookId, deliveryAddress, beginTime) values " +
+            "(#{buyerId},#{sellerId},#{bookId},#{deliveryAddress},#{beginTime})")
     void insert(Order order);
 
     void updateOrderEnd(Order order);

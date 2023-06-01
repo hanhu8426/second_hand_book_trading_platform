@@ -53,4 +53,7 @@ public interface UserMapper {
 
     @Delete("delete from address where addId = #{addId}")
     void delUserAddressById(Integer addId);
+
+    @Select("select balance from user where id=#{id}")
+    Float checkUserBalance(Integer id);
 }
