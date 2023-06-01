@@ -3,31 +3,25 @@ import ajax from "./ajax";
 const BASE_URL = 'http://localhost:8080'
 
 
-//上传图片
-export const uploadImage = (formData) => ajax(BASE_URL+'/bookStall/uploadImg', {
-       formData:formData
-}, 'POST')
-
-//添加地址
+//添加书籍
 export const reqAddBook = (book) => ajax(BASE_URL+'/bookStall', {
-       img:book.img,
+       image:book.image,
        name:book.name,
        type:book.type,
-       introduction:book.introduction,
+       description:book.description,
        price:book.price,
 }, 'POST')
 
-//修改地址
+//修改书籍
 export const reqModBook = (book) => ajax(BASE_URL+"/modifyBook",{
-    img:book.img,
     name:book.name,
     type:book.type,
-    introduction:book.introduction,
+    description:book.description,
     price:book.price,
 },'POST')
 
-//删除地址
-export const reqDelBook = (id) => ajax(BASE_URL+"/delBook",{id})
+//删除书籍
+export const reqDelBook = (bookId) => ajax(BASE_URL+"/delBook",{bookId})
 
-//得到某个用户的地址列表
-export const reqGetBookList = (account) => ajax(BASE_URL+"/getBookList",{account})
+//得到某个用户的书籍列表
+export const reqGetBookList = () => ajax(BASE_URL+"/getBookList",{})

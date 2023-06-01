@@ -6,7 +6,8 @@
                 :show-file-list="true"
                 :on-remove="handleAvatarFail"
                 :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
+                :before-upload="beforeAvatarUpload"
+                :headers="headersJWT">
             <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="图片详情">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             <span>书籍封面上传</span>
@@ -42,7 +43,15 @@ export default {
         handleAvatarFail(){
             console.log("文件已被移动")
         }
-    }
+    },
+    computed: {
+        headersJWT(){
+            const token=localStorage.getItem('token')
+            return{
+                Authorization:token
+            };
+        },
+    },
 }
 </script>
 

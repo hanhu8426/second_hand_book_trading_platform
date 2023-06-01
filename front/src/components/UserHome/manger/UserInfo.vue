@@ -7,53 +7,71 @@ export default {
     name: "UserInfo",
     components: {UploadPage},
     data () {
-        var checkAccount = (rule, value, callback) => {
+        //检测充值的数额大小
+        var checkCharge = (rule, value, callback) => {
             if (!value) {
-                return callback(new Error('账号不能为空'));
+                return callback(new Error('充值数额不能为空'));
+            }
+        };
+        var checkPhone = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('手机号不能为空'));
             }
             setTimeout(() => {
-                if(value.length>20){
-                    callback(new Error('账号不能大于20位'));
+                if(value.length>11){
+                    callback(new Error('手机号不能大于11位'));
                 }else {
                     callback();
                 }
             }, 1000);
         };
-        var validatePass = (rule, value, callback) => {
-            if (value === '') {
-                callback(new Error('请输入对应信息'));
-            } else {
-                callback();
+        var checkIntro = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('自我介绍不能为空'));
             }
+            setTimeout(() => {
+                if(value.length<5){
+                    callback(new Error('自我介绍不能少于5个字'));
+                }else {
+                    callback();
+                }
+            }, 1000);
         };
         return {
-            msg: 'Welcome to Your Vue.js App',
-            imgS: require('../../../assets/image/head.jpg'),
-            imgS1: require('../../../assets/image/weibo.png'),
-            imgS2: require('../../../assets/image/qq.png'),
-            imgS3: require('../../../assets/image/weixin.png'),
-            imgS4: require('../../../assets/image/apple.png'),
-            activeName: 'first',
-            ruleForm: {
-                account: '',
-                password: '',
+            chargeNum:{
+                charge:' ',
             },
-            rules: {
-                account: [
-                    { validator: checkAccount, trigger: 'blur' }
+            rules:{
+                charge:[
+                    {
+                        validator: checkCharge ,trigger:'blur'
+                    }
                 ],
-                password: [
-                    { validator: validatePass, trigger: 'blur' }
-                ],
-
             },
-
-           charge:'',
-
-            form_2:{
+            InfoForm:{
                 img:'',
-                phone: '',
-                area:[],
+                phone:'',
+                area:'',
+                gender:'',
+                introduction:'',
+            },
+            ruleInfo:{
+              img:'',
+              phone:[{
+                  validator:checkPhone,trigger:'blur'
+              }
+              ],
+              area:'',
+              gender:'',
+              introduction:[
+                    {
+                        validator:checkIntro,trigger:'blur'
+                    }
+                ]
+
+            },
+            activeName: 'first',
+            form_2:{
                 checkBoxOption:[
                     {
                         value:"四牌楼校区"
@@ -65,7 +83,6 @@ export default {
                         value:"丁家桥校区"
                     },
                 ],
-                gender:[],
                 genderOption:[
                     {
                         value:"男",
@@ -76,13 +93,12 @@ export default {
                         type: 1,
                     }
                 ],
-                introduction:[],
             }
         }
     },
-    mounted(){
-
-    },
+        // mounted(){
+        //
+        // },
     methods: {
         changeInput() {
             this.$forceUpdate();
@@ -91,44 +107,40 @@ export default {
             console.log(tab, event);
         },
 
-        areaChange(){
-            if(this.form_2.area.length > 1){
-                this.form_2.area.splice(0,1)
-            }
+        getGender(item){
+           this.InfoForm.gender=item.type
         },
-        genderChange(){
-            if(this.form_2.gender.length > 1){
-                this.form_2.gender.splice(0,1)
-            }
+
+        getArea(item){
+          this.InfoForm.area=item.type
         },
-        submitForm_1(charge){
-            this.$refs[charge].validate((valid) => {
-                if (valid) {
-                    console.log("=====上传表格1=======")
+
+        submitForm_1(){
+                   console.log(this.chargeNum.charge)
                     reqModUserInfo_1({
-                        charge: this.charge,
+                        charge: this.chargeNum.charge,
                     }).then((response) => {
-                        if(response.data.code==1){//根据状态码进入下一步
+                        if (response.data.code == 1) {//根据状态码进入下一步
                             console.log("=====上传成功=======")
                             console.log("打印余额")
                             console.log(response.data.data)
-                            if(response.msg=="success"){
+                            if (response.msg == "success") {
                                 this.$message({
                                     type: 'success',
                                     message: "上传成功！",
                                     duration: 1000
                                 })
-                            }else {
+                            } else {
                                 this.$message({
                                     type: 'success',
                                     message: "上传成功！",
                                     duration: 1000
                                 })
                                 setTimeout(() => {
-                                    this.$router.push({path:'/user/userCenter'});
+                                    this.$router.push({path: '/user/userCenter'});
                                 }, 1000);
                             }
-                        }else {
+                        } else {
                             this.$message({
                                 type: 'waring',
                                 message: "充值失败"
@@ -136,62 +148,65 @@ export default {
                         }
                     }).catch(() => {
                         this.$message.error("充值失败")
-                    })
-                } else {
-                    //数据校验失败，不可以进行提交
-                    this.$message.error("充值失败");
-                }
-            });
+                    },
+                 )
+                },
+
+        getImg(){
+            this.InfoForm.img= this.$refs.uploadImg.$data.imageUrl
         },
-        submitForm_2(formName){
-            let _this = this;
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
+        submitForm_2() {
+            console.log("这是用来测试的输出")
+            console.log(this.$refs.uploadImg.imageUrl)
+            console.log(this.InfoForm.img)
+            console.log(this.InfoForm.phone)
+            console.log(this.InfoForm.area)
+            console.log(this.InfoForm.gender)
+            console.log(this.InfoForm.introduction)
                     console.log("=====上传表格2=======")
                     reqModUserInfo_2({
-                        phone: _this.form_2.phone,
-                        area:_this.form_2.area,
-                        gender:_this.form_2.gender,
-                        introduction: _this.form_2.introduction
+                        img: this.InfoForm.img,
+                        phone: this.InfoForm.phone,
+                        area: this.InfoForm.area,
+                        gender: this.InfoForm.gender,
+                        introduction: this.InfoForm.introduction
                     }).then((response) => {
-                        if(response.data.code == 1){//根据状态码进入下一步
+                        if (response.data.code == 1) {//根据状态码进入下一步
                             console.log("=====上传成功=======")
 
-                            if(response.msg=="success"){
+                            if (response.msg == "success") {
                                 this.$message({
                                     type: 'success',
                                     message: "上传成功！",
                                     duration: 1000
                                 })
-                            }else {
+                            } else {
                                 this.$message({
                                     type: 'success',
                                     message: "上传成功！",
                                     duration: 1000
                                 })
                                 setTimeout(() => {
-                                    this.$router.push({path:'/user/userCenter'});
+                                    this.$router.push({path: '/user/userCenter'});
                                 }, 1000);
                             }
-                        }else {
+                        } else {
                             this.$message({
                                 type: 'waring',
                                 message: "资料上传失败1"
                             })
                         }
                     }).catch(() => {
-                         this.$message.error("资料上传失败2")
+                        this.$message.error("资料上传失败2")
                     })
-                } else {
-                    //数据校验失败，不可以进行提交
-                    this.$message.error("资料上传失败3");
-                }
-            });
         },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
-        }
+
+         resetForm(formName) {
+             this.$refs[formName].resetFields();
+          },
     }
+
+
 }
 </script>
 
@@ -199,53 +214,49 @@ export default {
 <template>
     <div class="content">
         <div class="box_info">
-            <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer">
+            <el-tabs v-model="activeName" @tab-click="handleClick" stretch:true class="tabContainer" ref="chargeName">
                 <el-tab-pane label="账号充值" name="first">
                     <div class="tab_box">
                         <div class="modify_box">
-                            <el-form :model="activeName" status-icon ref="form_1" label-width="80px">
-                                <el-form-item prop="charge" label="充值">
-                                    <el-input  type="text" @input="changeInput" v-model="charge"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>
-                                </el-form-item>
-                            </el-form>
-                    </div>
+                                    <el-input type="text" v-model="chargeNum.charge" autocomplete="off" placeholder="请输入金额"></el-input>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1('chargeName')">确认充值</el-button>
+                        </div>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="个人信息" name="second" style="height: 500px">
                     <div class="tab_box">
                         <div class="modify_box">
-                            <el-form :model="form_2" status-icon  ref="form_2" label-width="80px">
-                                <UploadPage><span>上传头像</span></UploadPage>
+                            <el-form :model="InfoForm" status-icon :rules="ruleInfo" ref="InfoForm" label-width="80px">
+                                <UploadPage ref="uploadImg" @click="getImg"><span>上传头像</span></UploadPage>
                                 <el-form-item prop="phone" label="电话号码">
-                                    <el-input  placeholder="输入你的手机号码" type="number"  @input="changeInput" v-model="form_1.phone"></el-input>
+                                    <el-input  placeholder="输入你的手机号码" type="text" autocomplete="off"  v-model="this.form_2.phone"></el-input>
                                 </el-form-item>
                                 <el-form-item prop="gender" label="性别">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="form_2.gender" @change="genderChange">
+                                        <el-checkbox-group  v-model="this.InfoForm.gender">
                                             <el-checkbox
                                                 v-for="item in form_2.genderOption"
                                                 :key="item.type"
                                                 :label="item.value"
+                                                @click="getGender('item')"
                                             ></el-checkbox>
                                         </el-checkbox-group>
                                     </el-dropdown>
                                 </el-form-item>
                                 <el-form-item prop="area" label="校区">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="form_2.area" @change="areaChange">
+                                        <el-checkbox-group  v-model="this.InfoForm.area" >
                                         <el-checkbox
                                             v-for="item in form_2.checkBoxOption"
                                             :key="item.value"
                                             :label="item.value"
+                                            @click="getArea(item)"
                                         ></el-checkbox>
                                         </el-checkbox-group>
                                     </el-dropdown>
                                 </el-form-item>
                                 <el-form-item prop="introduction" label="简介">
-                                    <el-input type="textarea" placeholder="说两句介绍自己吧" @input="changeInput" v-model="form_2.introduction"></el-input>
+                                    <el-input type="textarea" placeholder="说两句介绍自己吧" autocomplete="off" v-model="this.InfoForm.introduction"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>

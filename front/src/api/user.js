@@ -44,5 +44,5 @@ export const reqGetUserInfo = ()=>ajax(BASE_URL+'/getUserInfo',{})
 export const reqModUserPwd = (oldPassword,newPassword)=>ajax(BASE_URL+'/user/PwdManage',{oldPassword,newPassword},'POST')
 
 //修改用户的基本信息
-export const reqModUserInfo_1 = (charge)=>ajax(BASE_URL+'/user/userInfoOne',{charge})
-export const reqModUserInfo_2 = (phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{phone,area,gender,introduction},"POST")
+export const reqModUserInfo_1 = (charge)=>ajax(BASE_URL+'/user/userInfoOne',{charge},"POST")
+export const reqModUserInfo_2 = (img,phone,area,gender,introduction)=>ajax(BASE_URL+'/user/userInfo',{img,phone,area,gender,introduction},"POST")
