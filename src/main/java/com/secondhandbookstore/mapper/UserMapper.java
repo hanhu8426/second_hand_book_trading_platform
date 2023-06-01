@@ -25,7 +25,7 @@ public interface UserMapper {
     User getById(Integer id);
 
     @Update("update user set balance = balance+#{balance_m} where id = #{id}")
-    void modifyUserBalance(Integer id,float balance_m);
+    void modifyUserBalance(Integer id,Float balance_m);
 
     @Select("select balance from user where id = #{id}")
     float queryCurrentBalance(Integer id);

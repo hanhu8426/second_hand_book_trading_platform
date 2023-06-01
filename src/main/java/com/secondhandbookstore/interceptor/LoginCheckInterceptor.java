@@ -35,6 +35,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("首页，放行...");
             return true;
         }
+        if(url.contains("favicon")){
+            log.info("icon,放行");
+            return true;
+        }
 
         //获取请求头中的令牌（token)
         String jwt = req.getHeader("Authorization");

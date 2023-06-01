@@ -4,6 +4,7 @@ import com.secondhandbookstore.pojo.PageBean;
 import com.secondhandbookstore.pojo.Result;
 import com.secondhandbookstore.pojo.Book;
 import com.secondhandbookstore.service.BookService;
+import com.secondhandbookstore.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -174,16 +175,17 @@ public class BookController {
      * @return
      */
     @GetMapping("/getBookList")
-    public Result getSellerBookList(Integer sellerId){
-        log.info("根据用户账号获得书籍：sellerId:{}",sellerId);
-        List<Book> bookList=bookService.listSellerBook(sellerId);
+    public Result getSellerBookList(@RequestHeader("Authorization")String jwt){
+        Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
+        log.info("根据用户id获得书籍：sellerId:{}",id);
+        List<Book> bookList=bookService.listSellerBook(id);
         return Result.success(bookList);
     }
 
     @DeleteMapping("/delBook")
-    public Result delSellerBook(Integer sellerId,Integer bookId){
-        log.info("在用户界面里删除单本书籍：sellerId,bookId:{},{}",sellerId,bookId);
-        bookService.deleteSellerBook(sellerId, bookId);
+    public Result delSellerBook(Integer bookId){
+        log.info("在用户界面里删除单本书籍：bookId:{}",bookId);
+        bookService.deleteSellerBook(bookId);
         return Result.success();
     }
 

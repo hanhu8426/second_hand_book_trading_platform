@@ -73,5 +73,5 @@ public interface BookMapper {
 
 
     @Delete("delete from book where sellerID=#{sellerId} and bookId=#{bookId}")
-    void deleteSellerBook(Integer sellerId, Integer bookId);
+    void deleteSellerBook(Integer bookId);
 }

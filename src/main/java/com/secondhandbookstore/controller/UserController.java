@@ -1,5 +1,6 @@
 package com.secondhandbookstore.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.secondhandbookstore.pojo.Result;
 import com.secondhandbookstore.pojo.CollectPassword;
 import com.secondhandbookstore.pojo.User;
@@ -30,12 +31,19 @@ public class UserController {
     }
 
     //修改用户信息一:修改用户余额
+    //这里是帮前端擦屁股的写法，前端传进来的参数为：{charge:20.5}(example)
+    //后端对前端传进来的参数做了截断，然后转了Float
     @RequestMapping("/user/userInfoOne")
-    public Result modifyUserBalance(@RequestHeader("Authorization")String jwt,@RequestParam(value = "charge")String balance){
-        float currentBalance = userService.modifyUserBalance(JwtUtils.parseJWTAndGenerateId(jwt), Float.parseFloat(balance));
+    public Result modifyUserBalance(@RequestHeader("Authorization")String jwt,@RequestBody JSONObject object){
+        System.out.println(object.getString("charge"));
+        String balance=object.getString("charge").substring(8);
+        System.out.println(balance);
+        Float currentBalance = userService.modifyUserBalance(JwtUtils.parseJWTAndGenerateId(jwt),
+                Float.parseFloat(balance.substring(0,balance.length()-1)));
         return Result.success(currentBalance);
     }
-    //@RequestParam("charge")Object balance
+
+
 
     //修改用户信息二:添加一些用户的基础信息
     @RequestMapping("/user/userInfo")
