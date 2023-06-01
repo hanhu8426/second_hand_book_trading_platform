@@ -1,5 +1,4 @@
 
-
 import instance from "@/axois";
 export default function ajax (url, data={}, method='GET') {
     return new Promise(function (resolve, reject) {
@@ -27,5 +26,6 @@ export default function ajax (url, data={}, method='GET') {
         })
     })
 }
+
 
 

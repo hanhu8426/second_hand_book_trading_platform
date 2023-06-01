@@ -8,14 +8,14 @@
                     <p style="font-size: 14px">添加新地址</p>
                 </div>
             </div>
-            <div class="address_list" v-for="address in addressList" :key="address.id">
+            <div class="address_list" v-for="address in addressList" :key="address.addId">
                 <div class="name">{{address.name}}
-                    <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
+                    <span style="float: right;font-size: 14px;color: #757575;">{{address.area}}</span>
                 </div>
-                <div class="tel">{{address.phone}}</div>
-                <div class="detail">{{address.addr}}</div>
+                <span class="tel">{{address.phone}}</span>
+                <span class="detail">{{address.addr}}</span>
                 <div class="foot">
-                    <span style="float: right" @click="delAddress(address.id)">删除</span>
+                    <span style="float: right" @click="delAddress(address.addId)">删除</span>
                     <span style="float: right;margin-right: 10px" @click="handleMod(address)">修改</span>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="校区" v-model="address.label"></el-input>
+                    <el-input placeholder="校区" v-model="address.area"></el-input>
                 </el-form-item>
             </el-form>
             <span class="dialog-footer">
@@ -56,38 +56,23 @@ export default {
             dialogVisible: false,
             isEdit:false,//用来判断是添加地址还是修改地址 false:添加 true:修改
             addressList:[
-                {
-                    addId: 1,
-                    name: "小胖",
-                    phone: "18988798892",
-                    addr: "东南大学梅园2东85",
-                    area: "1",
-                    off: false,
-                },
-                {
-                    addId: 2,
-                    account: "黄小龙",
-                    name: "小胖",
-                    phone: "18988798892",
-                    addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                    area: "1",
-                    off: false,
-                },
             ],
             address:{
-                addId:null,
+                addId:"",
                 name: "",
                 phone: "",
                 addr: "",
                 area: "",
-                off:false,
             },
         };
     },
-    // created(){
-    //     this.address.account = this.$store.getters.getUser.account;
-    //     console.log("=========this.address.account:============"+this.address.account+"===")
-    //     this.getAddressList();
+    created(){
+        console.log("开始生命构建，获取该用户的所有地址数据")
+        this.getAddressList();
+    },
+    // mounted() {
+    //   console.log("重新渲染页面")
+    //
     // },
     methods: {
         //处理添加操作
@@ -99,7 +84,7 @@ export default {
         handleMod(addr){
             this.dialogVisible = true;
             this.isEdit = true;
-            this.address.id = addr.id;
+            this.address.addId = addr.addId;
             this.address.account = addr.account;
             this.address.name = addr.name;
             this.address.phone = addr.phone;
@@ -119,11 +104,12 @@ export default {
         //得到用户地址列表
         getAddressList(){
             console.log("===获取的地址列表：==="+this.$store.getters.getUser.account+"=====");
-            reqGetAddressList(this.$store.getters.getUser.account).then(response=>{
+            reqGetAddressList().then(response=>{
                 console.log(response);
-                if(response.code==1){
-                    this.addressList = response.addressList;
-                    console.log("===response.addressList.length==="+response.addressList.length);
+                if(response.data.code==1){
+                    let addList = response.data.data
+                    console.log(addList)
+                    this.addressList = addList
                 }else{
                     this.$message({
                         message: response.message,
@@ -136,32 +122,38 @@ export default {
         },
 
         //添加地址
-        addAddress(){
-            reqAddAddress(this.address).then(response=>{
-                console.log(response);
-                if(response.code==1){
-                    this.$message({
-                        message: response.message,
-                        type: "success"
-                    });
-                    this.dialogVisible = false;
-                    this.getAddressList();
-                }else{
-                    this.$message({
-                        message: response.message,
-                        type: "warning"
+        addAddress(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    reqAddAddress(this.address).then(response => {
+                        console.log(response);
+                        if (response.data.code == 1) {
+                            this.$message({
+                                message: response.message,
+                                type: "success"
+                            });
+                            this.dialogVisible = false;
+                            this.getAddressList();
+                        } else {
+                            this.$message({
+                                message: response.message,
+                                type: "warning"
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err);
                     })
                 }
-            }).catch(err=>{
-                console.log(err);
             })
         },
+
+
 
         //修改地址
         modifyAddress(){
             reqModAddress(this.address).then(response=>{
                 console.log(response);
-                if(response.code==1){
+                if(response.data.code==1){
                     this.$message({
                         message: response.message,
                         type: "success"
@@ -187,7 +179,7 @@ export default {
             }).then(() => {
                 reqDelAddress(id).then(response=>{
                     console.log(response);
-                    if(response.code==1){
+                    if(response.data.code==1){
                         this.$message({
                             message: response.message,
                             type: "success"
@@ -207,6 +199,9 @@ export default {
             });
         },
 
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        }
     }
 }
 </script>

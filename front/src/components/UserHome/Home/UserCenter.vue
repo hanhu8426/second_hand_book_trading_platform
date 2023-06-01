@@ -11,10 +11,10 @@
                 </div>
             </div>
             <div class="user_action">
-                <p> <span>余额:</span><span>{{user.balance}}</span></p>
-                <p> <span>绑定手机:</span><span>{{user.phone}}</span></p>
-                <p> <span>校区:</span><span>{{user.area}}</span></p>
-                <p> <span>简介:</span><span>{{user.introduction}}</span></p>
+                <p style="font-size: 11px;color: #616161"> <span>余额:</span>{{user.balance}}</p>
+                <p style="font-size: 11px;color: #616161"> <span>绑定手机:</span>{{user.phone}}</p>
+                <p style="font-size: 11px;color: #616161"> <span>校区:</span>{{user.area}}</p>
+                <p style="font-size: 11px;color: #616161"> <span>简介:</span>{{user.introduction}}</p>
             </div>
         </div>
 
@@ -75,16 +75,14 @@ export default {
             }
         }
     },
-    // mounted(){
-    // },
-    // created(){
-    //     this.initUserCenter();
-    // },
+    created(){
+        this.initUserCenter();
+    },
     methods: {
         initUserCenter(){
             reqGetUserInfo().then(response=>{
                 console.log(response);
-                if(response.code==1){
+                if(response.data.code==1){
                     this.user = response.data.data;
                 }else{
                     this.$message({

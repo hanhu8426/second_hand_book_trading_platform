@@ -10,12 +10,9 @@ const routes =[
     },
 
     {
-    path:'/Login',component:()=> import('../components/Login/LoginPage.vue')
+        path:'/Login',component:()=> import('../components/Login/LoginPage.vue')
     },
-    {
-        path:'/Test',component: ()=>import('../components/TestVue.vue')
 
-    },
     {
         path:'/Register',component: ()=>import('../components/Register/RegisterPage.vue')
 

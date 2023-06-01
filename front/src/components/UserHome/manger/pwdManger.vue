@@ -71,7 +71,8 @@ export default {
                     console.log("=====this.ruleForm.oldPassword:========"+this.ruleForm.newPassword+"====")
                     //数据校验成功，可以进行提交操作
                     reqModUserPwd(this.ruleForm.oldPassword,this.ruleForm.newPassword).then((response)=>{
-                        if(response.data.code==1){
+                        console.log(response.data)
+                        if(response.data.code == 1){
                             console.log("=====注册成功=====");
                             this.$message({
                                 type: 'success',

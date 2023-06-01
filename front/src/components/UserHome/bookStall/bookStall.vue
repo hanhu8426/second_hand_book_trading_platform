@@ -1,3 +1,207 @@
+<script>
+import UploadPage from "@/components/Common/Upload_2.vue";
+import {reqAddBook, reqDelBook, reqGetBookList, reqModBook} from "@/api/bookStall";
+export default {
+    name: "AddressPage",
+    components: {UploadPage},
+    data() {
+        return {
+            dialogVisible: false,
+            isEdit: false,//用来判断是添加书还是修改书 false:添加 true:修改
+            bookList: [
+                {
+                    BookId: 1,
+                    name: "黄哥的恋爱节奏",
+                    author: "黄文敬",
+                    isbn: "",
+                    type: "文学",
+                    description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
+                    status: "",
+                    image: "",
+                    campus: "",
+                    price: "25",
+                    newProduct: "",
+                    recommend: "",
+                    sellerID: "",
+                },
+                {
+                    bookId: 2,
+                    name: "算出来的秘密爱情",
+                    author: "胡丹婷",
+                    isbn: "",
+                    type: "小说",
+                    description: "",
+                    status: "",
+                    image: "",
+                    campus: "",
+                    price: "",
+                    newProduct: "",
+                    recommend: "",
+                    sellerID: "",
+                },
+
+            ],
+
+            book: {
+                bookId: '',
+                name: "",
+                author: "",
+                isbn: "",
+                type: "",
+                description: "",
+                status: "",
+                image: "",
+                campus: "",
+                price: "",
+                newProduct: "",
+                recommend: "",
+                sellerID: "",
+            },
+        };
+    },
+    //初始化构建组件
+    // created(){
+    //     this.getBookList();
+    // },
+    methods: {
+        //处理添加操作
+        handleAdd() {
+            this.dialogVisible = true;
+            this.isEdit = false;
+        },
+        //处理修改
+        handleMod(book) {
+            this.dialogVisible = true;
+            this.isEdit = true;
+            this.book.bookId = book.addId;
+            this.book.image = book.image;
+            this.book.author = book.author;
+            this.book.type = book.type;
+            this.book.description=book.description;
+            this.book.price=book.price;
+        },
+
+        //提交处理
+        onSubmit() {
+            if (this.isEdit) {
+                this.modifyBook();
+            } else {
+                this.addBook();
+            }
+        },
+
+        //得到用户书籍列表
+        getBookList() {
+            console.log("===获取的书籍列表：===" + this.$store.getters.getUser.account + "=====");
+            reqGetBookList().then(response => {
+                console.log(response);
+                if (response.data.code == 1) {
+                    let bookList = response.data.data
+                    console.log(bookList)
+                    this.bookList = bookList
+                } else {
+                    this.$message({
+                        message: response.message,
+                        type: "warning"
+                    })
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+
+        //添加地址
+        addBook(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    reqAddBook(this.book).then(response => {
+                        console.log(response);
+                        if (response.data.code == 1) {
+                            this.$message({
+                                message: response.message,
+                                type: "success"
+                            });
+                            this.dialogVisible = false;
+                            this.getAddressList();
+                        } else {
+                            this.$message({
+                                message: response.message,
+                                type: "warning"
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+            })
+        },
+
+
+        //修改书籍
+        modifyBook() {
+            reqModBook(this.book).then(response => {
+                console.log(response);
+                if (response.data.code == 1) {
+                    this.$message({
+                        message: response.message,
+                        type: "success"
+                    });
+                    this.dialogVisible = false;
+                    this.getAddressList();
+                } else {
+                    this.$message({
+                        message: response.message,
+                        type: "warning"
+                    })
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        //处理删除地址
+        delBook(bookId) {
+            this.$confirm('是否要进行删除操作?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                reqDelBook(bookId).then(response => {
+                    console.log(response);
+                    if (response.data.code == 1) {
+                        this.$message({
+                            message: response.message,
+                            type: "success"
+                        });
+                        this.getAddressList();
+                    } else {
+                        this.$message({
+                            message: response.message,
+                            type: "warning"
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            }).catch(() => {
+                console.log("取消删除了");
+            });
+        },
+
+        getPaper(){
+            this.book.image=this.$refs.bookPaper.imageUrl
+        }
+
+
+    }
+}
+
+
+
+</script>
+
+
+
+
 <template>
     <div class="content">
         <h1>我的书摊</h1>
@@ -8,7 +212,7 @@
                     <p style="font-size: 14px">添加新的书籍</p>
                 </div>
             </div>
-            <div class="book_list" v-for="book in bookList" :key="book.id">
+            <div class="book_list" v-for="book in bookList" :key="book.bookId">
                 <div class="bookCover">
                     <el-image  src="src/assets/image/20.jpg"> alt="书籍封面"></el-image>
                 </div>
@@ -18,8 +222,8 @@
                 <div class="author">{{book.author}}</div>
                 <div class="Description">{{book.description}}</div>
                 <div class="foot">
-                    <span style="float: right" @click="delAddress(book.id)">删除</span>
-                    <span style="float: right;margin-right: 10px" @click="handleMod(book.id)">修改</span>
+                    <span style="float: right" @click="delBook(book)">删除</span>
+                    <span style="float: right;margin-right: 10px" @click="handleMod(book)">修改</span>
                 </div>
             </div>
         </div>
@@ -27,28 +231,18 @@
         <!--添加图书的弹出框-->
         <el-dialog title="添加新的书籍" v-model="dialogVisible" width="50%"  center>
             <el-form ref="form" :model="book">
-                <el-form-item>
-                    <el-upload
-                        action={{this.book.image}}
-                    :on-success="handleUploadSuccess"
-                    :before-upload="beforeUpload"
-                    accept="image/*"
-                    :show-file-list="false"
-                    >
-                    <el-button>选择图片</el-button>
-                    </el-upload>
-                </el-form-item>
+                <UploadPage ref="bookPaper" @click="getPaper"></UploadPage>
                 <el-form-item>
                     <el-input placeholder="书名" v-model="book.name"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="类别" ></el-input>
+                    <el-input placeholder="类别" v-model="book.type"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input type="textarea" placeholder="简介"></el-input>
+                    <el-input type="textarea" placeholder="简介" v-model="book.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="价格"></el-input>
+                    <el-input placeholder="价格" v-model="book.price"></el-input>
                 </el-form-item>
             </el-form>
             <template v-slot:footer>
@@ -61,173 +255,6 @@
     </div>
 </template>
 
-<script>
-// <!--用户地址页面-->
-import {uploadImage} from "@/api/book";
-
-export default {
-    name: "AddressPage",
-    data() {
-        return {
-            dialogVisible: false,
-            isEdit:false,//用来判断是添加书还是修改书 false:添加 true:修改
-            bookList:[
-                {
-                    id: 1,
-                    name: "黄哥的恋爱节奏",
-                    author: "黄文敬",
-                    isbn: "",
-                    type: "文学",
-                    description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
-                    status:"",
-                    image:"",
-                    campus:"",
-                    price:"",
-                    newProduct:"",
-                    recommend:"",
-                    sellerID:"",
-                },
-                {
-                    id: 2,
-                    name: "算出来的秘密爱情",
-                    author: "胡丹婷",
-                    isbn: "",
-                    type: "小说",
-                    description: "",
-                    status:"",
-                    image:"",
-                    campus:"",
-                    price:"",
-                    newProduct:"",
-                    recommend:"",
-                    sellerID:"",
-                },
-
-            ],
-
-            book:{
-                id: null,
-                name: "",
-                author: "",
-                isbn: "",
-                type: "",
-                description: "",
-                status:"",
-                image:"",
-                campus:"",
-                price:"",
-                newProduct:"",
-                recommend:"",
-                sellerID:"",
-            },
-        };
-    },
-    //初始化构建组件
-    // created(){
-    //     this.address.account = this.$store.getters.getUser.account;
-    //     console.log("=========this.address.account:============"+this.address.account+"===")
-    //     this.getAddressList();
-    // },
-    methods: {
-        //有关图片上传的方法
-        handleUploadSuccess(response, file) {
-            console.log('上传成功', response);
-            // 获取上传文件的名称和大小
-            const fileName = file.name;
-            const fileSize = file.size;
-
-            console.log('文件名:', fileName);
-            console.log('文件大小:', fileSize);
-            // 假设服务器返回的响应数据为以下格式：
-            // {
-            //   "imageUrl": "http://example.com/uploads/image.jpg",
-            //   "name": "image.jpg",
-            //   "size": 1024
-            // }
-            const imageUrl = response.imageUrl;
-            const name = response.name;
-            const size = response.size;
-
-            console.log('图片地址:', imageUrl);
-            console.log('文件名:', name);
-            console.log('文件大小:', size);
-        },
-        beforeUpload(file) {
-            // 在上传之前的钩子函数
-            // 可以在此处进行一些验证操作
-            this.convertToDataURI(file);
-            return false; // 阻止自动上传
-        },
-        convertToDataURI(file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const imageData = event.target.result;
-                this.uploadImage(imageData);
-            };
-            reader.readAsDataURL(file);
-        },
-        uploadImage(imageData) {
-            // 在这里执行上传图片的操作，将imageData发送到服务器
-            console.log('数据流', imageData);
-
-            // 准备发送到服务器的数据
-            const formData = new FormData();
-            formData.append('image', imageData); // 将数据流添加到FormData对象中，使用'image'作为字段名
-
-            // 发送POST请求
-            uploadImage(formData).then(response => {
-                    // 上传成功，处理服务器返回的响应数据
-                    console.log('上传成功', response.data.img);
-                    // 可以根据需要进行后续的操作，比如显示上传成功的提示信息或更新页面中的数据等
-                })
-                .catch(error => {
-                    // 上传失败，处理错误情况
-                    console.error('上传失败', error);
-                    // 可以根据需要进行后续的操作，比如显示上传失败的提示信息或进行错误处理等
-                });
-        },
-
-
-
-        //处理添加操作
-        handleAdd(){
-            this.dialogVisible = true;
-            this.isEdit = false;
-        },
-        //处理修改
-        handleMod(){
-
-        },
-
-        //提交处理
-        // eslint-disable-next-line no-unused-vars
-        onSubmit(formName) {
-            if(this.isEdit){
-                this.modifyAddress();
-            }else {
-                this.addAddress();
-            }
-
-            this.$refs[formName].validate((valid)=>{
-                // console.log(this.publish.isShow);
-                if(valid){
-                    if(this.isEdit){
-                        this.modifyAddress();
-                    }else {
-                        this.addAddress();
-                    }
-                }else {
-                    this.$message.error("地址信息不符合要求，请重试");
-                }
-            });
-        },
-
-    },
-
-
-
-}
-</script>
 
 <style scoped>
 
@@ -255,6 +282,23 @@ h1{
     padding: 20px;
     vertical-align: top;
 }
+
+
+.img-uploader .avatar {
+    width: 178px;
+    height: 178px;
+    background: #9a9a9a;
+    display: block;
+}
+
+.img-uploader .el-icon-plus {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
+}
+
 .bookName{
     width: 240px;
     height: 40px;
@@ -288,4 +332,6 @@ h1{
     color: #757575;
     text-align: center;
 }
+
+
 </style>

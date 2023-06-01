@@ -14,10 +14,11 @@
                     <el-menu-item index="/">首页</el-menu-item>
                     <el-submenu index="/">
                         <template v-slot:title>登陆|注册</template>
-                        <el-menu-item index="/Login">登录</el-menu-item>
-                        <el-menu-item index="/Register">注册</el-menu-item>
+                        <el-menu-item><router-link to="/Login">登录</router-link></el-menu-item>
+                        <el-menu-item index="/RegisterPage">注册</el-menu-item>
                         <el-menu-item index="/user/bookStall">发布</el-menu-item>
 
+                        <el-menu-item index="/Upload">测试</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="/user/mesNotice">消息</el-menu-item>
                     <el-menu-item index="/user/userOrder">我的订单</el-menu-item>
@@ -39,7 +40,7 @@ export default {
     },
     methods: {
         handleSelect(key, keyPath) {
-             console.log(key, keyPath);
+            console.log(key, keyPath);
         },
     }
 }
