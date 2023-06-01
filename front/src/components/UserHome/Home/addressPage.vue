@@ -10,10 +10,10 @@
             </div>
             <div class="address_list" v-for="address in addressList" :key="address.addId">
                 <div class="name">{{address.name}}
-                    <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
+                    <span style="float: right;font-size: 14px;color: #757575;">{{address.area}}</span>
                 </div>
-                <div class="tel">{{address.phone}}</div>
-                <div class="detail">{{address.addr}}</div>
+                <span class="tel">{{address.phone}}</span>
+                <span class="detail">{{address.addr}}</span>
                 <div class="foot">
                     <span style="float: right" @click="delAddress(address.addId)">删除</span>
                     <span style="float: right;margin-right: 10px" @click="handleMod(address)">修改</span>
@@ -34,7 +34,7 @@
                     <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="校区" v-model="address.label"></el-input>
+                    <el-input placeholder="校区" v-model="address.area"></el-input>
                 </el-form-item>
             </el-form>
             <span class="dialog-footer">
@@ -58,7 +58,7 @@ export default {
             addressList:[
             ],
             address:{
-                addId:null,
+                addId:"",
                 name: "",
                 phone: "",
                 addr: "",
@@ -70,6 +70,10 @@ export default {
         console.log("开始生命构建，获取该用户的所有地址数据")
         this.getAddressList();
     },
+    // mounted() {
+    //   console.log("重新渲染页面")
+    //
+    // },
     methods: {
         //处理添加操作
         handleAdd(){
@@ -80,7 +84,7 @@ export default {
         handleMod(addr){
             this.dialogVisible = true;
             this.isEdit = true;
-            this.address.id = addr.id;
+            this.address.addId = addr.addId;
             this.address.account = addr.account;
             this.address.name = addr.name;
             this.address.phone = addr.phone;
@@ -118,26 +122,32 @@ export default {
         },
 
         //添加地址
-        addAddress(){
-            reqAddAddress(this.address).then(response=>{
-                console.log(response);
-                if(response.data.code==1){
-                    this.$message({
-                        message: response.message,
-                        type: "success"
-                    });
-                    this.dialogVisible = false;
-                    this.getAddressList();
-                }else{
-                    this.$message({
-                        message: response.message,
-                        type: "warning"
+        addAddress(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    reqAddAddress(this.address).then(response => {
+                        console.log(response);
+                        if (response.data.code == 1) {
+                            this.$message({
+                                message: response.message,
+                                type: "success"
+                            });
+                            this.dialogVisible = false;
+                            this.getAddressList();
+                        } else {
+                            this.$message({
+                                message: response.message,
+                                type: "warning"
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err);
                     })
                 }
-            }).catch(err=>{
-                console.log(err);
             })
         },
+
+
 
         //修改地址
         modifyAddress(){
@@ -189,6 +199,9 @@ export default {
             });
         },
 
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        }
     }
 }
 </script>

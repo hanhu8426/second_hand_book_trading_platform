@@ -6,16 +6,16 @@ const BASE_URL = 'http://localhost:8080'
 export const reqAddAddress = (address) => ajax(BASE_URL+'/addUserAddress', {
     name: address.name,
     phone: address.phone,
-    address: address.address,
+    address: address.addr,
     area: address.area,
 },"POST")
 
 //修改地址
 export const reqModAddress = (address) => ajax(BASE_URL+"/modifyUserAddress",{
-    id: address.id,
+    addId: address.addId,
     name: address.name,
     phone: address.phone,
-    address: address.address,
+    address: address.addr,
     area: address.area,
 },'POST')
 

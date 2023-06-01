@@ -8,14 +8,14 @@
                         <p class="noMesInfo">暂无数据</p>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="###" name="second">
+                <el-tab-pane label="余额信息" name="second">
                     <div class="tab_box">
-                        <p class="noMesInfo">暂无数据</p>
+                        <p class="noMesInfo">余额信息</p>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="###" name="third">
+                <el-tab-pane label="订单信息" name="third">
                     <div class="tab_box">
-                        <p class="noMesInfo">暂无数据</p>
+                        <p class="noMesInfo">订单信息</p>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -29,7 +29,8 @@ export default {
     name: "MesNotice",
     data() {
         return {
-            activeName: 'second'
+            activeName: 'second',
+            messageList:[],
         };
     },
     methods: {

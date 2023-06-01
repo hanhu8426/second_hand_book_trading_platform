@@ -2,7 +2,7 @@
     <div>
         <el-upload
                 class="avatar-uploader"
-                action="http://localhost:8080/upload"
+                action="http://localhost:8080/uploadBook"
                 :show-file-list="true"
                 :on-remove="handleAvatarFail"
                 :on-success="handleAvatarSuccess"

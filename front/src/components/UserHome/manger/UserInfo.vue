@@ -34,10 +34,6 @@ export default {
             imgS3: require('../../../assets/image/weixin.png'),
             imgS4: require('../../../assets/image/apple.png'),
             activeName: 'first',
-            currentPage: 1,
-            page_size: 2,
-            total:20,
-            balance:'',
             ruleForm: {
                 account: '',
                 password: '',
@@ -52,10 +48,7 @@ export default {
 
             },
 
-            form_1: {
-
-                charge:'',
-            },
+           charge:'',
 
             form_2:{
                 img:'',
@@ -91,9 +84,6 @@ export default {
 
     },
     methods: {
-        handleSuccess(){
-
-        },
         changeInput() {
             this.$forceUpdate();
         },
@@ -111,18 +101,17 @@ export default {
                 this.form_2.gender.splice(0,1)
             }
         },
-        submitForm_1(){
-            let _this = this;
-            this.$refs["form_1"].validate((valid) => {
+        submitForm_1(charge){
+            this.$refs[charge].validate((valid) => {
                 if (valid) {
                     console.log("=====上传表格1=======")
                     reqModUserInfo_1({
-                        charge: _this.form_1.charge,
+                        charge: this.charge,
                     }).then((response) => {
-                        if(response.data.code == 1){//根据状态码进入下一步
+                        if(response.data.code==1){//根据状态码进入下一步
                             console.log("=====上传成功=======")
-                            let balanceNum=response.data.data
-                            _this.balance =balanceNum
+                            console.log("打印余额")
+                            console.log(response.data.data)
                             if(response.msg=="success"){
                                 this.$message({
                                     type: 'success',
@@ -142,25 +131,24 @@ export default {
                         }else {
                             this.$message({
                                 type: 'waring',
-                                message: "登录失败"
+                                message: "充值失败"
                             })
                         }
                     }).catch(() => {
-                        this.$message.error("登录失败")
+                        this.$message.error("充值失败")
                     })
                 } else {
                     //数据校验失败，不可以进行提交
-                    this.$message.error("账号密码不符合要求，登陆失败");
+                    this.$message.error("充值失败");
                 }
             });
         },
-        submitForm_2(){
+        submitForm_2(formName){
             let _this = this;
-            this.$refs["form_2"].validate((valid) => {
+            this.$refs[formName].validate((valid) => {
                 if (valid) {
                     console.log("=====上传表格2=======")
                     reqModUserInfo_2({
-                        img: _this.form_2.img,
                         phone: _this.form_2.phone,
                         area:_this.form_2.area,
                         gender:_this.form_2.gender,
@@ -188,17 +176,20 @@ export default {
                         }else {
                             this.$message({
                                 type: 'waring',
-                                message: "登录失败"
+                                message: "资料上传失败1"
                             })
                         }
                     }).catch(() => {
-                        // this.$message.error("登录失败")
+                         this.$message.error("资料上传失败2")
                     })
                 } else {
                     //数据校验失败，不可以进行提交
-                    this.$message.error("账号密码不符合要求，登陆失败");
+                    this.$message.error("资料上传失败3");
                 }
             });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
         }
     }
 }
@@ -212,9 +203,9 @@ export default {
                 <el-tab-pane label="账号充值" name="first">
                     <div class="tab_box">
                         <div class="modify_box">
-                            <el-form :model="form_1" status-icon ref="form_1" label-width="80px">
+                            <el-form :model="activeName" status-icon ref="form_1" label-width="80px">
                                 <el-form-item prop="charge" label="充值">
-                                    <el-input  type="number"  @input="changeInput" v-model="form_1.charge"></el-input>
+                                    <el-input  type="text" @input="changeInput" v-model="charge"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_1">确认充值</el-button>

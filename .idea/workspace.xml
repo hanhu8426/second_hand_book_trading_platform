@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5b645ab-6983-4853-a92b-62d8bf030374" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/api/ajax.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api/ajax.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/axois.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/axois.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Login/LoginPage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/dist.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/dist (2).zip" beforeDir="false" afterPath="$PROJECT_DIR$/front/dist (2).zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/Register/RegisterPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Register/RegisterPage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/UserHome/Home/UserCenter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/UserHome/Home/UserCenter.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/UserHome/Home/addressPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/UserHome/Home/addressPage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +29,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "lgl",
+    "ts.external.directory.path": "D:\\WebStorm\\WebStorm 2023.1.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -44,6 +44,7 @@
       <workItem from="1684551510626" duration="8000" />
       <workItem from="1685282047602" duration="41000" />
       <workItem from="1685325092692" duration="16000" />
+      <workItem from="1685495990645" duration="32000" />
     </task>
     <servers />
   </component>
