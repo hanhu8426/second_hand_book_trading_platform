@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
-    private Integer id;
+    private Integer bookId;
     private String name;
     private String author;
     private String isbn;
@@ -24,9 +24,8 @@ public class Book {
     private String image;
     private Short campus;
     private Float price;
-    private Boolean newProduct;
     private Boolean recommend;
     //private String buyerID;
-    private String sellerID;
+    private Integer sellerId;
     //private int bookSort[];
 }

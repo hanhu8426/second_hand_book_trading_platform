@@ -36,25 +36,25 @@ class SecondHandBookStoreApplicationTests {
 //                .getBody();
 //        System.out.println(claims);
 //    }
-    @Test
-    public void upload(){
-        // Endpoint以北京四为例，其他地区请按实际情况填写。
-        String endPoint = "obs.cn-south-1.myhuaweicloud.com";
-        String ak = "M1ATZ7LSKEBWEBVEYL3X";
-        String sk = "zBJuwkNFCMTY18DFkHnhRFvbAy3nOk0VkZjbCtI3";
-// 创建ObsClient实例
-        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
-
-// localfile为待上传的本地文件路径，需要指定到具体的文件名
-        obsClient.putObject("hwj-first-test", "objectkey", new File("C:\\Users\\黄文敬\\Desktop\\1zl.jpg"));
-
-// localfile2 为待上传的本地文件路径，需要指定到具体的文件名
-        PutObjectRequest request = new PutObjectRequest();
-        request.setBucketName("hwj-first-test");
-        request.setObjectKey("objectkey2");
-        request.setFile(new File("C:\\Users\\黄文敬\\Desktop\\1zl.jpg"));
-        obsClient.putObject(request);
-
-    }
+//    @Test
+//    public void upload(){
+//        // Endpoint以北京四为例，其他地区请按实际情况填写。
+//        String endPoint = "obs.cn-south-1.myhuaweicloud.com";
+//        String ak = "M1ATZ7LSKEBWEBVEYL3X";
+//        String sk = "zBJuwkNFCMTY18DFkHnhRFvbAy3nOk0VkZjbCtI3";
+//// 创建ObsClient实例
+//        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+//
+//// localfile为待上传的本地文件路径，需要指定到具体的文件名
+//        obsClient.putObject("hwj-first-test", "objectkey", new File("C:\\Users\\黄文敬\\Desktop\\1zl.jpg"));
+//
+//// localfile2 为待上传的本地文件路径，需要指定到具体的文件名
+//        PutObjectRequest request = new PutObjectRequest();
+//        request.setBucketName("hwj-first-test");
+//        request.setObjectKey("objectkey2");
+//        request.setFile(new File("C:\\Users\\黄文敬\\Desktop\\1zl.jpg"));
+//        obsClient.putObject(request);
+//
+//    }
 
 }

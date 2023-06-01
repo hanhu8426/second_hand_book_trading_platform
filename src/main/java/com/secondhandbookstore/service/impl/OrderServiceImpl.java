@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateEnd(Order order) {
         order.setEndTime(LocalDateTime.now());
-        orderMapper.updateOrder(order);
+        orderMapper.updateOrderEnd(order);
     }
 
     @Override

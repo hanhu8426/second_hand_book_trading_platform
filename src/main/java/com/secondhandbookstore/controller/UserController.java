@@ -36,7 +36,7 @@ public class UserController {
 
     //修改用户信息二:添加一些用户的基础信息
     @RequestMapping("/user/userInfo")
-    public Result modifyUserInfo(@RequestHeader("token")String jwt,@RequestBody User userInfo){
+    public Result modifyUserInfo(@RequestHeader("Authorization")String jwt,@RequestBody User userInfo){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         userInfo.setId(id);
         userService.modifyUserInfo(userInfo);
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/PwdManage")
-    public Result modifyPassword(@RequestHeader("token")String jwt,@RequestBody CollectPassword pwds){
+    public Result modifyPassword(@RequestHeader("Authorization")String jwt,@RequestBody CollectPassword pwds){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         User user=userService.getByIdAndPassword(id,pwds.getOldPassword());
         if(user!=null){
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @RequestMapping("/Address")
-    public Result addAddress(@RequestHeader("token")String jwt,@RequestBody Address address){
+    public Result addAddress(@RequestHeader("Authorization")String jwt,@RequestBody Address address){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         address.setId(id);
         userService.addAddressList(address);
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @RequestMapping("/modifyUserAddress")
-    public Result modifyUserAddress(@RequestHeader("token")String jwt,@RequestBody Address modifyAdd){
+    public Result modifyUserAddress(@RequestHeader("Authorization")String jwt,@RequestBody Address modifyAdd){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         modifyAdd.setId(id);
         userService.modifyUserAddress(modifyAdd);

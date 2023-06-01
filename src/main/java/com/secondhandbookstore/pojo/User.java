@@ -11,7 +11,7 @@ public class User {
     private Integer id;
     private String account;
     private String password;
-    private boolean manage;
+    private Boolean manage;
     private String img;
     Integer gender;
     private Float blance;
