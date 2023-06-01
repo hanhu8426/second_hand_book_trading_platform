@@ -1,9 +1,13 @@
 package com.secondhandbookstore.controller;
 
 import com.secondhandbookstore.pojo.Order;
+import com.secondhandbookstore.pojo.OrderUtils;
 import com.secondhandbookstore.pojo.PageBean;
 import com.secondhandbookstore.pojo.Result;
+import com.secondhandbookstore.service.BookService;
 import com.secondhandbookstore.service.OrderService;
+import com.secondhandbookstore.service.UserService;
+import com.secondhandbookstore.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +22,8 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    private BookService bookService;
+    private UserService userService;
 
     /**
      * 查询所有订单数据
@@ -44,14 +50,27 @@ public class OrderController {
 
     /**
      * 增加新的订单数据
-     * @param order
+     * @param
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Order order){
-        log.info("新增订单：{}",order);
-        orderService.add(order);
-        return Result.success();
+    public Result add(@RequestHeader("Authorization")String jwt, @RequestBody OrderUtils orderUtils){
+        Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
+        Integer bookId=orderUtils.getBookId();
+        Float buyerBalance = userService.checkBalance(buyerId);
+        Float bookPrice = bookService.checkPrice(bookId);
+        if(buyerBalance>=bookPrice){
+            Integer sellerId=bookService.checkSeller(bookId);
+            Order order=new Order();
+            order.setBuyerId(buyerId);
+            order.setBuyerId(buyerId);
+            log.info("新增订单：{}",order);
+            orderService.add(order);
+            return Result.success();
+        }else {
+            return Result.success2();
+        }
+
     }
 
     /**

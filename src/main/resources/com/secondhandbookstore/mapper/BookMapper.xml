@@ -28,7 +28,9 @@
         select *
         from book
         <where>
-            type=#{type}
+            <if test="type!=null and type!=''">
+                type=#{type}
+            </if>
         </where>
     </select>
 
@@ -82,5 +84,12 @@
             </if>
         </set>
         where bookId=#{bookId}
+
+    </update>
+    <update id="modifyBookStatus">
+        update book
+        <set>
+            status=
+        </set>
     </update>
 </mapper>

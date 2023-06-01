@@ -22,4 +22,6 @@ public interface UserService {
     void addAddressList(Address address);
 
     void modifyUserAddress(Address modifyAddress);
+
+    Float checkBalance(Integer buyerId);
 }

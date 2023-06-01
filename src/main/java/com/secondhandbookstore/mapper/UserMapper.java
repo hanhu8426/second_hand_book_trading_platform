@@ -44,4 +44,7 @@ public interface UserMapper {
     @Update("update address set name = #{name},phone = #{phone}," +
             "address = #{address},area = #{area} where addId = #{addId}")
     void modifyUserAddress(Address modifyAddress);
+
+    @Select("select balance from user where id=#{id}")
+    Float checkUserBalance(Integer id);
 }

@@ -52,5 +52,8 @@ public interface BookService {
 
     //用户和书籍结合
     List<Book> listSellerBook(Integer sellerId);
-    void deleteSellerBook(Integer sellerId, Integer bookId);
+    void deleteSellerBook(Integer bookId);
+    Float checkPrice(Integer bookId);
+
+    Integer checkSeller(Integer bookId);
 }

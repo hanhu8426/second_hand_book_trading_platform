@@ -14,8 +14,8 @@ public interface OrderMapper {
     @Delete("delete from order1 where orderId=#{orderId}")
     void delete(Integer orderId);
 
-    @Insert("insert into order1 (buyerId, sellerId, deliveryAddress, beginTime) values " +
-            "(#{buyerId},#{sellerId},#{deliveryAddress},#{beginTime})")
+    @Insert("insert into order1 (buyerId, sellerId,bookId, deliveryAddress, beginTime) values " +
+            "(#{buyerId},#{sellerId},#{bookId},#{deliveryAddress},#{beginTime})")
     void insert(Order order);
 
     void updateOrderEnd(Order order);

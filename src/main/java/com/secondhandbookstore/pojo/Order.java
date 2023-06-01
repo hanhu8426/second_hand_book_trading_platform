@@ -13,7 +13,11 @@ public class Order {
     private Integer orderId;
     private Integer buyerId;
     private Integer sellerId;
-    private String deliveryAddress;
+    private String name;
+    private String phone;
+    private String address;
+    private Integer bookId;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
+    private Short status;
 }

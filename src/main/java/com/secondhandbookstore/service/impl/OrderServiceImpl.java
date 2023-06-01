@@ -2,6 +2,7 @@ package com.secondhandbookstore.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.secondhandbookstore.mapper.BookMapper;
 import com.secondhandbookstore.mapper.OrderMapper;
 import com.secondhandbookstore.pojo.Order;
 import com.secondhandbookstore.pojo.PageBean;
@@ -18,6 +19,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
+    private BookMapper bookMapper;
     @Override
     public List<Order> list() {
         List<Order> orderList=orderMapper.list();
@@ -33,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     public void add(Order order) {
         order.setBeginTime(LocalDateTime.now());
         orderMapper.insert(order);
+        bookMapper.modifyBookStatus(order.getBookId());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.secondhandbookstore.pojo.PageBean;
 import com.secondhandbookstore.pojo.Result;
 import com.secondhandbookstore.pojo.Book;
 import com.secondhandbookstore.service.BookService;
+import com.secondhandbookstore.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,6 @@ public class BookController {
     }
 
 
-
     //首页书籍信息管理（与个人无关）
     /**
      * 查询书籍数据
@@ -46,19 +46,13 @@ public class BookController {
      * 删除书籍
      * @return
      */
-    @DeleteMapping("/deleteBookById/{id}")
+    @DeleteMapping("/deleteBookById/{bookId}")
     public Result delete(@PathVariable Integer bookId){
         log.info("根据id删除书籍：{}",bookId);
         //调用service删除书籍
         bookService.delete(bookId);
         return Result.success();
     }
-
-    /**
-     * 新增书籍
-     * @return
-     */
-
 
 
     /**
@@ -83,35 +77,19 @@ public class BookController {
         return Result.success(pageBean);
     }
 
-    /**
-     * 批量删除书籍
-     * @param bookIds
-     * @return
-     */
-    @DeleteMapping("/deleteBooksByIds/{ids}")
-    public Result delete(@PathVariable List<Integer> bookIds){
-        log.info("批量删除操作，ids: {}",bookIds);
-        bookService.deleteBatch(bookIds);
-        return Result.success();
-    }
 
     /**
-     * 根据id查询书籍
+     * 根据id查询书籍,进入详情页面
      * @param bookId
      * @return
      */
-    @GetMapping("/getBookById/{id}")
+    @GetMapping("/getBookById/{bookId}")
     public Result getById(@PathVariable Integer bookId){
         log.info("根据ID查询书籍，id:{}",bookId);
         Book book=bookService.getById(bookId);
         return Result.success(book);
     }
 
-    /**
-     * 卖家修改书籍的信息
-     * @param book
-     * @return
-     */
 
     /**
      * 根据不同类别展示书籍
@@ -158,8 +136,8 @@ public class BookController {
     public Result getPagesByRecommend(@RequestParam(defaultValue = "1") Integer page,
                                       @RequestParam(defaultValue = "10") Integer pageSize,
                                       Boolean recommend){
-        log.info("分页查询，参数：{},{},{}",1,6,recommend);
-        PageBean pageBean=bookService.getPagesByRecommend(1,6,recommend);
+        log.info("分页查询，参数：{},{},{}",1,8,recommend);
+        PageBean pageBean=bookService.getPagesByRecommend(1,8,true);
         return Result.success(pageBean);
     }
 
@@ -170,20 +148,33 @@ public class BookController {
 
     /**
      * 根据用户账号获得书籍
-     * @param sellerId
+     * @param
      * @return
      */
     @GetMapping("/getBookList")
-    public Result getSellerBookList(Integer sellerId){
+    public Result getSellerBookList(@RequestHeader("Authorization")String jwt){
+        Integer sellerId = JwtUtils.parseJWTAndGenerateId(jwt);
         log.info("根据用户账号获得书籍：sellerId:{}",sellerId);
         List<Book> bookList=bookService.listSellerBook(sellerId);
         return Result.success(bookList);
     }
 
     @DeleteMapping("/delBook")
-    public Result delSellerBook(Integer sellerId,Integer bookId){
-        log.info("在用户界面里删除单本书籍：sellerId,bookId:{},{}",sellerId,bookId);
-        bookService.deleteSellerBook(sellerId, bookId);
+    public Result delSellerBook(Integer bookId){
+        log.info("在用户界面里删除单本书籍：bookId:{},{}",bookId);
+        bookService.deleteSellerBook(bookId);
+        return Result.success();
+    }
+
+    /**
+     * 批量删除书籍
+     * @param bookIds
+     * @return
+     */
+    @DeleteMapping("/deleteBooksByIds/{bookIds}")
+    public Result delete(@PathVariable List<Integer> bookIds){
+        log.info("批量删除操作，ids: {}",bookIds);
+        bookService.deleteBatch(bookIds);
         return Result.success();
     }
 
@@ -201,6 +192,12 @@ public class BookController {
         bookService.update(book);
         return Result.success();
     }
+
+
+
+
+
+
 
 
 }

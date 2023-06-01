@@ -116,8 +116,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteSellerBook(Integer sellerId, Integer bookId) {
-        bookMapper.deleteSellerBook(sellerId,bookId);
+    public void deleteSellerBook(Integer bookId) {
+        bookMapper.deleteSellerBook(bookId);
+    }
+
+    @Override
+    public Float checkPrice(Integer bookId) {
+        return bookMapper.checkPrice(bookId);
+    }
+
+    @Override
+    public Integer checkSeller(Integer bookId) {
+        return bookMapper.checkSeller(bookId);
     }
 
     @Override
