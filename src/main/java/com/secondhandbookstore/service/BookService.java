@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface BookService {
     List<Book> list();
-    void delete(Integer id);
+    void delete(Integer bookId);
 
     /**
      * 新增书籍
@@ -25,22 +25,32 @@ public interface BookService {
      */
     PageBean page(Integer page, Integer pageSize,Short type,String name,String author);
 
-    /**
-     * 批量删除操作
-     * @param ids
-     */
-    void deleteBatch(List<Integer> ids);
+    //List<Book> getBooksByType(Short type);
 
     /**
-     * 根据ID查询员工
-     * @param id
+     * 批量删除操作
+     * @param bookIds
+     */
+    void deleteBatch(List<Integer> bookIds);
+
+    /**
+     * 根据ID查询书籍
+     * @param bookId
      * @return
      */
-    Book getById(Integer id);
+    Book getById(Integer bookId);
 
     void update(Book book);
 
     PageBean getPagesByType(Integer page, Integer pageSize, Short type);
 
     PageBean getPagesByRecommend(Integer page, Integer pageSize, Boolean recommend);
+
+
+
+
+
+    //用户和书籍结合
+    List<Book> listSellerBook(Integer sellerId);
+    void deleteSellerBook(Integer sellerId, Integer bookId);
 }

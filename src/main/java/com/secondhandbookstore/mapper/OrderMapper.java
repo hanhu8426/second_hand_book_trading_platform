@@ -1,10 +1,7 @@
 package com.secondhandbookstore.mapper;
 
 import com.secondhandbookstore.pojo.Order;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,8 +18,10 @@ public interface OrderMapper {
             "(#{buyerId},#{sellerId},#{deliveryAddress},#{beginTime})")
     void insert(Order order);
 
+    void updateOrderEnd(Order order);
     void updateOrder(Order order);
 
     List<Order> pageList(String deliveryAddress, LocalDateTime beginTime, LocalDateTime endTime);
+
 
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequestMapping("orders")
+@RequestMapping("/orders")
 @Slf4j
 @RestController
 public class OrderController {
@@ -35,7 +35,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @DeleteMapping("/{orderId}")
+    @DeleteMapping("/deleteOrder/{orderId}")
     public Result delete(@PathVariable Integer orderId){
         log.info("根据orderId删除订单");
         orderService.delete(orderId);
@@ -59,7 +59,7 @@ public class OrderController {
      * @param order
      * @return
      */
-    @PostMapping("/end")
+    @PutMapping("/end")
     public Result updateEnd(@RequestBody Order order){
         log.info("订单已结束,{}",order);
         orderService.updateEnd(order);
@@ -71,7 +71,7 @@ public class OrderController {
      * @param order
      * @return
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result modify(@RequestBody Order order){
         log.info("修改订单数据{}",order);
         orderService.update(order);

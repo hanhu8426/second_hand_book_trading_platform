@@ -25,14 +25,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(Integer id) {
-        bookMapper.deleteById(id);
+    public void delete(Integer bookId) {
+        bookMapper.deleteById(bookId);
     }
 
-    @Override
-    public void add(Book book) {
-        bookMapper.insert(book);
-    }
 
 /*    @Override
     public PageBean page(Integer page, Integer pageSize) {
@@ -62,14 +58,21 @@ public class BookServiceImpl implements BookService {
         return pageBean;
     }
 
+    /*    @Override
+    public List<Book> getBooksByType(Short type) {
+        List<Book> bookList=bookMapper.getBooksByType(type);
+        return bookList;
+    }*/
+
+
     @Override
-    public void deleteBatch(List<Integer> ids) {
-        bookMapper.deleteBatch(ids);
+    public void deleteBatch(List<Integer> bookIds) {
+        bookMapper.deleteBatch(bookIds);
     }
 
     @Override
-    public Book getById(Integer id) {
-        return bookMapper.getById(id);
+    public Book getById(Integer bookId) {
+        return bookMapper.getById(bookId);
     }
 
     @Override
@@ -100,4 +103,26 @@ public class BookServiceImpl implements BookService {
         PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
         return pageBean;
     }
+
+
+
+
+
+    //用户和书籍联合，书摊
+    @Override
+    public List<Book> listSellerBook(Integer sellerId) {
+        List<Book> bookList=bookMapper.listSellerBook(sellerId);
+        return bookList;
+    }
+
+    @Override
+    public void deleteSellerBook(Integer sellerId, Integer bookId) {
+        bookMapper.deleteSellerBook(sellerId,bookId);
+    }
+
+    @Override
+    public void add(Book book) {
+        bookMapper.insert(book);
+    }
+
 }

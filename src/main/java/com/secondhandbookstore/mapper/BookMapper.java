@@ -22,15 +22,15 @@ public interface BookMapper {
      * 根据ID删除书籍
      * @param id
      */
-    @Delete("delete from book where id=#{id}")
-    void deleteById(Integer id);
+    @Delete("delete from book where bookId=#{bookId}")
+    void deleteById(Integer bookId);
 
     /**
      * 新增书籍
      * @param book
      */
-    @Insert("insert into book(name, author, isbn, type, description, status, image, campus, price, newProduct, recommend, sellerID) " +
-            "values (#{name},#{author},#{isbn},#{type},#{description},#{status},#{image},#{campus},#{price},#{newProduct},#{recommend},#{sellerID})")
+    @Insert("insert into book(name, author, isbn, type, description, status, image, campus, price, recommend, sellerId) " +
+            "values (#{name},#{author},#{isbn},#{type},#{description},#{status},#{image},#{campus},#{price},#{recommend},#{sellerId})")
     void insert(Book book);
 
 
@@ -41,23 +41,37 @@ public interface BookMapper {
     //@Select("select * from book.book")
     public List<Book> pageList(Short type,String name,String author);
 
+    /*    @Select("select *from book where type=#{type}")
+    List<Book> getBooksByType(Short type);*/
+
     /**
      * 批量删除操作
-     * @param ids
+     * @param bookIds
      */
-    void deleteBatch(List<Integer> ids);
+    void deleteBatch(List<Integer> bookIds);
 
-    @Select("select * from  book where id=#{id}")
-    Book getById(Integer id);
+    @Select("select * from  book where bookId=#{bookId}")
+    Book getById(Integer bookId);
 
     /**
-     * 更新员工
+     * 更新书籍
      * @param book
      */
     void update(Book book);
 
     List<Book> pageListByType(Short type);
 
-    @Select("select * from book where recommend=#{recommend}")
+
     List<Book> pageListByRecommend(Boolean recommend);
+
+
+
+
+    //用户和书籍结合，书摊
+    @Select("select * from book where sellerId=#{sellerId}")
+    List<Book> listSellerBook(Integer sellerId);
+
+
+    @Delete("delete from book where sellerID=#{sellerId} and bookId=#{bookId}")
+    void deleteSellerBook(Integer sellerId, Integer bookId);
 }

@@ -32,14 +32,23 @@
         </where>
     </select>
 
+    <select id="pageListByRecommend" resultType="com.secondhandbookstore.pojo.Book">
+        select *
+        from book
+        <where>
+            recommend=#{recommend}
+        </where>
+        ORDER BY bookId desc
+    </select>
+
 
     <!--批量删除操作-->
     <delete id="deleteBatch">
         delete
         from book
-        where id in
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
-            #{id}
+        where bookId in
+        <foreach collection="bookIds" item="bookId" separator="," open="(" close=")">
+            #{bookId}
         </foreach>
     </delete>
 
@@ -72,6 +81,6 @@
                 price=#{price}
             </if>
         </set>
-        where id=#{id}
+        where bookId=#{bookId}
     </update>
 </mapper>
