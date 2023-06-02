@@ -18,17 +18,6 @@
             </div>
         </div>
 
-        <div class="portal-sub">
-            <div class="info-list">
-                <el-image style="width: 120px; height: 120px;vertical-align: middle;border-radius: 50%;float: left;margin: 15px 10px"
-                          :src="imgS1"
-                          fit="fill"></el-image>
-                <div class="list_info">
-                    <p> <span class="title">待支付的订单:</span> <span class="num">0</span></p>
-                    <p> <span>查看待支付的订单></span></p>
-                </div>
-            </div>
-
             <div class="info-list">
                 <el-image style="width: 120px; height: 120px;vertical-align: middle;border-radius: 50%;float: left;margin: 15px 10px"
                           :src="imgS2"
@@ -42,7 +31,6 @@
 
         </div>
         <div id="myChart" v-show="false" :style="{width: '300px', height: '300px'}"></div>
-    </div>
 </template>
 
 <script>
@@ -61,14 +49,14 @@ export default {
             imgS3: require('../../../assets/image/icon3.png'),
             imgS4: require('../../../assets/image/icon4.png'),
             user:{
-                id: null,
+                id:'',
                 account: "",
                 password:"",
                 manage: false,
                 img:"",
                 gender: "",
                 balance: "",
-                area: null,
+                area:'',
                 address:"",
                 phone:"",
                 introduction:"",

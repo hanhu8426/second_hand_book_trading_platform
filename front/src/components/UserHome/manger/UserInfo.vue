@@ -201,12 +201,14 @@ export default {
                     })
         },
 
+        sendBalanceMessage(){
+
+        },
+
          resetForm(formName) {
              this.$refs[formName].resetFields();
           },
     }
-
-
 }
 </script>
 
