@@ -1,6 +1,6 @@
 import ajax from "./ajax";
 
-const BASE_URL = 'http://localhost:8082'
+const BASE_URL = 'http://localhost:8080'
 
 //初始化订单
 export const reqInitOrder = (ids,from,account) => ajax(BASE_URL+"/initOrder",{ids,from,account})

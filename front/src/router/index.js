@@ -5,10 +5,12 @@ const routes =[
 
     {
         path: '/',
-        name: 'Index',
         component:()=>import('../components/IndexPage.vue')
     },
-
+    {
+        path: '/Index',
+        component:()=>import('../components/IndexPage.vue')
+    },
     {
         path:'/Login',component:()=> import('../components/Login/LoginPage.vue')
     },
@@ -50,9 +52,15 @@ const routes =[
             },
         ]
     },
-    // {
-    //     path:'*' , redirect :'/'
-    // },
+    {
+        path:'/BookInfo', component: ()=>import('../components/Book/BookInfo.vue')
+    },
+    {
+        path:'/search/:selectResult?/:inputContent?',
+        name:'Search',
+        component: () => import('../components/Search/search.vue')
+    },
+
 ]
 
 const router = createRouter(

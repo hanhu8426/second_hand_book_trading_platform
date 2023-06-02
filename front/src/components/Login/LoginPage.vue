@@ -82,6 +82,7 @@ export default {
                         console.log("收到返回的response,接下来检测状态码")
                         console.log("再次修改")
                         if(response.data.code == 1){//根据状态码进入下一步
+
                            let token =response.headers.authorization;//获取令牌
                             console.log(response.headers)//
                             localStorage.setItem("token",token)
@@ -91,6 +92,7 @@ export default {
                             console.log(test)
                             let user = response.data.data
                             console.log(user)
+
                             _this.$store.commit("SET_USERINFO", user)
                             if(response.data.msg=="success"){
                                 this.$message({

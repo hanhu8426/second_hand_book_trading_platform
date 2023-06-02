@@ -98,7 +98,7 @@ export default {
 
                         if(response.data.code===1){
 
-                            this.$message({
+             this.$message({
                                 type: 'success',
                                 message: response.message,
                                 duration: 1000
