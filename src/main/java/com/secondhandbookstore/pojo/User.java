@@ -3,6 +3,7 @@ package com.secondhandbookstore.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +14,9 @@ public class User {
     private String password;
     private Boolean manage;
     private String img;
-    Integer gender;
-    private Double blance;
-    private Integer area;
+    private String gender;
+    private Float balance;
+    private String area;
     private String address;
     private String phone;
     private String introduce;

@@ -153,10 +153,6 @@ public class BookController {
      */
     @GetMapping("/getBookList")
     public Result getSellerBookList(@RequestHeader("Authorization")String jwt){
-        Integer sellerId = JwtUtils.parseJWTAndGenerateId(jwt);
-        log.info("根据用户账号获得书籍：sellerId:{}",sellerId);
-        List<Book> bookList=bookService.listSellerBook(sellerId);
-    public Result getSellerBookList(@RequestHeader("Authorization")String jwt){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         log.info("根据用户id获得书籍：sellerId:{}",id);
         List<Book> bookList=bookService.listSellerBook(id);
@@ -179,9 +175,6 @@ public class BookController {
     public Result delete(@PathVariable List<Integer> bookIds){
         log.info("批量删除操作，ids: {}",bookIds);
         bookService.deleteBatch(bookIds);
-    public Result delSellerBook(Integer bookId){
-        log.info("在用户界面里删除单本书籍：bookId:{}",bookId);
-        bookService.deleteSellerBook(bookId);
         return Result.success();
     }
 
