@@ -53,6 +53,9 @@ const routes =[
         ]
     },
     {
+        path:'/Upload_3', component: ()=>import('../components/Common/upload_3.vue')
+    },
+    {
         path:'/BookInfo', component: ()=>import('../components/Book/BookInfo.vue')
     },
     {

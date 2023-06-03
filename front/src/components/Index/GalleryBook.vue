@@ -1,5 +1,5 @@
 <script>
-import {reqGetRecBookList} from "@/api/book";
+// import {reqGetRecBookList} from "@/api/book";
 
 export default {
     name: "GalleryBook",
@@ -74,28 +74,28 @@ export default {
         };
     },
   methods: {
-    getBookList(){
-      reqGetRecBookList("newPut").then(response=>{
-        if(response.code==200){
-          this.bookList = response.bookList;
-        }else{
-          this.$message({
-            type: 'warning',
-            message: response.message
-          })
-        }
-      }).catch(()=>{
-        this.$message({
-          type: 'warning',
-          message: "获取图书列表数据失败"
-        })
-      })
-    }
-  },
-  created() {
-    this.getBookList();
-  }
-}
+  //   getBookList(){
+  //     reqGetRecBookList("newPut").then(response=>{
+  //       if(response.code==200){
+  //         this.bookList = response.bookList;
+  //       }else{
+  //         this.$message({
+  //           type: 'warning',
+  //           message: response.message
+  //         })
+  //       }
+  //     }).catch(()=>{
+  //       this.$message({
+  //         type: 'warning',
+  //         message: "获取图书列表数据失败"
+  //       })
+  //     })
+  //   }
+  // },
+  // created() {
+  //   this.getBookList();
+  // }
+}}
 
 </script>
 

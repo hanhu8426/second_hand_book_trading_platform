@@ -37,11 +37,6 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="待支付" name="second">
-                    <div class="tab_box">
-                        <p class="noMesInfo" v-show="true">暂无数据</p>
-                    </div>
-                </el-tab-pane>
                 <el-tab-pane label="待收货" name="third">
                     <div class="tab_box" v-show="total<1">
                         <p class="noMesInfo" v-show="true">暂无数据</p>
@@ -66,10 +61,6 @@
                                 </div>
                                 <div class="book_action">
                                     <button class="plainBtn" >订单详情</button>
-                                    <br>
-                                    <button class="plainBtn" >确认收货</button>
-                                    <br>
-                                    <button class="plainBtn">联系客服</button>
                                     <br>
                                 </div>
                             </div>
@@ -100,10 +91,6 @@
                                 </div>
                                 <div class="book_action">
                                     <button class="plainBtn" >订单详情</button>
-                                    <br>
-                                    <button class="plainBtn">申请售后</button>
-                                    <br>
-                                    <button class="plainBtn">联系客服</button>
                                     <br>
                                 </div>
                             </div>

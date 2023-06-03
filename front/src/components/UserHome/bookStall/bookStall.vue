@@ -1,20 +1,29 @@
 <script>
-import UploadPage from "@/components/Common/Upload_2.vue";
 import {reqAddBook, reqDelBook, reqGetBookList, reqModBook} from "@/api/bookStall";
+import UploadBook from "@/components/Common/uploadBook.vue";
 export default {
-    name: "AddressPage",
-    components: {UploadPage},
+    name: "BookStallPage",
+    components: {UploadBook},
     data() {
         return {
             dialogVisible: false,
             isEdit: false,//用来判断是添加书还是修改书 false:添加 true:修改
+            TextForType:[
+                "历史和政治类",
+                "文学和艺术类",
+                "科学和技术类",
+                "商业和经济类",
+                "心理学和自助类",
+                "旅游和地理类",
+                "工具书类",
+            ],
             bookList: [
                 {
                     BookId: 1,
                     name: "黄哥的恋爱节奏",
                     author: "黄文敬",
                     isbn: "",
-                    type: "文学",
+                    type: 1,
                     description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
                     status: "",
                     image: "",
@@ -29,7 +38,7 @@ export default {
                     name: "算出来的秘密爱情",
                     author: "胡丹婷",
                     isbn: "",
-                    type: "小说",
+                    type: 2,
                     description: "",
                     status: "",
                     image: "",
@@ -53,36 +62,69 @@ export default {
                 image: "",
                 campus: "",
                 price: "",
-                newProduct: "",
                 recommend: "",
                 sellerID: "",
             },
         };
     },
-    //初始化构建组件
-    // created(){
+    // 初始化构建组件
+    // created() {
+    //     console.log("开始生命构建")
+    //     this.getBookList();
+    // },
+    // mounted() {
+    //     console.log("开始生命构建")
     //     this.getBookList();
     // },
     methods: {
-        //处理添加操作
-        handleAdd() {
+    //修改当前的标签值
+    changeLable(){
+            switch (this.book.type) {
+                case '1':
+                    this.TextForType="历史和政治类"
+                    break
+                case '2':
+                    this.TextForType="文学和艺术类"
+                    break
+                case '3':
+                    this.TextForType="科学和技术类"
+                    break
+                case '4':
+                    this.TextForType="商业和经济类"
+                    break
+                case '5':
+                    this.TextForType="心理学和自助类"
+                    break
+                case '6':
+                    this.TextForType="旅游和地理类"
+                    break
+                case '7':
+                    this.TextForType="工具书类"
+                    break
+                default:
+                    console.log('default')
+            }
+           },
+    //处理添加操作
+    handleAdd() {
             this.dialogVisible = true;
             this.isEdit = false;
         },
-        //处理修改
-        handleMod(book) {
+    //处理修改
+    handleMod(book) {
             this.dialogVisible = true;
             this.isEdit = true;
-            this.book.bookId = book.addId;
-            this.book.image = book.image;
+            this.book.bookId = book.bookId;
+            this.book.image = this.$refs.bookPaper.image;
+            this.book.name=book.name;
             this.book.author = book.author;
             this.book.type = book.type;
-            this.book.description=book.description;
-            this.book.price=book.price;
+            this.book.description = book.description;
+            this.book.price = book.price;
         },
 
-        //提交处理
-        onSubmit() {
+    //提交处理
+    onSubmit() {
             if (this.isEdit) {
                 this.modifyBook();
             } else {
@@ -90,8 +132,8 @@ export default {
             }
         },
 
-        //得到用户书籍列表
-        getBookList() {
+     //得到用户书籍列表
+    getBookList() {
             console.log("===获取的书籍列表：===" + this.$store.getters.getUser.account + "=====");
             reqGetBookList().then(response => {
                 console.log(response);
@@ -110,36 +152,16 @@ export default {
             })
         },
 
-        //添加地址
-        addBook(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    reqAddBook(this.book).then(response => {
-                        console.log(response);
-                        if (response.data.code == 1) {
-                            this.$message({
-                                message: response.message,
-                                type: "success"
-                            });
-                            this.dialogVisible = false;
-                            this.getAddressList();
-                        } else {
-                            this.$message({
-                                message: response.message,
-                                type: "warning"
-                            })
-                        }
-                    }).catch(err => {
-                        console.log(err);
-                    })
-                }
-            })
-        },
-
-
-        //修改书籍
-        modifyBook() {
-            reqModBook(this.book).then(response => {
+    //添加书籍
+    addBook() {
+            console.log(this.book)
+            console.log(this.TextForType)
+            console.log("在向后端传送书籍的资料前进行赋值")
+            this.book.status = 1
+            this.book.recommend= "boolean"
+            this.book.image= this.$refs.bookPaper.image
+            console.log(this.book)
+            reqAddBook(this.book).then(response => {
                 console.log(response);
                 if (response.data.code == 1) {
                     this.$message({
@@ -158,14 +180,38 @@ export default {
                 console.log(err);
             })
         },
-        //处理删除地址
-        delBook(bookId) {
-            this.$confirm('是否要进行删除操作?', '提示', {
+
+    //修改书籍
+    modifyBook() {
+        reqModBook(this.book).then(response => {
+            console.log(response);
+            if (response.data.code == 1) {
+                this.$message({
+                    message: response.message,
+                    type: "success"
+                });
+                this.dialogVisible = false;
+                this.getAddressList();
+            } else {
+                this.$message({
+                    message: response.message,
+                    type: "warning"
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    //处理删除书籍
+    delBook(book) {
+        console.log("删除测试")
+        console.log(book.bookId)
+        this.$confirm('是否要进行删除操作?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                reqDelBook(bookId).then(response => {
+                reqDelBook(book.bookId).then(response => {
                     console.log(response);
                     if (response.data.code == 1) {
                         this.$message({
@@ -185,15 +231,10 @@ export default {
             }).catch(() => {
                 console.log("取消删除了");
             });
+
         },
 
-        getPaper(){
-            this.book.image=this.$refs.bookPaper.imageUrl
-        }
-
-
-    }
-}
+},}
 
 
 
@@ -214,16 +255,16 @@ export default {
             </div>
             <div class="book_list" v-for="book in bookList" :key="book.bookId">
                 <div class="bookCover">
-                    <el-image  src="src/assets/image/20.jpg"> alt="书籍封面"></el-image>
+                    <el-image  src="book.image"> alt="书籍封面"></el-image>
                 </div>
                 <div class="bookName">{{book.name}}
-                    <span style="float: right;font-size: 14px;color: #757575;">{{book.type}}</span>
+                    <span style="float: right;font-size: 14px;color: #757575;">{{this.TextForType[2]}}</span>
                 </div>
                 <div class="author">{{book.author}}</div>
                 <div class="Description">{{book.description}}</div>
                 <div class="foot">
                     <span style="float: right" @click="delBook(book)">删除</span>
-                    <span style="float: right;margin-right: 10px" @click="handleMod(book)">修改</span>
+                    <span style="float: right;margin-right: 10px" @click="handleMod">修改</span>
                 </div>
             </div>
         </div>
@@ -231,15 +272,39 @@ export default {
         <!--添加图书的弹出框-->
         <el-dialog title="添加新的书籍" v-model="dialogVisible" width="50%"  center>
             <el-form ref="form" :model="book">
-                <UploadPage ref="bookPaper" @click="getPaper"></UploadPage>
+                <upload-book ref="bookPaper"></upload-book>
                 <el-form-item>
                     <el-input placeholder="书名" v-model="book.name"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="类别" v-model="book.type"></el-input>
+                    <el-input placeholder="作者" v-model="book.author"></el-input>
                 </el-form-item>
                 <el-form-item>
+                    <el-input placeholder="ISBN" v-model="book.isbn"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-dropdown  style="width: 100%;">
+                        <el-select v-model="book.type" placeholder="请选择类型" @change="changeLable">
+                            <el-option label="历史和政治类" value="1" ></el-option>
+                            <el-option label="文学和艺术类" value="2"></el-option>
+                            <el-option label="科学和技术类" value="3"></el-option>
+                            <el-option label="商业和经济类" value="4"></el-option>
+                            <el-option label="心理学和自助类" value="5"></el-option>
+                            <el-option label="旅游和地理类" value="6"></el-option>
+                            <el-option label="工具书类" value="7"></el-option>
+                        </el-select>
+                    </el-dropdown>  </el-form-item>
+                <el-form-item>
                     <el-input type="textarea" placeholder="简介" v-model="book.description"></el-input>
+                </el-form-item>
+                <el-form-item prop="area">
+                    <el-dropdown  style="width: 100%;">
+                        <el-select v-model="book.campus" placeholder="请选择校区">
+                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
+                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+                            <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
+                        </el-select>
+                    </el-dropdown>
                 </el-form-item>
                 <el-form-item>
                     <el-input placeholder="价格" v-model="book.price"></el-input>
