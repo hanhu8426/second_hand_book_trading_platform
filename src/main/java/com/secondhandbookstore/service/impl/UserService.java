@@ -54,6 +54,15 @@ public class UserService implements com.secondhandbookstore.service.UserService 
         userMapper.modifyUserAddress(modifyAddress);
     }
 
+    public List<Address> getUserAddressById(Integer id){
+        return userMapper.getUserAddressList(id);
+    }
+
+    public void delUserAddressById(Integer addId){
+        userMapper.delUserAddressById(addId);
+    }
+
+
     @Override
     public Float checkBalance(Integer id) {
         return userMapper.checkUserBalance(id);

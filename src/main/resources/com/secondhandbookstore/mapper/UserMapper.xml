@@ -17,7 +17,7 @@
             <if test="phone!=null">phone = #{phone},</if>
             <if test="area!=null">area = #{area},</if>
             <if test="gender!=null">gender = #{gender},</if>
-            <if test="introduce!=null">introduce = #{introduce},</if>
+            <if test="introduction!=null">introduction = #{introduction},</if>
         </set>
         where id = #{id}
     </update>

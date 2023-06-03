@@ -28,8 +28,8 @@ public class LoginController {
             claims.put("id",login.getId());
             String jwt = JwtUtils.generateJwt(claims);
             //将jwt令牌添加到响应头
-            rs.addHeader("Access-Control-Expose-Headers","authorization");
-            rs.addHeader("authorization",jwt);
+            rs.addHeader("Access-Control-Expose-Headers","Authorization");
+            rs.addHeader("Authorization",jwt);
             return Result.success(login);
         }
         return Result.error("用户名或密码错误");

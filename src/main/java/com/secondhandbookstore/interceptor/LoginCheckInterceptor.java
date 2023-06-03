@@ -35,13 +35,17 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("首页，放行...");
             return true;
         }
+        if(url.contains("favicon")){
+            log.info("icon,放行");
+            return true;
+        }
 
         //获取请求头中的令牌（token)
-        String jwt = req.getHeader("token");
+        String jwt = req.getHeader("Authorization");
 
         //判断令牌是否存在，如果不存在，返回错误结果（未登录）
         if(!StringUtils.hasLength(jwt)){
-            log.info("请求头token为空，返回未登录的信息");
+            log.info("请求头Authorization为空，返回未登录的信息");
             Result error = Result.error("NOT_LOGIN");
             //手动转换 对象--json------->阿里巴巴fastJSON
             String notLogin = JSONObject.toJSONString(error);

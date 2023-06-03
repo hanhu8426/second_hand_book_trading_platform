@@ -25,6 +25,11 @@ public interface UserService {
 
     void modifyUserAddress(Address modifyAddress);
 
+    List<Address>getUserAddressById(Integer id);
+
+    void delUserAddressById(Integer addId);
+
+
     Float checkBalance(Integer buyerId);
 
     String checkName(Integer addId);
