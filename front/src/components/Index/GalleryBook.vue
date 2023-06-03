@@ -58,18 +58,6 @@ export default {
                     author: "黄子平 著",
                     price: 123.23
                 },
-                {
-                  bookId: 19,
-                    name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
-                    author: "黄子平 著",
-                    price: 123.23
-                },
-                {
-                  bookId: 10,
-                    name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
-                    author: "黄子平 著",
-                    price: 123.23
-                }
             ]
         };
     },
@@ -77,7 +65,7 @@ export default {
     getBookList(){
       reqGetRecBookList("newPut").then(response=>{
         if(response.data.code===1){
-          this.bookList = response.data.bookList;
+          this.bookList = response.data.data.rows;
         }else{
           this.$message({
             type: 'warning',
@@ -103,7 +91,7 @@ export default {
     <div class="gallery-book">
         <div class="gallery-book_list">
             <div class="gallery-book_card" v-for="item in bookList" :key="item.bookId">
-              <router-link :to= "{path: '/BookInfo',query:{bookId:item.bookId}}">
+              <router-link :to= "'/BookInfo/' + item.bookId">
                     <el-image
                             style="width: 82%; height: 190px;margin:5px 9%"
                             :src="item.image"

@@ -20,7 +20,7 @@
       </div>
       <div class="book_info">
         <div class="book_content" v-for="book in this.bookList" :key="book.bookId">
-          <router-link :to="{path: '/BookInfo',query:{id:book.bookId}}">
+          <router-link :to="'/BookInfo/' + book.bookId">
             <div class="book_content_img">
               <el-image
                   style="width: 82%; height: 150px;margin:5px 9%"

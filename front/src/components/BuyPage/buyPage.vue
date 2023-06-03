@@ -2,19 +2,30 @@
   <div style="background-color: #f7f7f6;width: 100%;min-width: 1240px">
     <Nav></Nav>
     <HeadNav></HeadNav>
-    <div class="content">
+
+     <div class="content">
       <div class="title"><h3>收货地址</h3></div>
       <div class="list_box">
         <!--           v-bind:class="{selected_address:address.select}"-->
         <div class="address_list" v-for="(address,index) in addressList"
-             v-bind:class="{selected_address:address.select}"
-             @click="selectOrderAddress(index)"
+
              :key="address.id">
           <div class="name">{{address.name}}
             <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
           </div>
           <div class="tel">{{address.phone}}</div>
           <div class="detail">{{address.addr}}</div>
+          <div>
+            <el-button @click="selectOrderAddress(index)">选择</el-button>
+          </div>
+        </div>
+        <div class="address_list">
+          <div class="add">
+            <i class="el-icon-edit"></i>
+            <div>
+              <el-button @click="handleAdd()"><p style="font-size: 20px">添加新地址</p></el-button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -96,18 +107,21 @@ import Nav from "../../components/Common/NavGation.vue";
 import HeadNav from "../../components/Common/NavHeader.vue";
 import Footer from "../../components/Common/FooTer.vue";
 import {reqAddAddress, reqGetAddressList} from "@/api/address";
+import {reqGetBook} from "@/api/book";
 import {reqAddOrder} from "@/api/order";
 import ChildComponent from "@/components/BuyPage/ChildComponent.vue";
 
 export default {
   name: "BuyPage",
-  components:{ChildComponent, Nav,HeadNav,Footer},
+  components:{ ChildComponent, Nav,HeadNav,Footer},
   data() {
     return {
       account: "",
       book:null,
+      bookId:null,
       selectId: null,
       dialogVisible: false,
+      selectedAddressIndex: -1,
       addressList: [
         {
           id: 1,
@@ -139,16 +153,33 @@ export default {
     }
   },
   created(){
+    this.bookId = this.$route.params.bookId;
     this.account = this.$store.getters.getUser.account;
     this.address.account = this.$store.getters.getUser.account;
-    this.book= this.$route.query.book;
+    this.getBook(this.bookId);
+    this.getAddressList();
     console.log("接收到参数book："+ this.book);
   },
   methods:{
+    //处理书的信息
+    getBook(bookId){
+      console.log("我已经传入了bookId：值为："+ bookId);
+      reqGetBook(bookId).then(response=>{
+        if(response.data.code===1)
+        {
+          console.log("接受到code,开始为book赋值：")
+          // console.log(response.book);
+          this.book = response.data.data;
+          console.log("接收到的内容为："+ this.book)
+        }
+      }).catch(err=>{
+        console.log(err);
+      })
+    },
+
     //处理添加操作
     handleAdd(){
       this.dialogVisible = true;
-      this.isEdit = false;
     },
 
     // 提交表单
@@ -185,13 +216,15 @@ export default {
     //得到用户地址列表
     getAddressList(){
       reqGetAddressList().then(response=>{
-        console.log(response);
+        console.log("已经接受到response:" + response);
         if(response.data.code===1){
+          console.log("response.data:" + response.data);
           this.addressList = response.data.data;
+          console.log("response.data.data:" + response.data.data);
           if(this.addressList.length>0){
             console.log(this.addressList[0]);
             this.address = this.addressList[0];//设置地址为排序第一的地址
-            this.selectId = this.addressList[0].id;//被选中的id
+            this.selectId = this.addressList[0].addId;//被选中的id
           }
           // console.log("===response.addressList.length==="+response.addressList.length);
         }else{
@@ -207,19 +240,22 @@ export default {
 
     //选择订单地址
     selectOrderAddress(index){
-      this.selectId = this.addressList[index].id;
+      this.selectId = this.addressList[index].addId;
       this.address = this.addressList[index];
+      // this.selectedAddressIndex = index; // 更新选中地址的索引
     },
+    // isSelected(index) {
+    //   return index === this.selectedAddressIndex; // 判断当前地址是否被选中
+    // },
 
     //提交订单
     submitOrder(){
       this.account = this.$store.getters.getUser.account;
       console.log("====this.OrderInitDto.account===="+this.account+"=====")
-
-      // 获取点击按钮的时间
-      const clickedTime = new Date();
-
-      reqAddOrder(this.address,this.bookId,clickedTime).then(response=>{
+      console.log(this.bookId)
+      console.log(parseInt(this.bookId))
+      console.log("对比实验")
+      reqAddOrder(parseInt(this.selectId), parseInt(this.bookId)).then(response=>{
         if(response.data.code ===1){
           this.$message({
             type: 'success',
@@ -278,6 +314,7 @@ export default {
 }
 .selected_address{
   border: 1px solid #ff6700;
+  background-color: #f5f5f5;
 }
 .name{
   width: 240px;

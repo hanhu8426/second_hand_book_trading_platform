@@ -12,8 +12,20 @@
         <div class="book_name">{{book.name}}</div>
         <div class="book_content book_buy_content">
           <div class="book_list_content">作者： {{book.author}}</div>
-          <div class="book_list_content">类别： {{ book.type}}</div>
-          <div class="book_list_content">校区： {{ book.campus }}</div>
+          <div class="book_list_content">类别：
+            <span v-if="book.type === 1">历史 | 政治</span>
+            <span v-if="book.type === 2">文学 | 艺术</span>
+            <span v-if="book.type === 3">科学 | 艺术</span>
+            <span v-if="book.type === 4">商业 | 经济</span>
+            <span v-if="book.type === 5">心理 | 自助</span>
+            <span v-if="book.type === 6">旅游 | 地理</span>
+            <span v-if="book.type === 7">宗教 | 哲学</span>
+          </div>
+          <div class="book_list_content">校区：
+            <span v-if="book.campus === 1">九龙湖校区</span>
+            <span v-if="book.campus === 2">四牌楼校区</span>
+            <span v-if="book.campus === 3">丁家桥校区</span>
+          </div>
           <div class="book_list_content">ISBN： {{ book.isbn }}</div>
         </div>
         <div class="book_content book_buy_price">
@@ -23,7 +35,7 @@
           </div>
         </div>
         <div class="book_content">
-          <el-button class="plainBtn" plain @click="goBuyPage(book)">立即购买</el-button>
+          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
         </div>
       </div>
     </div>
@@ -83,29 +95,33 @@ export default{
   },
   methods: {
     getBook(bookId){
+      console.log("我已经传入了bookId：值为："+ bookId);
       reqGetBook(bookId).then(response=>{
-        // console.log(response.book);
-        this.book = response.data.data;
-        // console.log("this.book.imgSrc:"+response.book.imgSrc);
-        let MarkdownIt = require("markdown-it");
-        let md = new MarkdownIt();
-        this.book.description = md.render(this.book.description);
+        if(response.data.code===1)
+        {
+          console.log("接受到code,开始为book赋值：")
+          // console.log(response.book);
+          this.book = response.data.data;
+          console.log("接收到的内容为："+ this.book)
+          // console.log("this.book.imgSrc:"+response.book.imgSrc);
+          let MarkdownIt = require("markdown-it");
+          let md = new MarkdownIt();
+          this.book.description = md.render(this.book.description);
+        }
       }).catch(err=>{
         console.log(err);
       })
     },
 
-    goBuyPage(book){
+    goBuyPage(bookId){
+      const encodedBookId = encodeURIComponent(parseInt(bookId, 10));
       this.$router.push({
-        path: "/buyPage",
-        query: {
-          book: book
-        }
+        path: "/buyPage/" + encodedBookId,
       })
     }
   },
   created() {
-    this.bookId = this.$route.query.bookId;
+    this.bookId = this.$route.params.bookId;
     this.getBook(this.bookId);
   }
 }
@@ -192,10 +208,9 @@ export default{
 }
 
 .book_info{
-  margin: 10px 10px;
+  margin-top: 10px; /* 调整上边距 */
+  margin-bottom: 10px; /* 调整下边距 */
   width: 900px;
-  /*height: 780px;*/
-  float: left;
 }
 .tab{
   width: 100%;
