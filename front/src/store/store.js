@@ -1,10 +1,10 @@
-import Vuex from 'vuex'
-
+import Vuex from 'vuex';
 
 export default new Vuex.Store({
     state: {
         token: '',
         userInfo: JSON.parse(sessionStorage.getItem("userInfo")),
+        selectedCategory: null, // 存储选中的分类项索引
         // userInfo: null,
     },
     mutations: {
@@ -22,7 +22,10 @@ export default new Vuex.Store({
             state.userInfo = {}
             localStorage.setItem("token", '')
             sessionStorage.setItem("userInfo", JSON.stringify(''))
-        }
+        },
+        setSelectedCategory(state, index) {
+            state.selectedCategory = index;
+        },
     },
     getters: {
         // get

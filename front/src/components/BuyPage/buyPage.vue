@@ -41,11 +41,11 @@
         <div class="order_detail">
           <div class="bill_item">
             <div class="bill_title">商品总价:</div>
-            <div class="bill_money height_text">{{OrderInitDto.expense.productTotalMoney}}元</div>
+            <div class="bill_money height_text">{{book.price}}元</div>
           </div>
           <div class="bill_item">
             <div class="bill_title">应付总额:</div>
-            <div class="bill_money height_text" style="font-size: 22px">{{OrderInitDto.expense.allPrice}}元</div>
+            <div class="bill_money height_text" style="font-size: 22px">{{book.price}}元</div>
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default {
     this.account = this.$store.getters.getUser.account;
     this.address.account = this.$store.getters.getUser.account;
     this.book= this.$route.query.book;
-    console.log("接收到参数bookId："+ this.book);
+    console.log("接收到参数book："+ this.book);
   },
   methods:{
     //处理添加操作
@@ -166,14 +166,14 @@ export default {
         console.log(response);
         if(response.data.code === 1){
           this.$message({
-            message: response.message,
+            message: response.data.msg,
             type: "success"
           });
           this.dialogVisible = false;
           this.getAddressList();
         }else{
           this.$message({
-            message: response.message,
+            message: response.data.msg,
             type: "warning"
           })
         }
@@ -196,7 +196,7 @@ export default {
           // console.log("===response.addressList.length==="+response.addressList.length);
         }else{
           this.$message({
-            message: response.data.message,
+            message: response.data.msg,
             type: "warning"
           })
         }
@@ -223,17 +223,18 @@ export default {
         if(response.data.code ===1){
           this.$message({
             type: 'success',
-            message: response.data.message,
+            message: response.data.msg,
             duration: 1000
           })
           setTimeout(() => {
             this.$router.push({path:'/user/userOrder'});
           }, 1000);
-        }else{
+        }else if(response.data.code ===2){
           this.$message({
-            message: response.message,
+            message: "余额不足，请充值！！！",
             type: "warning"
-          })
+          });
+          this.$router.push({ path: '/userInfo' }); // 跳转到充值页面
         }
       }).catch(()=>{
         this.$message({

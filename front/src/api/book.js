@@ -52,7 +52,7 @@ export const reqModifyBook = (book) => ajax(BASE_URL+'/modifyBook', {
 
 
 export const reqGetBookList = (page,pageSize)=>ajax(BASE_URL+'/getBookList',{page, pageSize})
-export const reqGetBook = (id)=>ajax(BASE_URL+'/getBook',{id})
+export const reqGetBook = (bookId) => ajax(BASE_URL + '/getBook/' + bookId);
 
 export const reqGetRecBookList = (sort)=>ajax(BASE_URL+'/getRecBookList',{sort})
 

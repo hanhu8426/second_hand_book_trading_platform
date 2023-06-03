@@ -9,10 +9,10 @@
       <div class="book_sort">
         <div class="tab">
           <div class="tab_head">分类</div>
-            <div v-for="(item,index) in sortList" :key="index" class="tab_list" >
-              <div>
+            <div v-for="(item,index) in sortList" :key="index" class="tab_list" :class="{ selected: item.isSelected && selectedCategory === index }">
+              <div @click="selectCategory(item,index)">>
                 <router-link :to="{ path: '/search', query: { kind:index+1 } }" class="custom-link">
-                  <span style="color: black">{{item}}</span>
+                  <span style="color: black">{{item.name}}</span>
                 </router-link>
               </div>
             </div>
@@ -31,14 +31,11 @@
           <div class="book_content_info">
             <div class="book_name">{{book.name}}</div>
             <div class="book_list_content">作者: 	{{book.author}}</div>
-            <div class="book_list_content">校区: 	{% switch book.campus %}
-              {% case 1 %}
-              九龙湖校区
-              {% case 2 %}
-              四牌楼校区
-              {% case 3 %}
-              丁家桥校区
-              {% endswitch %}</div>
+            <div class="book_list_content">校区:
+              <span v-if="book.campus === 1">九龙湖校区</span>
+              <span v-if="book.campus === 2">四牌楼校区</span>
+              <span v-if="book.campus === 3">丁家桥校区</span>
+            </div>
             <div class="book_list_content">售价: 	{{book.price}}</div>
             <div>
               <el-button class="plainBtn" plain>立即购买</el-button>
@@ -61,6 +58,7 @@
           <h3>不好意思，此分类暂时还没有图书......</h3>
         </div>
       </div>
+      <div style="clear: both;"></div>
     </div>
     <Footer></Footer>
   </div>
@@ -70,8 +68,8 @@
 import Nav from "../../components/Common/NavGation.vue";
 import HeadNav from "../../components/Common/NavHeader.vue";
 import Footer from "../../components/Common/FooTer.vue";
-import {reqGetSortList} from "@/api/sort";
 import {reqGetBookListByName, reqGetBookListBySort} from "@/api/book";
+
 
 export default {
   name: "SearchBook",
@@ -82,7 +80,16 @@ export default {
       page_size: 10,
       total:100,
       sortName:"分类名称",
-      sortList:['历史 |  政治', '文学 |  艺术', '科学 | 艺术', '商业  |  经济', '心理 | 自助', '旅游 | 地理', '宗教 | 哲学',],
+      selectedCategory: null,
+      sortList:[
+        {name:'历史 | 政治', isSelected: false},
+        {name:'文学 | 艺术', isSelected: false},
+        {name:'科学 | 艺术', isSelected: false},
+        {name:'商业 | 经济', isSelected: false},
+        {name:'心理 | 自助', isSelected: false},
+        {name:'旅游 | 地理', isSelected: false},
+        {name:'宗教 | 哲学',isSelected: false},
+      ],
       bookList: [],
       type:null,
       recInput:null,
@@ -91,6 +98,19 @@ export default {
   },
 
   methods: {
+    selectCategory(category, index) {
+      this.sortList.forEach((item) => {
+        item.isSelected = false;
+      });
+
+      category.isSelected = true;
+
+      // 调用 Vuex 的 mutation 设置选中的分类项索引
+      this.$store.commit('setSelectedCategory', index);
+    },
+
+
+
     async fetchBookList() {
       try {
         const response = await this.getBookList(this.type, 1, 10);
@@ -103,11 +123,6 @@ export default {
 
     handleClick(tab, event) {
       console.log(tab, event);
-    },
-    getSortList() {
-      reqGetSortList().then(response => {
-        this.sortList = response.sortResponseList;
-      });
     },
     //得到图书列表
     // getBookList(sortId,page,pageSize){
@@ -135,6 +150,9 @@ export default {
                   this.bookList = response.data.data.rows;
                   resolve(response.data.data); // 返回响应数据
                 }
+                else {
+                  reject(new Error("请求失败！"));
+                }
                 console.log("准备打印response");
                 console.log(response);
                 console.log("打印response中的bookList");
@@ -153,6 +171,10 @@ export default {
                 if (response.data.code === 1) {
                   this.total = response.data.data.total;
                   this.bookList = response.data.data.rows;
+                  resolve(response.data.data);
+                }
+                else {
+                  reject(new Error("请求失败！"));
                 }
                 console.log(response);
               })
@@ -167,17 +189,33 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.page_size = val;
-      this.getBookList(this.type,1,this.page_size);
+      this.getBookList(this.type,1,this.page_size).then(response => {
+        this.total = response.data.total;
+        this.bookList = response.data.data.rows;
+      }).catch(error => {
+            console.log(error);
+          });
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
       console.log(this.currentPage+":"+this.page_size);
-      this.getBookList(this.type,this.currentPage,this.page_size);
+      this.getBookList(this.type,this.currentPage,this.page_size).then(response => {
+        this.total = response.data.total;
+        this.bookList = response.data.data.rows;
+      }).catch(error => {
+            console.log(error);
+          });
     },
   },
 
   created() {
+    const selectedCategory = this.$store.state.selectedCategory;
+    if (selectedCategory !== null) {
+      this.selectedCategory = selectedCategory;
+      this.sortList[selectedCategory].isSelected = true;
+    }
+
     this.type = this.$route.query.kind;
     this.sortName = this.$route.query.name;
     this.recSelect = this.$route.params.selectResult;
@@ -188,7 +226,6 @@ export default {
     console.log("this.$route.query.kind:"+this.$route.query.kind);
     console.log("接收到的结果：" +this.$route.params.inputContent );
 
-    this.getSortList();
     this.fetchBookList();
   },
   watch: {
@@ -200,7 +237,6 @@ export default {
 
       console.log("this.$route.query.name:"+this.$route.query.name);
       console.log("this.$route.query.kind:"+this.$route.query.kind);
-      this.getSortList();
       this.fetchBookList();
     }
   },
@@ -208,32 +244,41 @@ export default {
 </script>
 
 <style scoped>
+
+.tab_list.selected {
+  background-color: brown; /* 背景色为棕色 */
+  color: black; /* 文字颜色为黑色 */
+}
+
 .content{
   background-color: #ffffff;
 }
-.box_title{
-  margin: 10px auto;
-  width: 1240px;
+
+.box_title {
+  margin-bottom: 10px;
+  width: 100%;
   color: #545c64;
   padding: 5px 10px;
 }
-.box{
+
+.box {
+  display: flex;
+  align-items: flex-start;
   margin: 10px auto;
   width: 1240px;
 }
-.book_sort{
-  margin: 10px 10px;
-  width: 200px;
-  float: left;
+
+.book_sort {
+  flex: 0 0 200px;
+  margin-right: 10px;
   border-right: 1px #f3f0e9 solid;
 }
 
-.book_info{
-  margin: 10px 10px;
-  width: 1000px;
-  float: right;
+.book_info {
+  flex: 1;
   background-color: #f7f7f6;
 }
+
 .tab{
   width: 100%;
 }

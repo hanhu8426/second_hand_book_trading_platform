@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="book_content">
-          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId,book.price)">立即购买</el-button>
+          <el-button class="plainBtn" plain @click="goBuyPage(book)">立即购买</el-button>
         </div>
       </div>
     </div>
