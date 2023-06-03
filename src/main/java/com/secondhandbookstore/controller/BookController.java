@@ -159,7 +159,7 @@ public class BookController {
         return Result.success(bookList);
     }
 
-    @DeleteMapping("/delBook")
+    @RequestMapping("/delBook")
     public Result delSellerBook(Integer bookId){
         log.info("在用户界面里删除单本书籍：bookId:{},{}",bookId);
         bookService.deleteSellerBook(bookId);
@@ -186,18 +186,11 @@ public class BookController {
         return Result.success();
     }
 
-    @PutMapping("/update")
+    @RequestMapping("/modifyBook")
     public Result update(@RequestBody Book book){
         log.info("更新书籍信息：{}",book);
         bookService.update(book);
         return Result.success();
     }
-
-
-
-
-
-
-
 
 }

@@ -114,11 +114,6 @@
             <artifactId>esdk-obs-java</artifactId>
             <version>3.22.3</version>
         </dependency>
-        <dependency>
-            <groupId>com.huaweicloud</groupId>
-            <artifactId>esdk-obs-java</artifactId>
-            <version>3.22.3</version>
-        </dependency>
         <!--若您的项目对三方依赖占用空间大小较为敏感，可使用下方代码引用非 bundle 版 SDK。具体差别见说明-->
         <!--<dependency>-->
         <!--	<groupId>com.huaweicloud</groupId>-->

@@ -8,9 +8,7 @@ import com.secondhandbookstore.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -49,18 +47,7 @@ public class UserController {
 
 
     //修改用户信息二:添加一些用户的基础信息
-//    @RequestMapping("/user/userInfo")              //改法一:拆解了父子组件
-//    public Result modifyUserInfo(@RequestHeader("Authorization")String jwt, @RequestBody User userInfo, MultipartFile file) throws Exception {
-//        Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
-//        userInfo.setId(id);
-//        log.info("文件上传，文件名：{}",file.getOriginalFilename());
-//        String url = huaWeiOBSUtils.upload(file);
-//        userInfo.setImg(url);
-//        log.info("进入上传user信息的方法，准备打印捕捉到的上传信息:{}",userInfo);
-//        userService.modifyUserInfo(userInfo);
-//        return Result.success();
-//    }
-    @RequestMapping("/user/userInfo")                    //改法二:等待前端改对
+    @RequestMapping("/user/userInfo")
     public Result modifyUserInfo(@RequestHeader("Authorization")String jwt,@RequestBody User userInfo){
         Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
         userInfo.setId(id);
@@ -68,23 +55,7 @@ public class UserController {
         userService.modifyUserInfo(userInfo);
         return Result.success();
     }
-//    @RequestMapping("/user/userInfo")             //改法三:将前端传输的数组对象进行转换
-//    public Result modifyUserInfo(@RequestHeader("Authorization")String jwt,@RequestBody CollectUserInfo userInfo){
-//        System.out.println("进入上传user信息的方法，准备打印捕捉到的上传信息");
-//        System.out.println(userInfo);
-//        Integer id = JwtUtils.parseJWTAndGenerateId(jwt);
-//
-//        User modify=new User();
-//        modify.setId(id);
-//        modify.setArea(userInfo.getArea().get(0));
-//        modify.setGender(userInfo.getGender().get(0));
-//        modify.setIntroduce(userInfo.getIntroduce());
-//
-//        System.out.println(modify);
-//
-//        userService.modifyUserInfo(modify);
-//        return Result.success();
-//    }
+
 
     @RequestMapping("/user/PwdManage")
     public Result modifyPassword(@RequestHeader("Authorization")String jwt,@RequestBody CollectPassword pwds){

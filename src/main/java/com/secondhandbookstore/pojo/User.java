@@ -17,9 +17,8 @@ public class User {
     private String gender;
     private Float balance;
     private String area;
-    private String address;
     private String phone;
-    private String introduce;
+    private String introduction;
     public User(String account,String password){
         this.account=account;
         this.password=password;

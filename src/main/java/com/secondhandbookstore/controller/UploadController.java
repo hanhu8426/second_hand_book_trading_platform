@@ -15,7 +15,7 @@ public class UploadController {
 
     @Autowired
     private HuaWeiOBSUtils huaWeiOBSUtils;
-    @RequestMapping("/upload")
+    @RequestMapping("/Upload")
     public Result upload(MultipartFile file) throws Exception{
         log.info("文件上传，文件名：{}",file.getOriginalFilename());
         String url = huaWeiOBSUtils.upload(file);
