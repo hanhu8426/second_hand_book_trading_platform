@@ -68,14 +68,14 @@ export default {
         };
     },
     // 初始化构建组件
-    // created() {
-    //     console.log("开始生命构建")
-    //     this.getBookList();
-    // },
-    // mounted() {
-    //     console.log("开始生命构建")
-    //     this.getBookList();
-    // },
+    created() {
+        console.log("开始生命构建")
+        this.getBookList();
+    },
+    mounted() {
+        console.log("开始生命构建")
+        this.getBookList();
+    },
     methods: {
     //修改当前的标签值
     changeLable(){
@@ -300,9 +300,9 @@ export default {
                 <el-form-item prop="area">
                     <el-dropdown  style="width: 100%;">
                         <el-select v-model="book.campus" placeholder="请选择校区">
-                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
-                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
-                            <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
+                            <el-option label="四牌楼校区" value=1 ></el-option>
+                            <el-option label="九龙湖校区" value=2></el-option>
+                            <el-option label="丁家桥校区" value=3></el-option>
                         </el-select>
                     </el-dropdown>
                 </el-form-item>

@@ -3,7 +3,7 @@
         <Nav></Nav>
         <div class="content">
             <div class="login_content">
-                <h2>登陆</h2>
+                <h2>登录</h2>
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
                     <el-form-item prop="account">
                         <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="请输入账号"></el-input>
@@ -12,7 +12,7 @@
                         <el-input type="password" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="login('ruleForm')" style="width: 100%">登陆</el-button>
+                        <el-button type="primary" @click="login('ruleForm')" style="width: 100%">登录</el-button>
                     </el-form-item>
                     <el-form-item>
                         <span style="float:left;">没有账号？<a href="#/Register">去注册</a></span><span style="float: right">忘记密码</span>
