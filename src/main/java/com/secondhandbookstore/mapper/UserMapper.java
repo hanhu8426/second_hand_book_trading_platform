@@ -4,6 +4,8 @@ import com.secondhandbookstore.pojo.Address;
 import com.secondhandbookstore.pojo.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 //    @Results({
@@ -56,4 +58,7 @@ public interface UserMapper {
 
     @Select("select address from address where addId=#{addId}")
     String checkAddress(Integer addId);
+
+    @Select("select * from address where id=#{id}")
+    List<Address> getBuyerAddress(Integer id);
 }

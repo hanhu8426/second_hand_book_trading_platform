@@ -3,6 +3,8 @@ package com.secondhandbookstore.service;
 import com.secondhandbookstore.pojo.Address;
 import com.secondhandbookstore.pojo.User;
 
+import java.util.List;
+
 public interface UserService {
     public User login(User user);
     public User getByAccount(String account);
@@ -30,4 +32,6 @@ public interface UserService {
     String checkPhone(Integer addId);
 
     String checkAddress(Integer addId);
+
+    List<Address> getBuyerAddress(Integer buyerId);
 }

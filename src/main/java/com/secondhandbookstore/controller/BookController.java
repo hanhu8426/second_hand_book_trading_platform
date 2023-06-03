@@ -1,9 +1,12 @@
 package com.secondhandbookstore.controller;
 
+import com.secondhandbookstore.mapper.UserMapper;
+import com.secondhandbookstore.pojo.Address;
 import com.secondhandbookstore.pojo.PageBean;
 import com.secondhandbookstore.pojo.Result;
 import com.secondhandbookstore.pojo.Book;
 import com.secondhandbookstore.service.BookService;
+import com.secondhandbookstore.service.UserService;
 import com.secondhandbookstore.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 测试
@@ -82,8 +87,8 @@ public class BookController {
      * @param bookId
      * @return
      */
-    @RequestMapping("/getBook")
-    public Result getById(Integer bookId){
+    @RequestMapping("/getBook/{bookId}")
+    public Result getById(@PathVariable Integer bookId){
         log.info("根据ID查询书籍，id:{}",bookId);
         Book book=bookService.getById(bookId);
         return Result.success(book);
@@ -131,7 +136,7 @@ public class BookController {
      * @param recommend
      * @return
      */
-    @RequestMapping("/recommend")
+    @RequestMapping("/getRecBookList")
     public Result getPagesByRecommend(@RequestParam(defaultValue = "1") Integer page,
                                       @RequestParam(defaultValue = "10") Integer pageSize,
                                       Boolean recommend){
@@ -192,6 +197,13 @@ public class BookController {
         log.info("更新书籍信息：{}",book);
         bookService.update(book);
         return Result.success();
+    }
+    @RequestMapping("/buyPage")
+    public Result buyPage(@RequestHeader("Authorization")String jwt){
+        Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
+        List<Address> addressList=userService.getBuyerAddress(buyerId);
+        log.info("获取买家地址列表");
+        return Result.success(addressList);
     }
 
 

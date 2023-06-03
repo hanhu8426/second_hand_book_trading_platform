@@ -15,7 +15,7 @@ public class User {
     private String img;
     Integer gender;
     private Float balance;
-    private Integer area;
+    private String area;
     private String phone;
     private String introduce;
     public User(String account,String password){

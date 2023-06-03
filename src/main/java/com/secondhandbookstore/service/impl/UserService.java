@@ -6,6 +6,8 @@ import com.secondhandbookstore.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements com.secondhandbookstore.service.UserService {
 
@@ -70,5 +72,10 @@ public class UserService implements com.secondhandbookstore.service.UserService 
     @Override
     public String checkAddress(Integer addId) {
         return userMapper.checkAddress(addId);
+    }
+
+    @Override
+    public List<Address> getBuyerAddress(Integer buyerId) {
+        return userMapper.getBuyerAddress(buyerId);
     }
 }
