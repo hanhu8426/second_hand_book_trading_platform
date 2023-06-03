@@ -56,4 +56,16 @@ public interface UserMapper {
 
     @Select("select balance from user where id=#{id}")
     Float checkUserBalance(Integer id);
+
+    @Select("select name from address where addId=#{addId}")
+    String checkName(Integer addId);
+
+    @Select("select phone from address where addId=#{addId}")
+    String checkPhone(Integer addId);
+
+    @Select("select address from address where addId=#{addId}")
+    String checkAddress(Integer addId);
+
+    @Select("select * from address where id=#{id}")
+    List<Address> getBuyerAddress(Integer id);
 }

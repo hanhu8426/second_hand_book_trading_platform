@@ -31,4 +31,12 @@ public interface UserService {
 
 
     Float checkBalance(Integer buyerId);
+
+    String checkName(Integer addId);
+
+    String checkPhone(Integer addId);
+
+    String checkAddress(Integer addId);
+
+    List<Address> getBuyerAddress(Integer buyerId);
 }

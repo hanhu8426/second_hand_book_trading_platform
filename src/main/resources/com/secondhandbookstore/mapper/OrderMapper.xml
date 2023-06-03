@@ -25,7 +25,10 @@
         update order1
         <set>
             <if test="endTime!=null">
-                endTime=#{endTime}
+                endTime=#{endTime},
+            </if>
+            <if test="status!=null">
+                status=#{status}
             </if>
         </set>
         where orderId=#{orderId}
@@ -35,11 +38,25 @@
         select *
         from order1
         <where>
-            <if test="deliveryAddress!=null and deliveryAddress!=''">
-                deliveryAddress like concat('%',#{deliveryAddress},'%')
+            <if test="address!=null and address!=''">
+                address like concat('%',#{address},'%')
             </if>
             <if test="beginTime!=null and endTime!=null">
                 and beginTime between #{beginTime} and #{endTime}
+            </if>
+        </where>
+        order by orderId desc
+    </select>
+
+    <select id="listDifStatus" resultType="com.secondhandbookstore.pojo.Order">
+        select *
+        from order1
+        <where>
+            <if test="buyerId!=null and buyerId!=''">
+                buyerId=#{buyerId}
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
             </if>
         </where>
         order by orderId desc

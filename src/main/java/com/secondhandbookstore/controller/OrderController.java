@@ -22,14 +22,16 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
     private BookService bookService;
+    @Autowired
     private UserService userService;
 
     /**
      * 查询所有订单数据
      * @return
      */
-    @GetMapping
+    @RequestMapping
     public Result list(){
         log.info("查询订单所有数据");
         List<Order> orderList=orderService.list();
@@ -41,7 +43,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @DeleteMapping("/deleteOrder/{orderId}")
+    @RequestMapping("/deleteOrder/{orderId}")
     public Result delete(@PathVariable Integer orderId){
         log.info("根据orderId删除订单");
         orderService.delete(orderId);
@@ -53,7 +55,7 @@ public class OrderController {
      * @param
      * @return
      */
-    @PostMapping("/add")
+    @RequestMapping("/add")
     public Result add(@RequestHeader("Authorization")String jwt, @RequestBody OrderUtils orderUtils){
         Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
         Integer bookId=orderUtils.getBookId();
@@ -63,9 +65,17 @@ public class OrderController {
             Integer sellerId=bookService.checkSeller(bookId);
             Order order=new Order();
             order.setBuyerId(buyerId);
-            order.setBuyerId(buyerId);
+            order.setSellerId(sellerId);
+            order.setName(userService.checkName(orderUtils.getAddId()));
+            order.setPhone(userService.checkPhone(orderUtils.getAddId()));
+            order.setAddress(userService.checkAddress(orderUtils.getAddId()));
+            order.setBookId(bookId);
+            order.setBeginTime(LocalDateTime.now());
+            order.setStatus(1);
             log.info("新增订单：{}",order);
             orderService.add(order);
+            userService.modifyUserBalance(sellerId,bookPrice);
+            userService.modifyUserBalance(buyerId,-bookPrice);
             return Result.success();
         }else {
             return Result.success2();
@@ -78,7 +88,7 @@ public class OrderController {
      * @param order
      * @return
      */
-    @PutMapping("/end")
+    @RequestMapping("/end")
     public Result updateEnd(@RequestBody Order order){
         log.info("订单已结束,{}",order);
         orderService.updateEnd(order);
@@ -90,31 +100,31 @@ public class OrderController {
      * @param order
      * @return
      */
-    @PutMapping("/update")
+    @RequestMapping("/update")
     public Result modify(@RequestBody Order order){
         log.info("修改订单数据{}",order);
         orderService.update(order);
         return Result.success();
     }
 
-    /**
-     * 条件分页查询
-     * @param page
-     * @param pageSize
-     * @param deliveryAddress
-     * @param beginTime
-     * @param endTime
-     * @return
-     */
-    @GetMapping("/pages")
+
+    @RequestMapping("/pages")
     public Result page(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10")Integer pageSize,
-                       String deliveryAddress,
+                       String address,
                        @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDateTime beginTime,
                        @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDateTime endTime){
-        log.info("分页查询，参数{},{},{},{},{}",page,pageSize,deliveryAddress,beginTime,endTime);
-        PageBean pageBean=orderService.page(page,pageSize,deliveryAddress,beginTime,endTime);
+        log.info("分页查询，参数{},{},{},{},{}",page,pageSize,address,beginTime,endTime);
+        PageBean pageBean=orderService.page(page,pageSize,address,beginTime,endTime);
         return Result.success(pageBean);
+    }
+
+    @RequestMapping("/orderStatus")
+    public Result listDifStatus(@RequestHeader("Authorization")String jwt,Integer status){
+        Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
+        List<Order> orderList=orderService.listDifStatus(buyerId,status);
+        return Result.success(orderList);
+
     }
 
 }

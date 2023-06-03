@@ -19,6 +19,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
     private BookMapper bookMapper;
     @Override
     public List<Order> list() {
@@ -41,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateEnd(Order order) {
         order.setEndTime(LocalDateTime.now());
+        order.setStatus(2);
         orderMapper.updateOrderEnd(order);
     }
 
@@ -57,4 +59,10 @@ public class OrderServiceImpl implements OrderService {
         PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
         return pageBean;
     }
+
+    @Override
+    public List<Order> listDifStatus(Integer buyerId, Integer status) {
+        return orderMapper.listDifStatus(buyerId,status);
+    }
+
 }

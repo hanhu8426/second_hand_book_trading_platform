@@ -14,8 +14,8 @@ public interface OrderMapper {
     @Delete("delete from order1 where orderId=#{orderId}")
     void delete(Integer orderId);
 
-    @Insert("insert into order1 (buyerId, sellerId,bookId, deliveryAddress, beginTime) values " +
-            "(#{buyerId},#{sellerId},#{bookId},#{deliveryAddress},#{beginTime})")
+    @Insert("insert into order1 (buyerId, sellerId, name, phone, address, bookId, beginTime, endTime, status) values " +
+            "(#{buyerId},#{sellerId},#{name},#{phone},#{address},#{bookId},#{beginTime},#{endTime},#{status})")
     void insert(Order order);
 
     void updateOrderEnd(Order order);
@@ -23,5 +23,5 @@ public interface OrderMapper {
 
     List<Order> pageList(String deliveryAddress, LocalDateTime beginTime, LocalDateTime endTime);
 
-
+    List<Order> listDifStatus(Integer buyerId, Integer status);
 }
