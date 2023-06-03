@@ -24,4 +24,10 @@ public interface UserService {
     void modifyUserAddress(Address modifyAddress);
 
     Float checkBalance(Integer buyerId);
+
+    String checkName(Integer addId);
+
+    String checkPhone(Integer addId);
+
+    String checkAddress(Integer addId);
 }

@@ -18,4 +18,6 @@ public interface OrderService {
     void update(Order order);
 
     PageBean page(Integer page, Integer pageSize, String deliveryAddress, LocalDateTime beginTime, LocalDateTime endTime);
+
+    List<Order> listDifStatus(Integer buyerId, Integer status);
 }

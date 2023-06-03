@@ -14,9 +14,8 @@ public class User {
     private Boolean manage;
     private String img;
     Integer gender;
-    private Float blance;
+    private Float balance;
     private Integer area;
-    private String address;
     private String phone;
     private String introduce;
     public User(String account,String password){

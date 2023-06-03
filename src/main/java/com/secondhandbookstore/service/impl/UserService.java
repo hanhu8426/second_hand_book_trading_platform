@@ -54,7 +54,21 @@ public class UserService implements com.secondhandbookstore.service.UserService 
 
     @Override
     public Float checkBalance(Integer id) {
-
         return userMapper.checkUserBalance(id);
+    }
+
+    @Override
+    public String checkName(Integer addId) {
+        return userMapper.checkName(addId);
+    }
+
+    @Override
+    public String checkPhone(Integer addId) {
+        return userMapper.checkPhone(addId);
+    }
+
+    @Override
+    public String checkAddress(Integer addId) {
+        return userMapper.checkAddress(addId);
     }
 }

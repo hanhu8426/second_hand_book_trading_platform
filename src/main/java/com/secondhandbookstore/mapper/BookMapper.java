@@ -11,13 +11,13 @@ public interface BookMapper {
      * 查询全部书籍
      * @return
      */
-    @Select("select * from book")
+    @Select("select * from book where status=1")
     List<Book> list();
 
 
     /**
      * 根据ID删除书籍
-     * @param id
+     * @param
      */
     @Delete("delete from book where bookId=#{bookId}")
     void deleteById(Integer bookId);
@@ -68,6 +68,7 @@ public interface BookMapper {
     @Delete("delete from book where bookId=#{bookId}")
     void deleteSellerBook(Integer bookId);
 
+    @Update("update book set status=0 where bookId=#{bookId}")
     void modifyBookStatus(Integer bookId);
 
     @Select("select price from book where bookid=#{bookId}")

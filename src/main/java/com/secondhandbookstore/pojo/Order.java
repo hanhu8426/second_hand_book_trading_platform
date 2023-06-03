@@ -19,5 +19,5 @@ public class Order {
     private Integer bookId;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
-    private Short status;
+    private Integer status;
 }

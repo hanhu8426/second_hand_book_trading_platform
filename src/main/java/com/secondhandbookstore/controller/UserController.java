@@ -20,7 +20,7 @@ public class UserController {
 
     //获取用户信息
     @RequestMapping("/getUserInfo")
-    public Result getUserInfo(@RequestHeader("token")String jwt){
+    public Result getUserInfo(@RequestHeader("Authorization")String jwt){
         Integer id=JwtUtils.parseJWTAndGenerateId(jwt);
         User show=userService.getById(id);
         log.info("查询用户信息:{}",show.getAccount());
