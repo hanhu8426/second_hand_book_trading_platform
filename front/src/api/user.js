@@ -1,6 +1,6 @@
 import axios from 'axios'
 import ajax from "./ajax";
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://8.140.52.224:8080'
 
 // 包装的axios ajax请求接口
 function ajax1 (url, data={}, method='GET') {
@@ -32,7 +32,7 @@ function ajax1 (url, data={}, method='GET') {
 }
 
 //登录
-export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
+export const reqLogin = ({account, password}) => ajax1('http://8.140.52.224:8080/Login', {account, password}, 'POST')
 
 // 注册账号
 export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})

@@ -1,6 +1,6 @@
 import ajax from "./ajax";
 
-const BASE_URL = 'http://localhost:8080/sort'
+const BASE_URL = 'http://8.140.52.224:8080/sort'
 
 //添加图书分类
 export const reqAddBookSort = (bookSort) => ajax(BASE_URL+'/addBookSort', {

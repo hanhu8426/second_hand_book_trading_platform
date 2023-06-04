@@ -1,6 +1,6 @@
 import ajax from "./ajax";
 
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://8.140.52.224:8080'
 
 
 //余额消息变动
