@@ -25,7 +25,7 @@ export default {
 
 <template>
 <div class="content">
-<el-carousel :interval="5000" arrow="always" height="300px">
+<el-carousel :interval="5000" arrow="always" height="300px" class="carousel-item">
     <el-carousel-item v-for="item in imgS" :key="item.id">
           <img v-bind:src="item" alt="图片"/>
     </el-carousel-item>
@@ -35,5 +35,10 @@ export default {
 </template>
 
 <style scoped>
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 </style>

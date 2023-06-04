@@ -86,7 +86,7 @@ export default {
       sortList:[
         {name:'历史 | 政治', isSelected: false},
         {name:'文学 | 艺术', isSelected: false},
-        {name:'科学 | 艺术', isSelected: false},
+        {name:'科学 | 技术', isSelected: false},
         {name:'商业 | 经济', isSelected: false},
         {name:'心理 | 自助', isSelected: false},
         {name:'旅游 | 地理', isSelected: false},
@@ -134,19 +134,7 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    //得到图书列表
-    // getBookList(sortId,page,pageSize){
-    //   reqGetBookListBySort(sortId,page,pageSize).then(response=>{
-    //     if(response.code==200){
-    //       this.total = response.total;
-    //       console.log(this.total);
-    //       this.bookList = response.bookList;
-    //     }
-    //     console.log(response);
-    //   }).catch(err=>{
-    //     console.log(err);
-    //   })
-    // },
+
     getBookList(type, page, pageSize) {
       return new Promise((resolve,reject) => {
         if (type !== undefined) {
