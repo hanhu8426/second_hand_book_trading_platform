@@ -68,7 +68,7 @@ public class BookController {
      * @param author
      * @return
      */
-    @RequestMapping("/getPages")
+    @RequestMapping("/getBookListByName")
     public Result page(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer pageSize,
                        Short type,
@@ -192,7 +192,7 @@ public class BookController {
         return Result.success();
     }
 
-    @RequestMapping("/update")
+    @RequestMapping("/modifyBook")
     public Result update(@RequestBody Book book){
         log.info("更新书籍信息：{}",book);
         bookService.update(book);

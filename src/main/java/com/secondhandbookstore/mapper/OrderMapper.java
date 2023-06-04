@@ -24,4 +24,10 @@ public interface OrderMapper {
     List<Order> pageList(String deliveryAddress, LocalDateTime beginTime, LocalDateTime endTime);
 
     List<Order> listDifStatus(Integer buyerId, Integer status);
+
+    @Select("select * from order1 where buyerId=#{buyerId}")
+    List<Order> listUserOrders(Integer buyerId);
+
+    @Select("select * from order1 where orderId=#{orderId}")
+    Order getOrderByOrderId(Integer orderId);
 }

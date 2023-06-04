@@ -40,6 +40,7 @@ public interface UserMapper {
 
 //    @Insert("insert into address (name,phone,address,id,area) " +
 //            "values (#{name},#{phone},#{address},#{id},#{area})")
+
     void addAddressList(Address address);
 
 //    @Select("select last_insert_id()")

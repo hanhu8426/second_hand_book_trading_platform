@@ -11,14 +11,12 @@
         from book
         <where>
             <if test="type!=null">
-                type=#{type}
+                and type=#{type}
             </if>
-
-            <if test="name!=null and name!=''">
-                and name like concat('%',#{type},'%')
+            <if test="name!='null' and name!=''">
+                and name like concat('%',#{name},'%')
             </if>
-
-            <if test="author!=null">
+            <if test="author!='null' and author!=''">
                 and author like concat('%',#{author},'%')
             </if>
         </where>
@@ -40,7 +38,7 @@
         select *
         from book
         <where>
-            recommend=#{recommend}
+            recommend=#{recommend} and status=1
         </where>
         ORDER BY bookId desc
     </select>

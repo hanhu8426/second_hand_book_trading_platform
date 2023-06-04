@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequestMapping("/orders")
+/*@RequestMapping("/orders")*/
 @Slf4j
 @RestController
 public class OrderController {
@@ -31,7 +31,7 @@ public class OrderController {
      * 查询所有订单数据
      * @return
      */
-    @RequestMapping
+    @RequestMapping("/test1")
     public Result list(){
         log.info("查询订单所有数据");
         List<Order> orderList=orderService.list();
@@ -50,13 +50,22 @@ public class OrderController {
         return Result.success();
     }
 
+    @RequestMapping("/GetOrderByOrderId")
+    public Result getOrderByOrderId(Integer orderId){
+        log.info("根据orderId查找订单信息，{}",orderId);
+        Order order=orderService.getOrderByOrderId(orderId);
+        return Result.success(order);
+    }
+
     /**
+     *
      * 增加新的订单数据
      * @param
      * @return
      */
-    @RequestMapping("/add")
+    @RequestMapping("/addOrder")
     public Result add(@RequestHeader("Authorization")String jwt, @RequestBody OrderUtils orderUtils){
+        System.out.println("进入方法");
         Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
         Integer bookId=orderUtils.getBookId();
         Float buyerBalance = userService.checkBalance(buyerId);
@@ -125,6 +134,13 @@ public class OrderController {
         List<Order> orderList=orderService.listDifStatus(buyerId,status);
         return Result.success(orderList);
 
+    }
+
+    @RequestMapping("/listUserOrders")
+    public Result listUserOrders(@RequestHeader("Authorization")String jwt){
+        Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
+        List<Order> orderList=orderService.listUserOrders(buyerId);
+        return Result.success(orderList);
     }
 
 }

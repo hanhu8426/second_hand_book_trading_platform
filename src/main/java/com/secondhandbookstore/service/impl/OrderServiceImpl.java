@@ -65,4 +65,14 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.listDifStatus(buyerId,status);
     }
 
+    @Override
+    public List<Order> listUserOrders(Integer buyerId) {
+        return orderMapper.listUserOrders(buyerId);
+    }
+
+    @Override
+    public Order getOrderByOrderId(Integer orderId) {
+        return orderMapper.getOrderByOrderId(orderId);
+    }
+
 }

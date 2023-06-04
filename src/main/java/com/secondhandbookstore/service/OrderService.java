@@ -20,4 +20,8 @@ public interface OrderService {
     PageBean page(Integer page, Integer pageSize, String deliveryAddress, LocalDateTime beginTime, LocalDateTime endTime);
 
     List<Order> listDifStatus(Integer buyerId, Integer status);
+
+    List<Order> listUserOrders(Integer buyerId);
+
+    Order getOrderByOrderId(Integer orderId);
 }
