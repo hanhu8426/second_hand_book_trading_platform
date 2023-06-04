@@ -40,7 +40,18 @@ const routes =[
             },
             {
                 path: 'userOrder',
-                component: ()=>import('../components/UserHome/order/UseOrder.vue')
+                component: ()=>import('../components/UserHome/order/UseOrder.vue'),
+                children:[
+                    {
+                        path:'orderDetail',
+                        component:()=>import('../components/UserHome/order/UseOrderDetail.vue')
+                    }
+                ],
+            },
+            {
+              path:'OrderDetail',
+              component:()=>import('../components/UserHome/order/UseOrderDetail.vue')
+
             },
             {
                 path: 'bookStall',
@@ -63,6 +74,7 @@ const routes =[
         name:'Search',
         component: () => import('../components/Search/search.vue')
     },
+
 
 ]
 
