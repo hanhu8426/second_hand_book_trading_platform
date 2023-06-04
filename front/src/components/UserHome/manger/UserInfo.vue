@@ -1,11 +1,13 @@
 <script>
 // <!--用户中心-->
 import {reqModUserInfo_1, reqModUserInfo_2} from "@/api/user";
-import UploadPage from "@/components/Common/Upload.vue";
+
+
+import UploadImg from "@/components/Common/upload_3.vue";
 
 export default {
     name: "UserInfo",
-    components: {UploadPage},
+    components: {UploadImg},
     data () {
         //检测充值的数额大小
         var checkCharge = (rule, value, callback) => {
@@ -71,48 +73,17 @@ export default {
 
             },
             activeName: 'first',
-            form_2:{
-                checkBoxOption:[
-                    {
-                        value:"四牌楼校区"
-                    },
-                    {
-                        value:"九龙湖校区"
-                    },
-                    {
-                        value:"丁家桥校区"
-                    },
-                ],
-                genderOption:[
-                    {
-                        value:"男",
-                        type:0,
-                    },
-                    {
-                        value: "女",
-                        type: 1,
-                    }
-                ],
-            }
         }
     },
-        // mounted(){
-        //
-        // },
+        mounted(){
+
+        },
     methods: {
-        changeInput() {
-            this.$forceUpdate();
+         test() {
+            console.log(this.InfoForm)
         },
         handleClick(tab, event) {
             console.log(tab, event);
-        },
-
-        getGender(item){
-           this.InfoForm.gender=item.type
-        },
-
-        getArea(item){
-          this.InfoForm.area=item.type
         },
 
         submitForm_1(){
@@ -151,26 +122,21 @@ export default {
                     },
                  )
                 },
-
-        getImg(){
-            this.InfoForm.img= this.$refs.uploadImg.$data.imageUrl
-        },
         submitForm_2() {
             console.log("这是用来测试的输出")
-            console.log(this.$refs.uploadImg.imageUrl)
-            console.log(this.InfoForm.img)
+            console.log(this.$refs.uploadImg.image)
             console.log(this.InfoForm.phone)
             console.log(this.InfoForm.area)
             console.log(this.InfoForm.gender)
             console.log(this.InfoForm.introduction)
                     console.log("=====上传表格2=======")
-                    reqModUserInfo_2({
-                        img: this.InfoForm.img,
-                        phone: this.InfoForm.phone,
-                        area: this.InfoForm.area,
-                        gender: this.InfoForm.gender,
-                        introduction: this.InfoForm.introduction
-                    }).then((response) => {
+                    reqModUserInfo_2(
+                        this.$refs.uploadImg.image,
+                        this.InfoForm.phone,
+                        this.InfoForm.area,
+                        this.InfoForm.gender,
+                        this.InfoForm.introduction
+                    ).then((response) => {
                         if (response.data.code == 1) {//根据状态码进入下一步
                             console.log("=====上传成功=======")
 
@@ -201,12 +167,14 @@ export default {
                     })
         },
 
+        sendBalanceMessage(){
+
+        },
+
          resetForm(formName) {
              this.$refs[formName].resetFields();
           },
     }
-
-
 }
 </script>
 
@@ -227,39 +195,32 @@ export default {
                     <div class="tab_box">
                         <div class="modify_box">
                             <el-form :model="InfoForm" status-icon :rules="ruleInfo" ref="InfoForm" label-width="80px">
-                                <UploadPage ref="uploadImg" @click="getImg"><span>上传头像</span></UploadPage>
+                                <UploadImg ref="uploadImg" @click="handleDataFromChild"><span>上传头像</span></UploadImg>
                                 <el-form-item prop="phone" label="电话号码">
-                                    <el-input  placeholder="输入你的手机号码" type="text" autocomplete="off"  v-model="this.form_2.phone"></el-input>
+                                    <el-input  placeholder="输入你的手机号码" type="text" autocomplete="off"  v-model="this.InfoForm.phone"></el-input>
                                 </el-form-item>
                                 <el-form-item prop="gender" label="性别">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="this.InfoForm.gender">
-                                            <el-checkbox
-                                                v-for="item in form_2.genderOption"
-                                                :key="item.type"
-                                                :label="item.value"
-                                                @click="getGender('item')"
-                                            ></el-checkbox>
-                                        </el-checkbox-group>
+                                        <el-select v-model="InfoForm.gender" placeholder="请选择性别">
+                                            <el-option label="男" value="男" ></el-option>
+                                            <el-option label="女" value="女"></el-option>
+                                        </el-select>
                                     </el-dropdown>
                                 </el-form-item>
                                 <el-form-item prop="area" label="校区">
                                     <el-dropdown  style="width: 100%;">
-                                        <el-checkbox-group  v-model="this.InfoForm.area" >
-                                        <el-checkbox
-                                            v-for="item in form_2.checkBoxOption"
-                                            :key="item.value"
-                                            :label="item.value"
-                                            @click="getArea(item)"
-                                        ></el-checkbox>
-                                        </el-checkbox-group>
+                                        <el-select v-model="InfoForm.area" placeholder="请选择校区">
+                                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
+                                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+                                            <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
+                                        </el-select>
                                     </el-dropdown>
                                 </el-form-item>
                                 <el-form-item prop="introduction" label="简介">
                                     <el-input type="textarea" placeholder="说两句介绍自己吧" autocomplete="off" v-model="this.InfoForm.introduction"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2">确认修改</el-button>
+                                    <el-button type="primary" style="width: 120px;" native-type="submit" @click="submitForm_2()">确认修改</el-button>
                                 </el-form-item>
                             </el-form>
                         </div>

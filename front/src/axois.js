@@ -15,7 +15,7 @@ instance.interceptors.request.use(config => {
         console.log("在请求头中放入令牌")
         const token = localStorage.getItem("token");
         console.log("发送前的token:"+token);
-        config.headers.Authorization = token;
+        config.headers['Authorization'] = token;
         return config;
     },
     error => {
@@ -27,10 +27,11 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(
     response => {
-        console.log("返回的response:"+response);
-        let data = response.data;
-        console.log("response.data"+response.data);
-        console.log("response.data.code"+data.code);
+        //  console.log("返回的response:"+response);
+        // let data = response.data;
+        // console.log("response.data"+response.data);
+        // console.log("response.data.code"+data.code);
+
         switch(response.data.code){
             case 0:
                 console.log("=======后端返回的编码是401=======")
@@ -111,3 +112,4 @@ instance.interceptors.response.use(
 
 
 export default instance;
+

@@ -33,8 +33,14 @@
                 <el-form-item>
                     <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-input placeholder="校区" v-model="address.area"></el-input>
+                <el-form-item prop="area">
+                    <el-dropdown  style="width: 100%;">
+                        <el-select v-model="address.area" placeholder="请选择校区">
+                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
+                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+                            <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
+                        </el-select>
+                    </el-dropdown>
                 </el-form-item>
             </el-form>
             <span class="dialog-footer">
@@ -70,10 +76,10 @@ export default {
         console.log("开始生命构建，获取该用户的所有地址数据")
         this.getAddressList();
     },
-    // mounted() {
-    //   console.log("重新渲染页面")
-    //
-    // },
+    mounted() {
+      console.log("重新渲染页面")
+        this.getAddressList();
+    },
     methods: {
         //处理添加操作
         handleAdd(){
@@ -122,9 +128,9 @@ export default {
         },
 
         //添加地址
-        addAddress(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
+        addAddress() {
+            console.log("尝试添加地址")
+            console.log(this.address)
                     reqAddAddress(this.address).then(response => {
                         console.log(response);
                         if (response.data.code === 1) {
@@ -143,14 +149,12 @@ export default {
                     }).catch(err => {
                         console.log(err);
                     })
-                }
-            })
-        },
-
-
+                },
 
         //修改地址
         modifyAddress(){
+            console.log("这是修改地址的测试")
+            console.log(this.address)
             reqModAddress(this.address).then(response=>{
                 console.log(response);
                 if(response.data.code==1){

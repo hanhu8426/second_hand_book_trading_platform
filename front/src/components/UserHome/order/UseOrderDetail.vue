@@ -1,9 +1,10 @@
 <template>
     <div class="content">
-        <h1>订单详情</h1>
         <div class="detail_title">
-            <span style="color: red">当前订单状态：{{order.orderStatus}}</span>
-            <span style="float: right">
+            <span style="color: red">
+                <p v-if="orderItem.order.status===1">待收货</p>
+                <p v-if="orderItem.order.status===2">已完成</p>
+                <span style="float: right"></span>
         <el-button size="small">删除订单</el-button>
       </span>
         </div>
@@ -14,15 +15,15 @@
             <div class="table-layout">
                 <el-row>
                     <el-col :span="7" class="table-cell-title">订单编号</el-col>
-                    <el-col :span="6" class="table-cell-title">发货单流水号</el-col>
                     <el-col :span="6" class="table-cell-title">用户账号</el-col>
                     <el-col :span="5" class="table-cell-title">下单时间</el-col>
+                    <el-col :span="6" class="table-cell-title">收货时间</el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="7" class="table-cell">{{order.orderId}}</el-col>
-                    <el-col :span="6" class="table-cell">{{order.logisticsNum}}</el-col>
-                    <el-col :span="6" class="table-cell">{{order.account}}</el-col>
-                    <el-col :span="5" class="table-cell">{{order.orderTime}}</el-col>
+                    <el-col :span="7" class="table-cell">{{message}}</el-col>
+                    <el-col :span="6" class="table-cell">{{}}</el-col>
+                    <el-col :span="5" class="table-cell">{{this.orderItem.order.beginTime}}</el-col>
+                    <el-col :span="6" class="table-cell">{{this.orderItem.order.endTime}}</el-col>
                 </el-row>
             </div>
 
@@ -34,76 +35,38 @@
                     <el-col :span="4" class="table-cell-title">收货人姓名</el-col>
                     <el-col :span="4" class="table-cell-title">电话</el-col>
                     <el-col :span="13" class="table-cell-title">地址</el-col>
-                    <el-col :span="3" class="table-cell-title">标签</el-col>
+                    <el-col :span="3" class="table-cell-title">校区</el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="4" class="table-cell">{{order.address.name}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order.address.phone}}</el-col>
-                    <el-col :span="13" class="table-cell">{{order.address.addr}}</el-col>
-                    <el-col :span="3" class="table-cell">{{order.address.label}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.name}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+                    <el-col :span="13" class="table-cell">{{}}</el-col>
+                    <el-col :span="3" class="table-cell">{{orderItem.book.campus}}</el-col>
                 </el-row>
             </div>
 
             <div class="info_title">
-                <i class="el-icon-s-flag"></i><span> 商品信息</span>
+                <i class="el-icon-s-flag"></i><span> 书籍信息</span>
             </div>
             <div class="table-layout">
-                <el-table
-                        ref="multipleTable"
-                        border
-                        :data="order.orderDetailDtoList"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                >
-                    <el-table-column
-                            label="图书封面"
-                            width="110"
-                            align="center">
-                        <template v-slot="scope">
-                            <el-image style="height: 120px"
-                                      :src="scope.row.book.coverImg">
-                                <div  class="image-slot">
-                                    <i class="el-icon-picture-outline"></i>
-                                </div>
-                            </el-image>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="book.bookName"
-                            label="书名"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            prop="book.isbn"
-                            label="isbn"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            prop="book.author"
-                            label="作者"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            label="单价"
-                            align="center">
-                        <template v-slot:scope>
-                            {{ scope.row.price}}元
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="num"
-                            width="100px"
-                            label="数量"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            label="小计"
-                            width="120" align="center">
-                        <template v-slot:scope>
-                            {{ scope.row.price * scope.row.num}}元
-                        </template>
-                    </el-table-column>
-                </el-table>
+                <el-row>
+                    <el-col :span="4" class="table-cell-title">书籍照片</el-col>
+                    <el-col :span="4" class="table-cell-title">书名</el-col>
+                    <el-col :span="4" class="table-cell-title">作者</el-col>
+                    <el-col :span="4" class="table-cell-title">校区</el-col>
+                    <el-col :span="4" class="table-cell-title">isbn</el-col>
+                    <el-col :span="4" class="table-cell-title">价格</el-col>
+
+                </el-row>
+                <el-row>
+                    <el-col :span="4" class="table-cell"><el-image></el-image></el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+                    <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
+
+                </el-row>
             </div>
 
             <div class="info_title">
@@ -111,20 +74,12 @@
             </div>
             <div class="table-layout">
                 <el-row>
-                    <el-col :span="4" class="table-cell-title">商品总价</el-col>
-                    <el-col :span="4" class="table-cell-title">运费</el-col>
-                    <el-col :span="4" class="table-cell-title">优惠券</el-col>
-                    <el-col :span="4" class="table-cell-title">活动优惠</el-col>
-                    <el-col :span="4" class="table-cell-title">订单总金额</el-col>
-                    <el-col :span="4" class="table-cell-title">实付金额</el-col>
+                    <el-col :span="12" class="table-cell-title">订单总金额</el-col>
+                    <el-col :span="12" class="table-cell-title">实付金额</el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="4" class="table-cell">{{order.expense.productTotalMoney}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order .expense.freight}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order.expense.coupon}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order.expense.activityDiscount}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order.expense.allPrice}}</el-col>
-                    <el-col :span="4" class="table-cell">{{order.expense.finallyPrice}}</el-col>
+                    <el-col :span="12" class="table-cell">{{orderItem.book.price}}</el-col>
+                    <el-col :span="12" class="table-cell">{{orderItem.book.price}}</el-col>
                 </el-row>
             </div>
 
@@ -133,95 +88,72 @@
 </template>
 
 <script>
-import {reqAdminGetOrderDetail} from "../../../api/order";
+// import {reqAdminGetOrderDetail} from "../../../api/order";
 
 export default {
     name: "UserOrderDetail",
+    props:['message'],
     data(){
-        return{
+        return {
             active: 2,
-
-            order:{
-                id:null,
-                orderId:null,
-                account:null,
-                orderTime:null,
-                shipTime:null,
-                getTime:null,
-                evaluateTime:null,
-                closeTime:null,
-                confirmTime:null,
-                orderStatus:null,
-                logisticsNum:null,
-                orderDetailDtoList:[
-                    {
-                        book:{
-                            id: null,
-                            bookName: '',
-                            author: '',
-                            isbn: '',
-                            publish: '',
-                            birthday: '',
-                            marketPrice: '',
-                            price: '',
-                            stock: '',
-                            description: '',
-                            put: true,
-                            coverImg: '',
-                            rank: '',
-                        },
-                        num:1,
-                        price: 0.0,
-                    }
-                ],
-                expense:{
-                    orderId:null,//订单编号
-                    productTotalMoney:null,//商品总价
-                    freight:null,//运费 默认为0元
-                    coupon:null,//优惠券 默认为0元
-                    activityDiscount:null,//活动优惠 默认为0元
-                    allPrice:null,//订单总金额
-                    finallyPrice:null,//最终实付总额
+            testNum:'测试的数字',
+            showDetail: false,
+            orderItem: {
+                order: {
+                    orderId: 54564651321,
+                    buyerId: 5,
+                    sellerId: 2,
+                    name: '黄文敬',
+                    phone: '1235444755',
+                    address: '梅园一栋201',
+                    bookId: '2',
+                    beginTime: '2020.2.21',
+                    endTime: '2020.3.21',
+                    status: 1,
                 },
-                address:{
-                    id: 1,
-                    account: "黄小龙",
-                    name: "小胖",
-                    phone: "18988798892",
-                    addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                    label: "家",
-                    off: false,
-                }
-            }
-        }
-    },
+                book: {
+                    bookId: '',
+                    name: "",
+                    author: "",
+                    isbn: "",
+                    type: "",
+                    description: "",
+                    status: "",
+                    image: "",
+                    campus: "",
+                    price: "",
+                    recommend: "",
+                    sellerID: "",
+                },
+            },
+        }},
     created() {
-        let id = this.$route.query.id;
-        console.log("============"+id+"==========")
-        this.getOrderList();
+        console.log("开始构建")
+        this.getOrderList()
     },
-    methods:{
-        next() {
-            if (this.active++ > 2) this.active = 0;
-        },
-        getOrderList(){
-            let id = this.$route.query.id;
-            this.loading=false;
-            reqAdminGetOrderDetail(id).then(response=>{
-                if(response.code==200){
-                    console.log(response.orderDto);
-                    this.order = response.orderDto;
-                }else {
-                    this.$message({
-                        message: "获取订单明细出错了！",
-                        type: "warning"
-                    })
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
-        },
-    }
+    // methods:{
+    //     next() {
+    //         if (this.active++ > 2) this.active = 0;
+    //     },
+         getOrderList(){
+             let message = this.$route.query.message;
+             console.log(message)
+    //         this.loading=false;
+    //         reqAdminGetOrderDetail(id).then(response=>{
+    //             if(response.code==200){
+    //                 console.log(response.orderDto);
+    //                 this.order = response.orderDto;
+    //             }else {
+    //                 this.$message({
+    //                     message: "获取订单明细出错了！",
+    //                     type: "warning"
+    //                 })
+    //             }
+    //         }).catch(err=>{
+    //             console.log(err);
+    //         })
+         },
+    // }
 }
 </script>
 

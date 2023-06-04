@@ -2,44 +2,39 @@
     <div class="content">
         <h1>我的订单</h1>
         <div class="box_info">
-            <el-tabs v-model="activeName">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="全部有效订单" name="first">
                     <div class="tab_box" v-show="total<1">
                         <p class="noMesInfo" v-show="true">暂无数据</p>
                     </div>
                     <div class="tab_box" v-show="total>0">
-                        <div class="order_list" v-for="order in orderList" :key="order.id" >
+                        <div class="order_list" v-for="orderItem in orderAndBookList" :key="orderItem.order.orderId">
                             <div class="order_summary">
-                                <p class="order_status">{{order.orderStatus}}</p>
+                                <div>
+                                <p class="order_status" v-if="orderItem.order.status===1">订单已完成</p>
+                                <p class="order_status" v-if="orderItem.order.status===2">订单待收货</p>
+                                </div>
                                 <p class="caption-info">
-                                    {{order.orderTime}}
+                                    {{orderItem.order.beginTime}}
                                     <span>|</span>
-                                    {{order.address.name}}
+                                    {{orderItem.order.name}}
                                     <span>|</span>
-                                    订单号：{{order.orderId}}
-
-                                    <span style="float: right">实付金额： <span class="money">{{order.expense.finallyPrice}} </span>元</span>
+                                    订单号：{{orderItem.order.orderId}}
+                                    <span style="float: right">实付金额： <span class="money">{{orderItem.book.price}} </span>元</span>
                                 </p>
                             </div>
                             <div class="bookInfo">
                                 <div class="book_item">
-                                    <el-image class="bookImg" v-for="(img,index) in order.coverImgList" :src="img" :key="index" fit="fill"></el-image>
+                                    <el-image class="bookImg"  :src="orderItem.book.image" fit="fill"></el-image>
                                 </div>
                                 <div class="book_action">
-                                    <button class="plainBtn" @click="goToOrderDetail(order.id)">订单详情</button>
+                                    <button class="plainBtn" v-show="orderItem.order.status===2" @click="handleChange(orderItem)">确认收货</button>
                                     <br>
-                                    <button class="plainBtn">申请售后</button>
-                                    <br>
-                                    <button class="plainBtn">联系客服</button>
+                                    <button class="plainBtn"  @click="goToOrderDetail(orderItem)">订单详情</button>
                                     <br>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="待支付" name="second">
-                    <div class="tab_box">
-                        <p class="noMesInfo" v-show="true">暂无数据</p>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="待收货" name="third">
@@ -65,43 +60,9 @@
                                     <el-image class="bookImg" v-for="(img,index) in order.coverImgList" :src="img" :key="index" fit="fill"></el-image>
                                 </div>
                                 <div class="book_action">
-                                    <button class="plainBtn" >订单详情</button>
+                                    <button class="plainBtn" @click="goToOrderDetail(order.id)">订单详情</button>
                                     <br>
-                                    <button class="plainBtn" >确认收货</button>
-                                    <br>
-                                    <button class="plainBtn">联系客服</button>
-                                    <br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="订单回收站" name="four">
-                    <div class="tab_box" v-show="total<1">
-                        <p class="noMesInfo" v-show="true">暂无数据</p>
-                    </div>
-                    <div class="tab_box" v-show="total>0">
-                        <div class="order_list" v-for="order in orderList" :key="order.id">
-                            <div class="order_summary">
-                                <p class="order_status">{{order.orderStatus}}</p>
-                                <p class="caption-info">
-                                    {{order.orderTime}}
-                                    <span>|</span>
-                                    {{order.address.name}}
-                                    <span>|</span>
-                                    订单号：{{order.orderId}}
-
-                                    <span style="float: right">实付金额： <span class="money">{{order.expense.finallyPrice}} </span>元</span>
-                                </p>
-                            </div>
-                            <div class="bookInfo">
-                                <div class="book_item">
-                                    <el-image class="bookImg" v-for="(img,index) in order.coverImgList" :src="img" :key="index" fit="fill"></el-image>
-                                </div>
-                                <div class="book_action">
-                                    <button class="plainBtn" >订单详情</button>
-                                    <br>
-                                    <button class="plainBtn">申请售后</button>
+                                    <button class="plainBtn" @click="getOrder(order.id)">确认收货</button>
                                     <br>
                                     <button class="plainBtn">联系客服</button>
                                     <br>
@@ -112,17 +73,17 @@
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <div style="margin: 10px 0 20px;width: 100%" v-show="total>0">
+        <div style="margin: 10px 0px 20px;width: 100%" v-show="total>0">
             <div class="block" style="float: right">
                 <el-pagination
-
-
-                        :current-page="currentPage"
-                        :page-sizes="[5, 10, 20, 50]"
-                        :page-size="page_size"
-                        background
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="total">
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5, 10, 20, 50]"
+                    :page-size="page_size"
+                    background
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -130,63 +91,83 @@
 </template>
 <script>
 // <!--  reqUserGetOrderList-->
-// import {reqModOrderStatus} from "../../../api/order";
+// import {reqUserGetOrderList,reqModOrderStatus} from "../../../api/order";
 // <!--用户订单页面-->
+import {reqModOrderStatus, reqUserOrders} from "@/api/user";
+import {reqAppointBook} from "@/api/bookStall";
+
 export default {
     name: "UserOrder",
-    // computed: {
-    //     address() {
-    //         return address
-    //     }
-    // },
     data() {
         return {
+            showDetail:false,
             activeName: 'first',
             currentPage: 1,
             page_size: 5,
             total:20,
+            //包含书和订单的数组
+            orderAndBookList:[
+                {
+                    order:{
+                        orderId:54564651321,
+                        buyerId:5,
+                        sellerId:2,
+                        name:'黄文敬',
+                        phone:'1235444755',
+                        address:'梅园一栋测试测试测试',
+                        bookId:'2',
+                        beginTime:'2020.2.21',
+                        endTime:'2020.3.21',
+                        status:2,
+                    },
+                    book:{
+                        bookId: '2',
+                        name: "我的名字",
+                        author: "李贵林",
+                        isbn: "564564212",
+                        type: 1,
+                        description: "这是一本不知道用来干嘛的书",
+                        status: 0,
+                        image: "#",
+                        campus: "九龙湖校区",
+                        price: 15,
+                        recommend: "1",
+                        sellerID: "12346",
+                    },
+                },
+            ],
+
+            currentItem:'我是你大爷',
+
             orderList:[
                 {
                     id:1,
-                    orderId:456,
-                    account:4544564,
-                    orderTime:44655,
-                    shipTime:45454,
-                    getTime:null,
-                    evaluateTime:null,
-                    closeTime:null,
-                    confirmTime:null,
-                    orderStatus:null,
-                    logisticsNum:null,
+                    orderId:1,
+                    account:"刘德华",
+                    orderTime:10.21,
+                    shipTime:11.21,
+                    getTime:12.21,
                     coverImgList:[],
                     orderDetailDtoList:[
                         {
                             book:{
-                                id: 1,
-                                bookName: '黄文敬在南京',
+                                id: 5,
+                                bookName: '我的名字',
                                 author: '李贵林',
-                                isbn: '4456456',
-                                publish: '东南南大学',
-                                birthday: '',
-                                marketPrice: '',
-                                price: '45',
-                                stock: '',
-                                description: '',
+                                isbn: '123456798878',
+                                price: '52',
+                                description: '这是一本用来测试的书籍',
                                 put: true,
                                 coverImg: '',
-                                rank: '',
                             },
                             num:1,
-                            price: 45.0,
+                            price: 52,
                         }
                     ],
                     expense:{
-                        orderId:1,//订单编号
-                        productTotalMoney:null,//商品总价
-                        freight:5,//运费 默认为0元
-                        coupon:null,//优惠券 默认为0元
-                        activityDiscount:null,//活动优惠 默认为0元
-                        allPrice:null,//订单总金额
+                        orderId:846546545132,//订单编号
+                        productTotalMoney:52,//商品总价
+                        freight:null,//运费 默认为0元
                         finallyPrice:null,//最终实付总额
                     },
                     address:{
@@ -199,122 +180,17 @@ export default {
                         off: false,
                     }
                 },
-                {
-                    id:2,
-                    orderId:456,
-                    account:4544564,
-                    orderTime:44655,
-                    shipTime:45454,
-                    getTime:null,
-                    evaluateTime:null,
-                    closeTime:null,
-                    confirmTime:null,
-                    orderStatus:null,
-                    logisticsNum:null,
-                    coverImgList:[],
-                    orderDetailDtoList:[
-                        {
-                            book:{
-                                id: 2,
-                                bookName: '黄文敬在南京',
-                                author: '李贵林',
-                                isbn: '4456456',
-                                publish: '东南南大学',
-                                birthday: '',
-                                marketPrice: '',
-                                price: '45',
-                                stock: '',
-                                description: '',
-                                put: true,
-                                coverImg: '',
-                                rank: '',
-                            },
-                            num:1,
-                            price: 45.0,
-                        }
-                    ],
-                    expense:{
-                        orderId:2,//订单编号
-                        productTotalMoney:null,//商品总价
-                        freight:5,//运费 默认为0元
-                        coupon:null,//优惠券 默认为0元
-                        activityDiscount:null,//活动优惠 默认为0元
-                        allPrice:null,//订单总金额
-                        finallyPrice:null,//最终实付总额
-                    },
-                    address:{
-                        id: 2,
-                        account: "黄小龙",
-                        name: "小胖",
-                        phone: "18988798892",
-                        addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                        label: "家",
-                        off: false,
-                    }
-                },
-                {
-                    id:3,
-                    orderId:456,
-                    account:4544564,
-                    orderTime:44655,
-                    shipTime:45454,
-                    getTime:null,
-                    evaluateTime:null,
-                    closeTime:null,
-                    confirmTime:null,
-                    orderStatus:null,
-                    logisticsNum:null,
-                    coverImgList:[],
-                    orderDetailDtoList:[
-                        {
-                            book:{
-                                id: 3,
-                                bookName: '黄文敬在南京',
-                                author: '李贵林',
-                                isbn: '4456456',
-                                publish: '东南南大学',
-                                birthday: '',
-                                marketPrice: '',
-                                price: '45',
-                                stock: '',
-                                description: '',
-                                put: true,
-                                coverImg: '',
-                                rank: '',
-                            },
-                            num:1,
-                            price: 45.0,
-                        }
-                    ],
-                    expense:{
-                        orderId:3,//订单编号
-                        productTotalMoney:null,//商品总价
-                        freight:5,//运费 默认为0元
-                        coupon:null,//优惠券 默认为0元
-                        activityDiscount:null,//活动优惠 默认为0元
-                        allPrice:null,//订单总金额
-                        finallyPrice:null,//最终实付总额
-                    },
-                    address:{
-                        id: 3,
-                        account: "黄小龙",
-                        name: "小胖",
-                        phone: "18988798892",
-                        addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                        label: "家",
-                        off: false,
-                    }
-                },
             ],
-            orderStatus: "",
             beUserDelete: false
         };
-
     },
-    created(){
-        // this.getOrderList(1,5);
-    },
+    // created(){
+    //     this.getOrderList(1,5);
+    // },
     methods: {
+        cancelDetail(orderItem){
+            orderItem.showDetail=false;
+        },
         // eslint-disable-next-line no-unused-vars
         handleClick(tab, event) {
             console.log("=====this.activeName===="+this.activeName+"=======");
@@ -335,86 +211,142 @@ export default {
             console.log("=====this.orderStatus====="+this.orderStatus+"======")
             this.getOrderList(1,5);
         },
-
+        //确认收货
+        handleChange(orderItem){
+            console.log(this.showDetail)
+            console.log(orderItem.order.status)
+            orderItem.orderStatus=1;
+            console.log(orderItem.order.status)
+            console.log(orderItem)
+            console.log("收货成功")
+        },
         //跳转到订单明细页面
-        goToOrderDetail(id) {
+        goToOrderDetail(orderItem) {
             console.log("=====跳转到订单详情页========")
             this.$router.push({
-                path:'/user/userOrderDetail',
+                path:'/user/OrderDetail',
                 query: {
-                    id: id
+                    orderId: orderItem.order.orderId,
+                    bookId:orderItem.book.bookId,
                 }
             });
-        },}
-    //     //分页函数
-    //     handleSizeChange(val) {
-    //         console.log(`每页 ${val} 条`);
-    //         this.page_size = val;
-    //         this.getOrderList(1,this.page_size);
-    //     },
-    //     handleCurrentChange(val) {
-    //         console.log(`当前页: ${val}`);
-    //         this.currentPage = val;
-    //         console.log(this.currentPage+":"+this.page_size);
-    //         this.getOrderList(this.currentPage,this.page_size);
-    //     },
-    //     //得到订单列表
-    //     getOrderList(page,pageSize){
-    //         let account= this.$store.getters.getUser.account;
-    //         reqUserGetOrderList(account,page,pageSize,this.orderStatus,this.beUserDelete).then(response=>{
-    //             if(response.code==200){
-    //                 this.total = response.total;
-    //                 console.log(this.total);
-    //                 this.orderList = response.orderDtoList;
-    //             }else {
-    //                 this.$message({
-    //                     message: response.message,
-    //                     type: "warning"
-    //                 })
-    //             }
-    //             // eslint-disable-next-line no-unused-vars
-    //         }).catch(err=>{
-    //             this.$message({
-    //                 message: "获取用户订单出错了",
-    //                 type: "warning"
-    //             })
-    //         })
-    //     },
-    //
-    //     //进行订单收货
-    //     getOrder(id){
-    //         this.$confirm('确认收货码?', '提示', {
-    //             confirmButtonText: '确定',
-    //             cancelButtonText: '取消',
-    //             type: 'warning'
-    //         }).then(() => {
-    //             reqModOrderStatus(id,"已收货").then(response=>{
-    //                 if(response.code==200){
-    //                     this.$message({
-    //                         message: response.message,
-    //                         type: "success"
-    //                     })
-    //                 }else {
-    //                     this.$message({
-    //                         message: response.message,
-    //                         type: "warning"
-    //                     })
-    //                 }
-    //                 // eslint-disable-next-line no-unused-vars
-    //             }).catch(err=>{
-    //                 this.$message({
-    //                     message: "确认收货出错了",
-    //                     type: "warning"
-    //                 })
-    //             })
-    //         }).catch(()=>{
-    //             this.$message({
-    //                 message: "取消确认收货",
-    //                 type: "warning"
-    //             })
-    //         });
-    //     },
-    // }
+        },
+
+        getList(){
+          reqUserOrders().then(response=>{
+              console.log(response);
+              if(response.data.code===1){
+                  var orderList = response.data.data
+                  var length = orderList.length()
+                  for(var i=0;i<length;i++){
+                      this.orderAndBookList[i].order=orderList[i]
+                }
+                  for(var m=0;m<length;m++){
+                      console.log(this.orderAndBookList[m].order)
+                  }
+
+              }
+              else {
+                  this.$message({
+                      message: response.message,
+                      type: "warning"
+                  })
+              }
+          }).catch(error=>{
+              console.log(error)
+          });
+            var termArray = this.orderAndBookList;
+            var newLength = termArray.length
+            for(var n=0;n<newLength;n++){
+               reqAppointBook(this.orderAndBookList[n].order.bookId).then(response=>{
+                   console.log(response)
+                   if(response.data.code===1){
+                       console.log("获取书籍成功")
+                       this.orderAndBookList[n].book=response.data.data
+                       console.log(this.orderAndBookList[n].book)
+                   }
+                   else {
+                       console.log("获取书籍失败")
+                       this.$message({
+                           message: response.message,
+                           type: "warning"
+                       })
+                   }
+               }).catch(error=>{
+                   console.log(error)
+               })
+            }
+            console.log("订单所有信息更新成功")
+        },
+        // //分页函数
+        // handleSizeChange(val) {
+        //     console.log(`每页 ${val} 条`);
+        //     this.page_size = val;
+        //     this.getOrderList(1,this.page_size);
+        // },
+        // handleCurrentChange(val) {
+        //     console.log(`当前页: ${val}`);
+        //     this.currentPage = val;
+        //     console.log(this.currentPage+":"+this.page_size);
+        //     this.getOrderList(this.currentPage,this.page_size);
+        // },
+        // //得到订单列表
+        // getOrderList(page,pageSize){
+        //     let account= this.$store.getters.getUser.account;
+        //     reqUserGetOrderList(account,page,pageSize,this.orderStatus,this.beUserDelete).then(response=>{
+        //         if(response.code==200){
+        //             this.total = response.total;
+        //             console.log(this.total);
+        //             this.orderList = response.orderDtoList;
+        //         }else {
+        //             this.$message({
+        //                 message: response.message,
+        //                 type: "warning"
+        //             })
+        //         }
+        //         // eslint-disable-next-line no-unused-vars
+        //     }).catch(err=>{
+        //         this.$message({
+        //             message: "获取用户订单出错了",
+        //             type: "warning"
+        //         })
+        //     })
+        // },
+        //
+        // //进行订单收货
+        getOrder(id){
+            this.$confirm('确认收货码?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                reqModOrderStatus(id).then(response=>{
+                    if(response.code==200){
+                        this.$message({
+                            message: response.message,
+                            type: "success"
+                        })
+                    }else {
+                        this.$message({
+                            message: response.message,
+                            type: "warning"
+                        })
+                    }
+                    // eslint-disable-next-line no-unused-vars
+                }).catch(err=>{
+                    this.$message({
+                        message: "确认收货出错了",
+                        type: "warning"
+                    })
+                })
+            }).catch(()=>{
+                this.$message({
+                    message: "取消确认收货",
+                    type: "warning"
+                })
+            });
+        },
+    },
 }
 </script>
 
@@ -445,7 +377,7 @@ h1{
 }
 
 .order_list{
-    border: 1px  solid;
+    border: 1px #f3f0e9 solid;
     margin: 12px auto;
     width: 960px;
     height: 250px;

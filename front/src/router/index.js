@@ -5,10 +5,12 @@ const routes =[
 
     {
         path: '/',
-        name: 'Index',
         component:()=>import('../components/IndexPage.vue')
     },
-
+    {
+        path: '/Index',
+        component:()=>import('../components/IndexPage.vue')
+    },
     {
         path:'/Login',component:()=> import('../components/Login/LoginPage.vue')
     },
@@ -38,7 +40,18 @@ const routes =[
             },
             {
                 path: 'userOrder',
-                component: ()=>import('../components/UserHome/order/UseOrder.vue')
+                component: ()=>import('../components/UserHome/order/UseOrder.vue'),
+                children:[
+                    {
+                        path:'orderDetail',
+                        component:()=>import('../components/UserHome/order/UseOrderDetail.vue')
+                    }
+                ],
+            },
+            {
+              path:'OrderDetail',
+              component:()=>import('../components/UserHome/order/UseOrderDetail.vue')
+
             },
             {
                 path: 'bookStall',
@@ -51,7 +64,13 @@ const routes =[
         ]
     },
     {
-        path: '/BookInfo/:bookId', component: () => import('../components/Book/BookInfo.vue')
+       path: '/BookInfo/:bookId', component: () => import('../components/Book/BookInfo.vue')
+    },
+    {
+        path:'/Upload_3', component: ()=>import('../components/Common/upload_3.vue')
+    },
+    {
+        path:'/BookInfo', component: ()=>import('../components/Book/BookInfo.vue')
     },
     {
         path:'/search/:selectResult?/:inputContent?',
@@ -61,6 +80,9 @@ const routes =[
     {
         path:'/buyPage/:bookId', component:()=>import('../components/BuyPage/buyPage.vue')
     }
+
+
+
 ]
 
 const router = createRouter(

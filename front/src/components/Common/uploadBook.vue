@@ -1,47 +1,33 @@
-<template>
-    <div>
-        <el-upload
-                class="avatar-uploader"
-                action="http://localhost:8080/uploadBook"
-                :show-file-list="true"
-                :on-remove="handleAvatarFail"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                :headers="headersJWT">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="图片详情">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            <span>书籍封面上传</span>
-        </el-upload>
-    </div>
-</template>
-
 <script>
+
 export default {
-    name: "UploadPage",
+    name:"UploadBook",
     data() {
         return {
-            imageUrl: ''
+            imageUrl: '',
+            image:'',
         };
     },
     methods: {
         handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
-            console.log(this.imageUrl);
+            console.log(this.imageUrl)
+            console.log(res)
+            this.image = res.data
+            console.log(res.data)
+
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
+                this.$message.error('上传书籍图片只能是 JPG 格式!');
             }
             if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
+                this.$message.error('上传书籍图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
-        },
-        handleAvatarFail(){
-            console.log("文件已被移动")
         }
     },
     computed: {
@@ -55,17 +41,34 @@ export default {
 }
 </script>
 
-<style scoped>
-.avatar-uploader{
+
+<template>
+    <div>
+        <el-upload
+            class="avatar-uploader"
+            action='http://localhost:8080/Upload'
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :headers="headersJWT">
+            <span >上传书籍</span>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="书籍封面">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+    </div>
+</template>
+
+
+<style>
+.avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
 }
-.avatar-uploader{
+.avatar-uploader .el-upload:hover {
     border-color: #409EFF;
-    background: #9a9a9a;
 }
 .avatar-uploader-icon {
     font-size: 28px;
@@ -79,6 +82,6 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
-
 }
 </style>
+

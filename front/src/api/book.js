@@ -31,7 +31,6 @@ export const reqModBook = (book) => ajax(BASE_URL+"/modifyBook",{
 
 //得到某个用户的地址列表
 
-
 export const reqModifyBook = (book) => ajax(BASE_URL+'/modifyBook', {
     author: book.author,
     isbn: book.isbn,

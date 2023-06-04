@@ -18,7 +18,7 @@
                         <el-menu-item index="/RegisterPage">注册</el-menu-item>
                         <el-menu-item index="/user/bookStall">发布</el-menu-item>
 
-                        <el-menu-item index="/Upload">测试</el-menu-item>
+                        <el-menu-item index="/Upload_3">测试</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="/user/mesNotice">消息</el-menu-item>
                     <el-menu-item index="/user/userOrder">我的订单</el-menu-item>

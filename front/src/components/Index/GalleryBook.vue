@@ -62,6 +62,7 @@ export default {
         };
     },
   methods: {
+
     getBookList(){
       reqGetRecBookList("newPut").then(response=>{
         if(response.data.code===1){
@@ -84,6 +85,7 @@ export default {
     this.getBookList();
   }
 }
+
 
 </script>
 
