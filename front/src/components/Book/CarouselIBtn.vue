@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <el-carousel :interval="5000" arrow="always" height="430px" indicator-position="outside">
-      <el-carousel-item v-for="item in imgList" :key="item">
+      <el-carousel-item>
         <div style="padding: 5px 75px;height: 100%;width: 100%">
-          <img v-bind:src="item" alt="图片">
+          <img :src="image" alt="图片">
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -14,21 +14,13 @@
 export default {
   name: "CarouselBtn",
   props:{
-    imgList: {
-      type: Array,
+    image: {
+      type: String,
       default: null
     }
   },
-  data(){
-    return{
-      imgS: ["static/image/20.jpg",
-        "static/image/21.jpg",
-        "static/image/22.jpg",
-        "static/image/23.jpg"]
-    }
-  },
   created() {
-    console.log("this.imgList:"+this.imgList);
+    console.log("this.imgList:"+this.image);
   }
 }
 </script>
