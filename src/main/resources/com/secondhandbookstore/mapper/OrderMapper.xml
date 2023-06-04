@@ -6,7 +6,7 @@
 <mapper namespace="com.secondhandbookstore.mapper.OrderMapper">
 
     <update id="updateOrder">
-        update order
+        update order1
         <set>
             <if test="buyerId!=null and buyerId!=''">
                 buyerId=#{buyerId},

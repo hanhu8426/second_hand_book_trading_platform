@@ -39,8 +39,12 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("icon,放行");
             return true;
         }
+        if(url.contains("getRecBookList")){
+            log.info("获取首页推荐书籍，放行");
+            return true;
+        }
 
-        //获取请求头中的令牌（token)
+        //获取请求头中的令牌（Authorization)
         String jwt = req.getHeader("Authorization");
 
         //判断令牌是否存在，如果不存在，返回错误结果（未登录）

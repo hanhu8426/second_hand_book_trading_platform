@@ -17,6 +17,7 @@ import java.util.List;
 //一个完整的请求路径，应该是类上的@RequestMapping的value属性+方法上的@RequestMapping的value属性
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 //@RequestMapping("/sort")
 public class BookController {
     @Autowired
@@ -185,6 +186,7 @@ public class BookController {
     @RequestMapping("/addBook")
     public Result add(@RequestHeader("Authorization")String jwt,@RequestBody Book book){
         log.info("新增书籍：{}",book);
+        book.setRecommend(true);
         //调用service新增书籍
         Integer sellerId = JwtUtils.parseJWTAndGenerateId(jwt);
         book.setSellerId(sellerId);
@@ -192,7 +194,7 @@ public class BookController {
         return Result.success();
     }
 
-    @RequestMapping("/update")
+    @RequestMapping("/modifyBook")
     public Result update(@RequestBody Book book){
         log.info("更新书籍信息：{}",book);
         bookService.update(book);

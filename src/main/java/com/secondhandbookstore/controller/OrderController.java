@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequestMapping("/orders")
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -31,7 +31,7 @@ public class OrderController {
      * 查询所有订单数据
      * @return
      */
-    @RequestMapping
+    @RequestMapping("/test1")
     public Result list(){
         log.info("查询订单所有数据");
         List<Order> orderList=orderService.list();
@@ -55,8 +55,9 @@ public class OrderController {
      * @param
      * @return
      */
-    @RequestMapping("/add")
+    @RequestMapping("/addOrder")
     public Result add(@RequestHeader("Authorization")String jwt, @RequestBody OrderUtils orderUtils){
+        System.out.println("进入方法");
         Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
         Integer bookId=orderUtils.getBookId();
         Float buyerBalance = userService.checkBalance(buyerId);
@@ -80,8 +81,8 @@ public class OrderController {
         }else {
             return Result.success2();
         }
-
     }
+
 
     /**
      * 订单结束，修改订单状态
