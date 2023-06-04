@@ -27,4 +27,4 @@ export const reqDelSecondSort = (upperName,sortName)=>ajax(BASE_URL+'/delSecondS
 
 export const reqGetFirstSortList = (page,pageSize) => ajax(BASE_URL+"/getFirstSortList",{page,pageSize})
 export const reqGetSecondSortList = (upperName,page,pageSize) => ajax(BASE_URL+"/getSecondSortList",{upperName,page,pageSize})
-export const reqGetSortList = () => ajax(BASE_URL+"/getBookSortList")
+// export const reqGetSortList = () => ajax(BASE_URL+"/getBookSortList")

@@ -2,17 +2,25 @@ import ajax from "./ajax";
 
 const BASE_URL = 'http://localhost:8080'
 
-//初始化订单
-export const reqInitOrder = (ids,from,account) => ajax(BASE_URL+"/initOrder",{ids,from,account})
-
 //提交订单 addOrder
-export const reqAddOrder = (orderInitDto) => ajax(BASE_URL+"/addOrder", {
-    account: orderInitDto.account,
-    bookList: orderInitDto.bookList,
-    expense: orderInitDto.expense,
-    addressList: orderInitDto.addressList,
-    address: orderInitDto.address
+export const reqAddOrder = (addId,bookId) => ajax(BASE_URL+"/addOrder", {
+    addId,bookId
 },"POST")
+// export const reqAddOrder = (addId, bookId) => {
+//     const url = BASE_URL + "/addOrder";
+//     const data = {
+//         addId,
+//         bookId
+//     };
+//
+//     return axios.post(url, data)
+//         .then(response => response.data)
+//         .catch(error => {
+//             // 处理错误
+//             console.error('Error:', error);
+//             throw error;
+//         });
+// };
 
 //管理员得到订单列表
 export const reqAdminGetOrderList = (page,pageSize) => ajax(BASE_URL+"/getAdminOrderList",{page,pageSize})

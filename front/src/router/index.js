@@ -64,6 +64,9 @@ const routes =[
         ]
     },
     {
+       path: '/BookInfo/:bookId', component: () => import('../components/Book/BookInfo.vue')
+    },
+    {
         path:'/Upload_3', component: ()=>import('../components/Common/upload_3.vue')
     },
     {
@@ -74,6 +77,10 @@ const routes =[
         name:'Search',
         component: () => import('../components/Search/search.vue')
     },
+    {
+        path:'/buyPage/:bookId', component:()=>import('../components/BuyPage/buyPage.vue')
+    }
+
 
 
 ]

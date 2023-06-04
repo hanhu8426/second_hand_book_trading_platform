@@ -1,5 +1,6 @@
 import ajax from "./ajax";
 
+
 const BASE_URL = 'http://localhost:8080'
 
 
@@ -27,9 +28,58 @@ export const reqModBook = (book) => ajax(BASE_URL+"/modifyBook",{
 },'POST')
 
 //删除地址
-export const reqDelBook = (id) => ajax(BASE_URL+"/delBook",{id})
 
 //得到某个用户的地址列表
-export const reqGetBookList = (account) => ajax(BASE_URL+"/getBookList",{account})
 
 export const reqGetBook = (bookId) => ajax(`${BASE_URL}/getBook/${bookId}`);
+
+export const reqModifyBook = (book) => ajax(BASE_URL+'/modifyBook', {
+    author: book.author,
+    isbn: book.isbn,
+    publish: book.publish,
+    birthday: book.birthday,
+    marketPrice: book.marketPrice,
+    price: book.price,
+    stock: book.stock,
+    description: book.description,
+    put: book.put,
+    bookName: book.bookName,
+    rank: book.rank,
+    newProduct: book.newProduct,
+    recommend: book.recommend,
+    bookSort: book.bookSort,
+    id: book.id
+}, 'POST')
+
+
+export const reqGetBookList = (page,pageSize)=>ajax(BASE_URL+'/getBookList',{page, pageSize})
+
+
+export const reqGetRecBookList = (sort)=>ajax(BASE_URL+'/getRecBookList',{sort})
+
+
+
+//删除
+export const reqDelBook = (bookId)=>ajax(BASE_URL+'/delBook',{bookId})
+export const reqDelBookImg = (bookId,url)=>ajax(BASE_URL+'/delOneImg',{bookId,url})
+
+
+export const reqGetBookImgPathList = (isbn)=>ajax(BASE_URL+'/getImgPaths',{isbn})
+
+
+export const reqModifyPut = (bookId,put)=>ajax(BASE_URL+'/modifyPut',{bookId,put})
+export const reqModifyRec = (bookId,recommend)=>ajax(BASE_URL+'/modifyRec',{bookId,recommend})
+export const reqModifyNew = (bookId,newProduct)=>ajax(BASE_URL+'/modifyNew',{bookId,newProduct})
+
+//getSortBookList
+// export const reqGetSortBookList = (type)=>ajax(BASE_URL+'/getSortBookList',{type})
+
+//getSortBookListBySort
+export const reqGetBookListBySort = (type,page,pageSize)=>ajax(BASE_URL+'/getBookListBySort',{type,page, pageSize})
+// export const reqGetBookListByName = (recSelect,input,page,pageSize)=>ajax(BASE_URL+'/getBookListByName',{input,page, pageSize})
+
+export const reqGetBookListByName = (name, author, page, pageSize) => ajax(BASE_URL+'/getBookListByName', {
+       name, author, page, pageSize })
+
+
+

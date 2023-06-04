@@ -1,5 +1,5 @@
 <script>
-// import {reqGetRecBookList} from "@/api/book";
+import {reqGetRecBookList} from "@/api/book";
 
 export default {
     name: "GalleryBook",
@@ -11,106 +11,96 @@ export default {
                 "static/image/23.jpg"],
             bookList: [
                 {
-                    id: 1,
+                    bookId: 1,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 12,
+                  bookId: 12,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 13,
+                  bookId: 13,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 14,
+                  bookId: 14,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 15,
+                  bookId: 15,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 16,
+                  bookId: 16,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 17,
+                  bookId: 17,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
                 {
-                    id: 18,
+                  bookId: 18,
                     name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
                     author: "黄子平 著",
                     price: 123.23
                 },
-                {
-                    id: 19,
-                    name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
-                    author: "黄子平 著",
-                    price: 123.23
-                },
-                {
-                    id: 10,
-                    name: "灰阑中的叙述（增订本）灰阑中的叙述（增订本）灰阑中的叙述（增订本）",
-                    author: "黄子平 著",
-                    price: 123.23
-                }
             ]
         };
     },
   methods: {
-  //   getBookList(){
-  //     reqGetRecBookList("newPut").then(response=>{
-  //       if(response.code==200){
-  //         this.bookList = response.bookList;
-  //       }else{
-  //         this.$message({
-  //           type: 'warning',
-  //           message: response.message
-  //         })
-  //       }
-  //     }).catch(()=>{
-  //       this.$message({
-  //         type: 'warning',
-  //         message: "获取图书列表数据失败"
-  //       })
-  //     })
-  //   }
-  // },
-  // created() {
-  //   this.getBookList();
-  // }
-}}
+
+    getBookList(){
+      reqGetRecBookList("newPut").then(response=>{
+        if(response.data.code===1){
+          this.bookList = response.data.data.rows;
+        }else{
+          this.$message({
+            type: 'warning',
+            message: response.message
+          })
+        }
+      }).catch(()=>{
+        this.$message({
+          type: 'warning',
+          message: "获取图书列表数据失败"
+        })
+      })
+    }
+  },
+  created() {
+    this.getBookList();
+  }
+}
+
 
 </script>
 
 <template>
     <div class="gallery-book">
         <div class="gallery-book_list">
-            <div class="gallery-book_card" v-for="item in bookList" :key="item.id">
-              <router-link :to= "{path: '/BookInfo',query:{id:item.id}}">
+            <div class="gallery-book_card" v-for="item in bookList" :key="item.bookId">
+              <router-link :to= "'/BookInfo/' + item.bookId">
                     <el-image
                             style="width: 82%; height: 190px;margin:5px 9%"
-                            :src="item.coverImg"
+                            :src="item.image"
                             fit="fill"></el-image>
                     <div style="width: 86%;margin: 0px 7%">
                         <a href="#" class="gallery-book_text">
-                            {{item.bookName}}
+                            {{item.name}}
                         </a>
                         <div class="gallery-book_author">
                             {{item.author}}

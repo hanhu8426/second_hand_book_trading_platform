@@ -31,6 +31,7 @@ instance.interceptors.response.use(
         // let data = response.data;
         // console.log("response.data"+response.data);
         // console.log("response.data.code"+data.code);
+
         switch(response.data.code){
             case 0:
                 console.log("=======后端返回的编码是401=======")
@@ -108,6 +109,7 @@ instance.interceptors.response.use(
         return error
     }
 )
+
 
 export default instance;
 

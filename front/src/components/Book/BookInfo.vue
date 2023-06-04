@@ -5,16 +5,28 @@
     <div class = "box book_box">
       <div class = "book_img">
         <!-- 放照片 -->
-        <CarouselBtn :imgList="book.imgSrc"></CarouselBtn>
+        <CarouselBtn :imgList="book.image"></CarouselBtn>
       </div>
       <div class="book_buy">
         <!-- 书籍的一些基本信息 -->
-        <div class="book_name">{{book.bookName}}</div>
+        <div class="book_name">{{book.name}}</div>
         <div class="book_content book_buy_content">
           <div class="book_list_content">作者： {{book.author}}</div>
-          <div class="book_list_content">出版社： {{book.publish}}</div>
-          <div class="book_list_content">类别： {{ book.category }}</div>
-          <div class="book_list_content">校区： {{ book.campus }}</div>
+          <div class="book_list_content">类别：
+            <span v-if="book.type === 1">历史 | 政治</span>
+            <span v-if="book.type === 2">文学 | 艺术</span>
+            <span v-if="book.type === 3">科学 | 艺术</span>
+            <span v-if="book.type === 4">商业 | 经济</span>
+            <span v-if="book.type === 5">心理 | 自助</span>
+            <span v-if="book.type === 6">旅游 | 地理</span>
+            <span v-if="book.type === 7">宗教 | 哲学</span>
+          </div>
+          <div class="book_list_content">校区：
+            <span v-if="book.campus === 1">九龙湖校区</span>
+            <span v-if="book.campus === 2">四牌楼校区</span>
+            <span v-if="book.campus === 3">丁家桥校区</span>
+          </div>
+          <div class="book_list_content">ISBN： {{ book.isbn }}</div>
         </div>
         <div class="book_content book_buy_price">
           <div class="book_buy_info">
@@ -23,7 +35,7 @@
           </div>
         </div>
         <div class="book_content">
-          <el-button class="plainBtn" plain @click="goBuyPage(book.id)">立即购买</el-button>
+          <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
         </div>
       </div>
     </div>
@@ -39,12 +51,11 @@
   </div>
 </template>
 
-<script >
+<script>
 import Nav from "../../components/Common/NavGation"
 import NavHead from "../../components/Common/NavHeader"
 import Footer from "../../components/Common/FooTer"
 import {reqGetBook} from "@/api/book";
-import {reqGetSortList} from "@/api/sort";
 import CarouselBtn from "@/components/Book/CarouselIBtn.vue";
 import 'github-markdown-css'
 
@@ -83,45 +94,35 @@ export default{
     }
   },
   methods: {
-    getSortList() {
-      reqGetSortList().then(response => {
-        if(response.code==200){
-          this.sortList = response.sortResponseList;
-        }
-      });
-    },
-
     getBook(bookId){
+      console.log("我已经传入了bookId：值为："+ bookId);
       reqGetBook(bookId).then(response=>{
-        // console.log(response.book);
-        this.book = response.book;
-        // console.log("this.book.imgSrc:"+response.book.imgSrc);
-        let MarkdownIt = require("markdown-it");
-        let md = new MarkdownIt();
-        let result = md.render(this.book.description);
-        this.book.description = result;
+        if(response.data.code===1)
+        {
+          console.log("接受到code,开始为book赋值：")
+          // console.log(response.book);
+          this.book = response.data.data;
+          console.log("接收到的内容为："+ this.book)
+          // console.log("this.book.imgSrc:"+response.book.imgSrc);
+          let MarkdownIt = require("markdown-it");
+          let md = new MarkdownIt();
+          this.book.description = md.render(this.book.description);
+        }
       }).catch(err=>{
         console.log(err);
       })
     },
 
-    goBuyPage(id){
-      let arr = [];
-      arr.push(id);
-      arr.push(0);
-      let ids = JSON.stringify(arr);
+    goBuyPage(bookId){
+      const encodedBookId = encodeURIComponent(parseInt(bookId, 10));
       this.$router.push({
-        path: "/buyPage",
-        query: {
-          ids: ids
-        }
+        path: "/buyPage/" + encodedBookId,
       })
     }
   },
   created() {
-    this.bookId = this.$route.query.id;
+    this.bookId = this.$route.params.bookId;
     this.getBook(this.bookId);
-    this.getSortList();
   }
 }
 
@@ -136,18 +137,18 @@ export default{
   width: 1240px;
 }
 .book_box{
-  height: 500px;
+  height: 400px;
 }
 .book_img{
   margin: 10px;
-  width: 450px;
-  height: 480px;
+  width: 390px;
+  height: 390px;
   float: left;
 }
 .book_buy{
   margin: 10px;
   width: 700px;
-  height: 480px;
+  height: 390px;
   float: right;
   padding: 1px;
 }
@@ -166,7 +167,7 @@ export default{
   margin: 10px auto;
   width: 740px;
   line-height: 35px;
-  font-size: 18px;
+  font-size: 25px;
   overflow: hidden;
 }
 
@@ -176,12 +177,12 @@ export default{
   height: 20px;
   overflow: hidden;
   line-height: 20px;
-  font-size: 15px;
+  font-size: 20px;
 }
 .book_buy_info{
   width: 100%;
   line-height: 40px;
-  font-size: 15px;
+  font-size: 20px;
 }
 .book_buy_price{
   background-color: #f3f0e9;
@@ -207,10 +208,9 @@ export default{
 }
 
 .book_info{
-  margin: 10px 10px;
+  margin-top: 10px; /* 调整上边距 */
+  margin-bottom: 10px; /* 调整下边距 */
   width: 900px;
-  /*height: 780px;*/
-  float: left;
 }
 .tab{
   width: 100%;

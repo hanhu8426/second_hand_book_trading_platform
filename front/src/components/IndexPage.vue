@@ -16,12 +16,12 @@ export default{
             recommended:"recommend",
             newProduct:"newProduct",
             bookTopicList:[
-               "assets/image/20.jpg",
-                "assets/image/21.jpg",
+               "/src/assets/image/20.jpg",
+                "src/assets/image/21.jpg",
 
-                "assets/image/22.jpg",
+                "src/assets/image/22.jpg",
 
-                "assets/image/23.jpg",
+                "src/assets/image/23.jpg",
 
             ],
 
@@ -32,7 +32,7 @@ export default{
             activeName:'first',
             imgS:[],
             bookSortList:['小说','文学','地理','教科书','生物','科学','玄幻','言情','计算机','男频','女频'],
-            options:['历史 |  政治', '文学 |  艺术', '科学 | 艺术', '商业  |  经济', '心理 | 自助', '旅游 | 地理', '宗教 | 哲学',],
+            options:['历史 |  政治', '文学 |  艺术', '科学 | 技术', '商业  |  经济', '心理 | 自助', '旅游 | 地理', '宗教 | 哲学',],
         };
 
     },
@@ -70,7 +70,7 @@ export default{
                                 <div class="tab">
                                   <div v-for="(item,index) in options" :key="index" class="tab_list" >
                                     <div>
-                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" >
+                                      <router-link :to="{ path: '/search', query: { kind:index+1 } }" class="custom-link">
                                         <span style="color: black">{{item}}</span>
                                       </router-link>
                                     </div>
@@ -216,6 +216,10 @@ export default{
     height: 60px;
     line-height: 60px;
     font-size: 20px;
+}
+
+.custom-link {
+  text-decoration: none; /* 移除下划线 */
 }
 
 </style>

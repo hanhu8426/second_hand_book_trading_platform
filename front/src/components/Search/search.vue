@@ -3,34 +3,42 @@
     <Nav></Nav>
     <HeadNav></HeadNav>
     <div class="box_title">
-      <p>{{this.total}} 条结果 | <span style="color: #9d232c">{{this.sortName}}</span></p>
+      <p>{{this.total}} 条结果 </p>
     </div>
     <div class="box">
       <div class="book_sort">
         <div class="tab">
           <div class="tab_head">分类</div>
-          <div v-for="sort in sortList" class="tab_list" :key="sort.upperSort.id">
-            <router-link :to="{path: '/search',query:{id:sort.upperSort.id,name:sort.upperSort.sortName}}"><div style="color: black;width: 100%">{{sort.upperSort.sortName}}</div></router-link>
-          </div>
+            <div v-for="(item,index) in sortList" :key="index" class="tab_list" :class="{ selected: item.isSelected && selectedCategory === index }">
+              <div @click="selectCategory(item,index)">>
+                <router-link :to="{ path: '/search', query: { kind:index+1 } }" class="custom-link">
+                  <span style="color: black">{{item.name}}</span>
+                </router-link>
+              </div>
+            </div>
         </div>
       </div>
       <div class="book_info">
-        <div class="book_content" v-for="book in bookList" :key="book.id">
-          <router-link :to="{path: '/BookInfo',query:{id:book.id}}">
+        <div class="book_content" v-for="book in this.bookList" :key="book.bookId">
+          <router-link :to="'/BookInfo/' + book.bookId">
             <div class="book_content_img">
               <el-image
                   style="width: 82%; height: 150px;margin:5px 9%"
-                  :src="book.coverImg"
+                  :src="book.image"
                   fit="fill"></el-image>
             </div>
           </router-link>
           <div class="book_content_info">
-            <div class="book_name">{{book.bookName}}</div>
+            <div class="book_name">{{book.name}}</div>
             <div class="book_list_content">作者: 	{{book.author}}</div>
-            <div class="book_list_content">出版社: 	{{book.publish}}</div>
+            <div class="book_list_content">校区:
+              <span v-if="book.campus === 1">九龙湖校区</span>
+              <span v-if="book.campus === 2">四牌楼校区</span>
+              <span v-if="book.campus === 3">丁家桥校区</span>
+            </div>
             <div class="book_list_content">售价: 	{{book.price}}</div>
             <div>
-              <el-button class="plainBtn" plain>立即购买</el-button>
+              <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
             </div>
           </div>
         </div>
@@ -47,9 +55,10 @@
           </el-pagination>
         </div>
         <div v-else style="width:100%;height: 50px;line-height: 50px;padding: 0 20px">
-          <h3>不好意思，此分类暂时还没有图书......</h3>
+          <h3>不好意思，本书库还没有相关图书......</h3>
         </div>
       </div>
+      <div style="clear: both;"></div>
     </div>
     <Footer></Footer>
   </div>
@@ -59,8 +68,8 @@
 import Nav from "../../components/Common/NavGation.vue";
 import HeadNav from "../../components/Common/NavHeader.vue";
 import Footer from "../../components/Common/FooTer.vue";
-import {reqGetSortList} from "@/api/sort";
-import {reqGetBookListBySort} from "@/api/book";
+import {reqGetBookListByName, reqGetBookListBySort} from "@/api/book";
+
 
 export default {
   name: "SearchBook",
@@ -70,114 +79,220 @@ export default {
       currentPage: 1,
       page_size: 10,
       total:100,
+      name:null,
+      author:null,
       sortName:"分类名称",
+      selectedCategory: null,
       sortList:[
-        {
-          upperSort: {
-            sortName: null,
-          },
-          children:null
-        }
+        {name:'历史 | 政治', isSelected: false},
+        {name:'文学 | 艺术', isSelected: false},
+        {name:'科学 | 技术', isSelected: false},
+        {name:'商业 | 经济', isSelected: false},
+        {name:'心理 | 自助', isSelected: false},
+        {name:'旅游 | 地理', isSelected: false},
+        {name:'宗教 | 哲学',isSelected: false},
       ],
       bookList: [],
-      sortId:null,
+      type:undefined,
       recInput:null,
       recSelect:null,
     }
   },
-  computed:{
-    selectResult(){
-      return this.$route.params.selectResult;
-    },
-    inputContent(){
-      return this.$route.params.inputContent;
-    }
-  },
+
   methods: {
+    //立即购买
+    goBuyPage(bookId){
+      const encodedBookId = encodeURIComponent(parseInt(bookId, 10));
+      this.$router.push({
+        path: "/buyPage/" + encodedBookId,
+      })
+    },
+
+    selectCategory(category, index) {
+      this.sortList.forEach((item) => {
+        item.isSelected = false;
+      });
+
+      category.isSelected = true;
+
+      // 调用 Vuex 的 mutation 设置选中的分类项索引
+      this.$store.commit('setSelectedCategory', index);
+    },
+
+
+
+    async fetchBookList() {
+      try {
+        const response = await this.getBookList(this.type, this.currentPage, this.page_size);
+        this.total = response.data.data.total;
+        this.bookList = response.data.data.rows; // 更新bookList的值
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    getSortList() {
-      reqGetSortList().then(response => {
-        this.sortList = response.sortResponseList;
-      });
-    },
-    //得到图书列表
-    getBookList(sortId,page,pageSize){
-      reqGetBookListBySort(sortId,page,pageSize).then(response=>{
-        if(response.code==200){
-          this.total = response.total;
-          console.log(this.total);
-          this.bookList = response.bookList;
+
+    getBookList(type, page, pageSize) {
+      return new Promise((resolve,reject) => {
+        if (type !== undefined) {
+          // 根据分类ID搜索图书
+          reqGetBookListBySort(type, page, pageSize)
+              .then((response) => {
+                // 处理返回的图书列表数据
+                const code = response.data.code;
+                if (code===1) {
+                  this.total = response.data.data.total;
+                  this.bookList = response.data.data.rows;
+                  resolve(response.data.data); // 返回响应数据
+                }
+                else {
+                  reject(new Error("请求失败！"));
+                }
+                console.log("准备打印response");
+                console.log(response);
+                console.log("打印response中的bookList");
+                console.log(this.bookList);
+              })
+              .catch((err) => {
+                reject(err);
+                console.log(err);
+              });
+        } else {
+          // 根据其他条件搜索图书
+          // 假设调用 reqGetBookListByName 函数来根据书名搜索图书
+          console.log("进入按照书名作者来查询,并发起请求：");
+          console.log("开始向后端请求数据，并且name和author的值为："+ this.name+ "====" +this.author);
+          reqGetBookListByName(this.name,this.author,page,pageSize)
+              .then((response) => {
+                // 处理返回的图书列表数据
+                if (response.data.code === 1) {
+                  this.total = response.data.data.total;
+                  this.bookList = response.data.data.rows;
+                  resolve(response.data.data);
+                }
+                else {
+                  reject(new Error("请求失败！"));
+                }
+                console.log(response);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
         }
-        console.log(response);
-      }).catch(err=>{
-        console.log(err);
-      })
+      });
     },
 
     //分页函数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.page_size = val;
-      this.getBookList(this.sortId,1,this.page_size);
+      this.currentPage = 1; // 重置当前页为第一页
+      this.fetchBookList(); // 获取更新后的数据
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
       console.log(this.currentPage+":"+this.page_size);
-      this.getBookList(this.sortId,this.currentPage,this.page_size);
+      this.fetchBookList(); // 获取更新后的数据
     },
   },
-  created() {
-    this.sortId = this.$route.query.id;
-    this.sortName = this.$route.query.name;
-    console.log("this.$route.query.name:"+this.$route.query.name);
-    console.log("this.$route.query.id:"+this.$route.query.id);
 
-    this.getSortList();
-    this.getBookList(this.sortId,1,10);
+  created() {
+    const selectedCategory = this.$store.state.selectedCategory;
+    if (selectedCategory !== null) {
+      this.selectedCategory = selectedCategory;
+      this.sortList[selectedCategory].isSelected = true;
+    }
+
+    this.type = this.$route.query.kind;
+    this.sortName = this.$route.query.name;
+    this.recSelect = this.$route.params.selectResult;
+    this.recInput = this.$route.params.inputContent;
+    if(this.recSelect=== "书名")
+    {
+      this.name = this.recInput;
+      this.author = null;
+    }
+    else if(this.recSelect==="作者")
+    {
+      this.name = null;
+      this.author = this.recInput
+    }
+    console.log("进入测试函数，准备打印数据");
+    console.log("type:"+this.type);
+    console.log("接收到的type："+ this.type);
+    console.log("this.$route.query.name:"+this.$route.query.name);
+    console.log("this.$route.query.kind:"+this.$route.query.kind);
+    console.log("接收到的结果：" +this.$route.params.inputContent );
+    console.log("接收到的selectResult："+this.recSelect)
+    console.log("name和author的值为："+ this.name+ "====" +this.author);
+
+    this.fetchBookList();
   },
   watch: {
     $route() {
-      this.sortId = this.$route.query.id;
+      this.type = this.$route.query.kind;
       this.sortName = this.$route.query.name;
+      this.recSelect = this.$route.params.selectResult;
+      this.recInput = this.$route.params.inputContent;
+      if(this.recSelect=== "书名")
+      {
+        this.name = this.recInput;
+        this.author = null;
+      }
+      else if(this.recSelect==="作者")
+      {
+        this.name = null;
+        this.author = this.recInput
+      }
       console.log("this.$route.query.name:"+this.$route.query.name);
-      console.log("this.$route.query.id:"+this.$route.query.id);
-      this.getSortList();
-      this.getBookList(this.sortId,1,10);
+      console.log("this.$route.query.kind:"+this.$route.query.kind);
+      console.log("name和author的值为："+ this.name+ "====" +this.author);
+      this.fetchBookList();
     }
   },
 }
 </script>
 
 <style scoped>
+
+.tab_list.selected {
+  background-color: brown; /* 背景色为棕色 */
+  color: black; /* 文字颜色为黑色 */
+}
+
 .content{
   background-color: #ffffff;
 }
-.box_title{
-  margin: 10px auto;
-  width: 1240px;
+
+.box_title {
+  margin-bottom: 10px;
+  width: 100%;
   color: #545c64;
   padding: 5px 10px;
 }
-.box{
+
+.box {
+  display: flex;
+  align-items: flex-start;
   margin: 10px auto;
   width: 1240px;
 }
-.book_sort{
-  margin: 10px 10px;
-  width: 200px;
-  float: left;
+
+.book_sort {
+  flex: 0 0 200px;
+  margin-right: 10px;
   border-right: 1px #f3f0e9 solid;
 }
 
-.book_info{
-  margin: 10px 10px;
-  width: 1000px;
-  float: right;
+.book_info {
+  flex: 1;
   background-color: #f7f7f6;
 }
+
 .tab{
   width: 100%;
 }
@@ -245,8 +360,8 @@ export default {
   display: inline-block;
   height: 20px;
   overflow: hidden;
-  line-height: 18px;
-  font-size: 14px;
+  line-height: 20px;
+  font-size: 18px;
 }
 
 .plainBtn{
@@ -273,6 +388,10 @@ export default {
 }
 .cartBtn:hover{
   background-color: #f52b21;
+}
+
+.custom-link {
+  text-decoration: none; /* 移除下划线 */
 }
 </style>
 
