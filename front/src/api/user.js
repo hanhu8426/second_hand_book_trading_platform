@@ -1,6 +1,6 @@
 import axios from 'axios'
 import ajax from "./ajax";
-const BASE_URL = 'http://8.140.52.224:8080'
+const BASE_URL = 'http://localhost:8080'
 
 // 包装的axios ajax请求接口
 function ajax1 (url, data={}, method='GET') {
@@ -32,7 +32,7 @@ function ajax1 (url, data={}, method='GET') {
 }
 
 //登录
-export const reqLogin = ({account, password}) => ajax1('http://8.140.52.224:8080/Login', {account, password}, 'POST')
+export const reqLogin = ({account, password}) => ajax1('http://localhost:8080/Login', {account, password}, 'POST')
 
 // 注册账号
 export const reqRegister = (account,password)=>ajax(BASE_URL+'/Register',{account,password})
@@ -49,4 +49,6 @@ export const reqModUserInfo_2 = (img,phone,area,gender,introduction)=>ajax(BASE_
 
 export const reqUserOrders=()=>ajax(BASE_URL+'/listUserOrders',{},"POST")
 
-export const reqModOrderStatus=(id)=>ajax(BASE_URL+'/ModOrderStatus',{id},"POST")
+export const reqModOrderStatus=(orderId)=>ajax(BASE_URL+'/end',{orderId},"POST")
+//这里是根据订单的id获取概订单
+export const reqGetOrderByOrderId=(orderId)=>ajax(BASE_URL+'/GetOrderByOrderId',{orderId},"POST")

@@ -32,5 +32,4 @@ export const reqDelBook = (id) => ajax(BASE_URL+"/delBook",{id})
 //得到某个用户的地址列表
 export const reqGetBookList = (account) => ajax(BASE_URL+"/getBookList",{account})
 
-//添加出版社newProduct: true,
-//                 recommend
+export const reqGetBook = (bookId) => ajax(`${BASE_URL}/getBook/${bookId}`);

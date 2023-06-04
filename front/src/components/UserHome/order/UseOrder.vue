@@ -4,15 +4,12 @@
         <div class="box_info">
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="全部有效订单" name="first">
-                    <div class="tab_box" v-show="total<1">
-                        <p class="noMesInfo" v-show="true">暂无数据</p>
-                    </div>
-                    <div class="tab_box" v-show="total>0">
-                        <div class="order_list" v-for="orderItem in orderAndBookList" :key="orderItem.order.orderId">
+                    <div class="tab_box">
+                        <div class="order_list" v-for="(orderItem,index) in orderAndBookList" :key="index">
                             <div class="order_summary">
                                 <div>
-                                <p class="order_status" v-if="orderItem.order.status===1">订单已完成</p>
-                                <p class="order_status" v-if="orderItem.order.status===2">订单待收货</p>
+                                <p class="order_status" v-if="orderItem.order.status===1">订单待收货</p>
+                                <p class="order_status" v-if="orderItem.order.status===2">订单已完成</p>
                                 </div>
                                 <p class="caption-info">
                                     {{orderItem.order.beginTime}}
@@ -62,7 +59,7 @@
                                 <div class="book_action">
                                     <button class="plainBtn" @click="goToOrderDetail(order.id)">订单详情</button>
                                     <br>
-                                    <button class="plainBtn" @click="getOrder(order.id)">确认收货</button>
+                                    <button class="plainBtn" @click="changeStatus()">确认收货</button>
                                     <br>
                                     <button class="plainBtn">联系客服</button>
                                     <br>
@@ -94,7 +91,7 @@
 // import {reqUserGetOrderList,reqModOrderStatus} from "../../../api/order";
 // <!--用户订单页面-->
 import {reqModOrderStatus, reqUserOrders} from "@/api/user";
-import {reqAppointBook} from "@/api/bookStall";
+import {reqGetBook} from "@/api/book";
 
 export default {
     name: "UserOrder",
@@ -106,6 +103,7 @@ export default {
             page_size: 5,
             total:20,
             //包含书和订单的数组
+
             orderAndBookList:[
                 {
                     order:{
@@ -136,9 +134,6 @@ export default {
                     },
                 },
             ],
-
-            currentItem:'我是你大爷',
-
             orderList:[
                 {
                     id:1,
@@ -184,13 +179,14 @@ export default {
             beUserDelete: false
         };
     },
-    // created(){
-    //     this.getOrderList(1,5);
-    // },
+     created(){
+         console.log("开始构建订单组件")
+         this.function_getList();
+     },
     methods: {
-        cancelDetail(orderItem){
-            orderItem.showDetail=false;
-        },
+
+
+
         // eslint-disable-next-line no-unused-vars
         handleClick(tab, event) {
             console.log("=====this.activeName===="+this.activeName+"=======");
@@ -213,6 +209,7 @@ export default {
         },
         //确认收货
         handleChange(orderItem){
+            this.$router.push({path:'/user/userOrder/userOrderDetail'});
             console.log(this.showDetail)
             console.log(orderItem.order.status)
             orderItem.orderStatus=1;
@@ -224,60 +221,104 @@ export default {
         goToOrderDetail(orderItem) {
             console.log("=====跳转到订单详情页========")
             this.$router.push({
-                path:'/user/OrderDetail',
+                path:'/user/userOrder/userOrderDetail',
                 query: {
                     orderId: orderItem.order.orderId,
                     bookId:orderItem.book.bookId,
                 }
             });
         },
+        async function_getList() {
+            try {
+                const orderResponse = await reqUserOrders(); // 发起订单请求
+                console.log(orderResponse);
 
-        getList(){
-          reqUserOrders().then(response=>{
-              console.log(response);
-              if(response.data.code===1){
-                  var orderList = response.data.data
-                  var length = orderList.length()
-                  for(var i=0;i<length;i++){
-                      this.orderAndBookList[i].order=orderList[i]
+                if (orderResponse.data.code === 1) {
+                    const orderList = orderResponse.data.data;
+                    const length = orderList.length;
+
+                    for (let i = 0; i < length; i++) {
+                        const bookResponse = await reqGetBook(orderList[i].bookId); // 发起获取书籍请求
+                        console.log(bookResponse);
+
+                        if (bookResponse.data.code === 1) {
+                            console.log("获取书籍成功");
+                            const order = orderList[i];
+                            const book = bookResponse.data.data;
+                            this.orderAndBookList.push({ order, book });
+                            console.log(this.orderAndBookList[i].order);
+                            console.log(this.orderAndBookList[i].book);
+                        } else {
+                            console.log("获取书籍失败");
+                            this.$message({
+                                message: bookResponse.message,
+                                type: "warning",
+                            });
+                        }
+                    }
+
+                    console.log("订单获取成功");
+                } else {
+                    this.$message({
+                        message: orderResponse.message,
+                        type: "warning",
+                    });
                 }
-                  for(var m=0;m<length;m++){
-                      console.log(this.orderAndBookList[m].order)
-                  }
 
-              }
-              else {
-                  this.$message({
-                      message: response.message,
-                      type: "warning"
-                  })
-              }
-          }).catch(error=>{
-              console.log(error)
-          });
-            var termArray = this.orderAndBookList;
-            var newLength = termArray.length
-            for(var n=0;n<newLength;n++){
-               reqAppointBook(this.orderAndBookList[n].order.bookId).then(response=>{
-                   console.log(response)
-                   if(response.data.code===1){
-                       console.log("获取书籍成功")
-                       this.orderAndBookList[n].book=response.data.data
-                       console.log(this.orderAndBookList[n].book)
-                   }
-                   else {
-                       console.log("获取书籍失败")
-                       this.$message({
-                           message: response.message,
-                           type: "warning"
-                       })
-                   }
-               }).catch(error=>{
-                   console.log(error)
-               })
+                console.log("订单所有信息更新成功");
+            } catch (error) {
+                console.log(error);
             }
-            console.log("订单所有信息更新成功")
         },
+
+
+        // getList(){
+        //   reqUserOrders().then(response=>{
+        //       console.log(response);
+        //       if(response.data.code===1){
+        //           var orderList = response.data.data
+        //           var length = orderList.length()
+        //           for(var i=0;i<length;i++){
+        //               this.orderAndBookList[i].push({order:response.data.order,book:null})
+        //         }
+        //           for(var m=0;m<length;m++){
+        //               console.log(this.orderAndBookList[m].order)
+        //           }
+        //           console.log("订单获取成功")
+        //       }
+        //       else {
+        //           this.$message({
+        //               message: response.message,
+        //               type: "warning"
+        //           })
+        //       }
+        //   }).catch(error=>{
+        //       console.log(error)
+        //   });
+        //
+        //   var termArray = this.orderAndBookList;
+        //   var newLength = termArray.length
+        //   for(var n=0;n<newLength;n++){
+        //         reqGetBook(this.orderAndBookList[n].order.bookId).then(response=>{
+        //            console.log(response)
+        //            if(response.data.code===1){
+        //                console.log("获取书籍成功")
+        //                this.orderAndBookList[n].book=response.data.book
+        //                console.log(this.orderAndBookList[n].book)
+        //            }
+        //            else {
+        //                console.log("获取书籍失败")
+        //                this.$message({
+        //                    message: response.message,
+        //                    type: "warning"
+        //                })
+        //            }
+        //        }).catch(error=>{
+        //            console.log(error)
+        //        })
+        //     }
+        //     console.log("订单所有信息更新成功")
+        // },
         // //分页函数
         // handleSizeChange(val) {
         //     console.log(`每页 ${val} 条`);

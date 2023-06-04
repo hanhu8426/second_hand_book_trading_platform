@@ -49,7 +49,7 @@ const routes =[
                 ],
             },
             {
-              path:'OrderDetail',
+              path:'userOrder/userOrderDetail',
               component:()=>import('../components/UserHome/order/UseOrderDetail.vue')
 
             },

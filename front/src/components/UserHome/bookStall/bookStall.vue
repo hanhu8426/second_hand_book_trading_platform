@@ -15,7 +15,7 @@ export default {
                 "商业和经济类",
                 "心理学和自助类",
                 "旅游和地理类",
-                "工具书类",
+                "宗教和哲学类",
             ],
             bookList: [
                 {
@@ -291,7 +291,7 @@ export default {
                             <el-option label="商业和经济类" value="4"></el-option>
                             <el-option label="心理学和自助类" value="5"></el-option>
                             <el-option label="旅游和地理类" value="6"></el-option>
-                            <el-option label="工具书类" value="7"></el-option>
+                            <el-option label="宗教和哲学类" value="7"></el-option>
                         </el-select>
                     </el-dropdown>  </el-form-item>
                 <el-form-item>

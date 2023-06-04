@@ -2,10 +2,9 @@
     <div class="content">
         <div class="detail_title">
             <span style="color: red">
-                <p v-if="orderItem.order.status===1">待收货</p>
+                <p v-if="orderItem.order.status===1" @click="testFunc">待收货</p>
                 <p v-if="orderItem.order.status===2">已完成</p>
                 <span style="float: right"></span>
-        <el-button size="small">删除订单</el-button>
       </span>
         </div>
         <div class="info">
@@ -20,10 +19,9 @@
                     <el-col :span="6" class="table-cell-title">收货时间</el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="7" class="table-cell">{{message}}</el-col>
-                    <el-col :span="6" class="table-cell">{{}}</el-col>
-                    <el-col :span="5" class="table-cell">{{this.orderItem.order.beginTime}}</el-col>
-                    <el-col :span="6" class="table-cell">{{this.orderItem.order.endTime}}</el-col>
+                    <el-col :span="8" class="table-cell">{{orderItem.order.orderId}}</el-col>
+                    <el-col :span="8" class="table-cell">{{orderItem.order.beginTime}}</el-col>
+                    <el-col :span="8" class="table-cell">{{orderItem.order.endTime}}</el-col>
                 </el-row>
             </div>
 
@@ -40,7 +38,7 @@
                 <el-row>
                     <el-col :span="4" class="table-cell">{{orderItem.order.name}}</el-col>
                     <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
-                    <el-col :span="13" class="table-cell">{{}}</el-col>
+                    <el-col :span="13" class="table-cell">{{orderItem.order.address}}</el-col>
                     <el-col :span="3" class="table-cell">{{orderItem.book.campus}}</el-col>
                 </el-row>
             </div>
@@ -59,7 +57,7 @@
 
                 </el-row>
                 <el-row>
-                    <el-col :span="4" class="table-cell"><el-image></el-image></el-col>
+                    <el-col :span="4" class="table-cell"><el-image :src="orderItem.book.image"></el-image></el-col>
                     <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
                     <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
                     <el-col :span="4" class="table-cell">{{orderItem.order.phone}}</el-col>
@@ -90,6 +88,9 @@
 <script>
 // import {reqAdminGetOrderDetail} from "../../../api/order";
 
+import {reqGetOrderByOrderId} from "@/api/user";
+import {reqGetBook} from "@/api/book";
+
 export default {
     name: "UserOrderDetail",
     props:['message'],
@@ -100,8 +101,8 @@ export default {
             showDetail: false,
             orderItem: {
                 order: {
-                    orderId: 54564651321,
-                    buyerId: 5,
+                    orderId:'',
+                    buyerId:'',
                     sellerId: 2,
                     name: '黄文敬',
                     phone: '1235444755',
@@ -126,15 +127,53 @@ export default {
                     sellerID: "",
                 },
             },
+            user:localStorage.getItem("user")
         }},
-    created() {
-        console.log("开始构建")
-        this.getOrderList()
-    },
-    // methods:{
-    //     next() {
-    //         if (this.active++ > 2) this.active = 0;
-    //     },
+     created() {
+       this.getInit(this.$route.query.orderId,this.$route.query.bookId)
+       console.log("开始组件构建")
+     },
+     methods:{
+
+         getInit(orderId,bookId){
+             //这里使用orderId获取订单信息并存储
+             reqGetOrderByOrderId(orderId).then(response=>{
+                 console.log(response)
+                 if(response.data.code===1){
+                     this.orderItem.order = response.data.data
+                     console.log(this.orderItem.order)
+                     console.log("检查本地订单的测试")
+                 }
+                 else {
+                     console.log("状态码错误，失败")
+                     this.$message({
+                         type: 'waring',
+                         message: "获取订单失败"
+                     })
+                 }
+             }).catch(error=>{
+                 console.log(error)
+             })
+             //这里使用bookId获取订单信息并存储
+             reqGetBook(bookId).then(response=>{
+                 console.log(response)
+                 if(response.data.code===1){
+                     this.orderItem.order = response.data.data
+                     console.log(this.orderItem.order)
+                     console.log("检查本地书籍的测试")
+                 }
+                 else {
+                     console.log("状态码错误，失败")
+                     this.$message({
+                         type: 'waring',
+                         message: "获取书籍失败"
+                     })
+                 }
+             }).catch(error=>{
+                 console.log(error)
+             })
+         },
+
          getOrderList(){
              let message = this.$route.query.message;
              console.log(message)
@@ -154,7 +193,7 @@ export default {
     //         })
          },
     // }
-}
+}}
 </script>
 
 <style scoped>

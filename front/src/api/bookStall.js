@@ -1,5 +1,6 @@
 import ajax from "./ajax";
 
+
 const BASE_URL = 'http://localhost:8080'
 
 
@@ -33,4 +34,3 @@ export const reqDelBook = (bookId) => ajax(BASE_URL+"/delBook",{bookId})
 //得到某个用户的书籍列表
 export const reqGetBookList = () => ajax(BASE_URL+"/getBookList",{})
 
-export const reqAppointBook = (bookId) => ajax(BASE_URL+"/AppointBook",{bookId})
