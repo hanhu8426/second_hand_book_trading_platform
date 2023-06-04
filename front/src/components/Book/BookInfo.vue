@@ -137,18 +137,18 @@ export default{
   width: 1240px;
 }
 .book_box{
-  height: 500px;
+  height: 400px;
 }
 .book_img{
   margin: 10px;
-  width: 450px;
-  height: 480px;
+  width: 390px;
+  height: 390px;
   float: left;
 }
 .book_buy{
   margin: 10px;
   width: 700px;
-  height: 480px;
+  height: 390px;
   float: right;
   padding: 1px;
 }
@@ -167,7 +167,7 @@ export default{
   margin: 10px auto;
   width: 740px;
   line-height: 35px;
-  font-size: 18px;
+  font-size: 25px;
   overflow: hidden;
 }
 
@@ -177,12 +177,12 @@ export default{
   height: 20px;
   overflow: hidden;
   line-height: 20px;
-  font-size: 15px;
+  font-size: 20px;
 }
 .book_buy_info{
   width: 100%;
   line-height: 40px;
-  font-size: 15px;
+  font-size: 20px;
 }
 .book_buy_price{
   background-color: #f3f0e9;

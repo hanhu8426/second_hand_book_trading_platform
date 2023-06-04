@@ -77,5 +77,10 @@ export const reqModifyNew = (bookId,newProduct)=>ajax(BASE_URL+'/modifyNew',{boo
 
 //getSortBookListBySort
 export const reqGetBookListBySort = (type,page,pageSize)=>ajax(BASE_URL+'/getBookListBySort',{type,page, pageSize})
-export const reqGetBookListByName = (input,page,pageSize)=>ajax(BASE_URL+'/getBookListByName',{input,page, pageSize})
+// export const reqGetBookListByName = (recSelect,input,page,pageSize)=>ajax(BASE_URL+'/getBookListByName',{input,page, pageSize})
+
+export const reqGetBookListByName = (name, author, page, pageSize) => ajax(BASE_URL+'/getBookListByName', {
+       name, author, page, pageSize })
+
+
 

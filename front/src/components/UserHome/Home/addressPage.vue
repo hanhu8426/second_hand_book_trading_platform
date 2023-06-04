@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <!--添加图书的弹出框-->
+        <!--添加地址的弹出框-->
         <el-dialog title="添加收货地址" v-model="dialogVisible" width="30%"  center>
             <el-form ref="form" :model="address" >
                 <el-form-item>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import {reqDelAddress,reqAddAddress,reqGetAddressList,reqModAddress} from "../../../api/address";
+import {reqDelAddress,reqAddAddress,reqGetAddressList,reqModAddress} from "@/api/address";
 // <!--用户地址页面-->
 export default {
     name: "AddressPage",
@@ -106,7 +106,7 @@ export default {
             console.log("===获取的地址列表：==="+this.$store.getters.getUser.account+"=====");
             reqGetAddressList().then(response=>{
                 console.log(response);
-                if(response.data.code==1){
+                if(response.data.code===1){
                     let addList = response.data.data
                     console.log(addList)
                     this.addressList = addList
@@ -127,7 +127,7 @@ export default {
                 if (valid) {
                     reqAddAddress(this.address).then(response => {
                         console.log(response);
-                        if (response.data.code == 1) {
+                        if (response.data.code === 1) {
                             this.$message({
                                 message: response.message,
                                 type: "success"

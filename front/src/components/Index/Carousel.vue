@@ -9,10 +9,12 @@ export default {
     },
     data(){
         return{
-            imgS: ["/src/assets/image/20.jpg",
-                "src/assets/image/21.jpg",
-                "src/assets/image/22.jpg",
-                "src/assets/image/23.jpg"]
+            imgS: ["https://hwj-first-test.obs.cn-south-1.myhuaweicloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/20.jpg",
+                "https://hwj-first-test.obs.cn-south-1.myhuaweicloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/21.jpg",
+                "https://hwj-first-test.obs.cn-south-1.myhuaweicloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/24.jpg",
+                "https://hwj-first-test.obs.cn-south-1.myhuaweicloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/23.jpg",
+                "https://hwj-first-test.obs.cn-south-1.myhuaweicloud.com/%E8%BD%AE%E6%92%AD%E5%9B%BE/22.jpg"
+            ]
         }
     },
     created() {

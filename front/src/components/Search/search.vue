@@ -38,7 +38,7 @@
             </div>
             <div class="book_list_content">售价: 	{{book.price}}</div>
             <div>
-              <el-button class="plainBtn" plain>立即购买</el-button>
+              <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
           </el-pagination>
         </div>
         <div v-else style="width:100%;height: 50px;line-height: 50px;padding: 0 20px">
-          <h3>不好意思，此分类暂时还没有图书......</h3>
+          <h3>不好意思，本书库还没有相关图书......</h3>
         </div>
       </div>
       <div style="clear: both;"></div>
@@ -79,6 +79,8 @@ export default {
       currentPage: 1,
       page_size: 10,
       total:100,
+      name:null,
+      author:null,
       sortName:"分类名称",
       selectedCategory: null,
       sortList:[
@@ -91,13 +93,21 @@ export default {
         {name:'宗教 | 哲学',isSelected: false},
       ],
       bookList: [],
-      type:null,
+      type:undefined,
       recInput:null,
       recSelect:null,
     }
   },
 
   methods: {
+    //立即购买
+    goBuyPage(bookId){
+      const encodedBookId = encodeURIComponent(parseInt(bookId, 10));
+      this.$router.push({
+        path: "/buyPage/" + encodedBookId,
+      })
+    },
+
     selectCategory(category, index) {
       this.sortList.forEach((item) => {
         item.isSelected = false;
@@ -113,7 +123,7 @@ export default {
 
     async fetchBookList() {
       try {
-        const response = await this.getBookList(this.type, 1, 10);
+        const response = await this.getBookList(this.type, this.currentPage, this.page_size);
         this.total = response.data.data.total;
         this.bookList = response.data.data.rows; // 更新bookList的值
       } catch (error) {
@@ -162,10 +172,12 @@ export default {
                 reject(err);
                 console.log(err);
               });
-        } else if (this.selectResult !== undefined && this.inputContent !== undefined) {
+        } else {
           // 根据其他条件搜索图书
           // 假设调用 reqGetBookListByName 函数来根据书名搜索图书
-          reqGetBookListByName({input: this.inputContent, page: page, pageSize: pageSize})
+          console.log("进入按照书名作者来查询,并发起请求：");
+          console.log("开始向后端请求数据，并且name和author的值为："+ this.name+ "====" +this.author);
+          reqGetBookListByName(this.name,this.author,page,pageSize)
               .then((response) => {
                 // 处理返回的图书列表数据
                 if (response.data.code === 1) {
@@ -189,23 +201,14 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.page_size = val;
-      this.getBookList(this.type,1,this.page_size).then(response => {
-        this.total = response.data.total;
-        this.bookList = response.data.data.rows;
-      }).catch(error => {
-            console.log(error);
-          });
+      this.currentPage = 1; // 重置当前页为第一页
+      this.fetchBookList(); // 获取更新后的数据
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
       console.log(this.currentPage+":"+this.page_size);
-      this.getBookList(this.type,this.currentPage,this.page_size).then(response => {
-        this.total = response.data.total;
-        this.bookList = response.data.data.rows;
-      }).catch(error => {
-            console.log(error);
-          });
+      this.fetchBookList(); // 获取更新后的数据
     },
   },
 
@@ -220,11 +223,24 @@ export default {
     this.sortName = this.$route.query.name;
     this.recSelect = this.$route.params.selectResult;
     this.recInput = this.$route.params.inputContent;
+    if(this.recSelect=== "书名")
+    {
+      this.name = this.recInput;
+      this.author = null;
+    }
+    else if(this.recSelect==="作者")
+    {
+      this.name = null;
+      this.author = this.recInput
+    }
     console.log("进入测试函数，准备打印数据");
     console.log("type:"+this.type);
+    console.log("接收到的type："+ this.type);
     console.log("this.$route.query.name:"+this.$route.query.name);
     console.log("this.$route.query.kind:"+this.$route.query.kind);
     console.log("接收到的结果：" +this.$route.params.inputContent );
+    console.log("接收到的selectResult："+this.recSelect)
+    console.log("name和author的值为："+ this.name+ "====" +this.author);
 
     this.fetchBookList();
   },
@@ -234,9 +250,19 @@ export default {
       this.sortName = this.$route.query.name;
       this.recSelect = this.$route.params.selectResult;
       this.recInput = this.$route.params.inputContent;
-
+      if(this.recSelect=== "书名")
+      {
+        this.name = this.recInput;
+        this.author = null;
+      }
+      else if(this.recSelect==="作者")
+      {
+        this.name = null;
+        this.author = this.recInput
+      }
       console.log("this.$route.query.name:"+this.$route.query.name);
       console.log("this.$route.query.kind:"+this.$route.query.kind);
+      console.log("name和author的值为："+ this.name+ "====" +this.author);
       this.fetchBookList();
     }
   },

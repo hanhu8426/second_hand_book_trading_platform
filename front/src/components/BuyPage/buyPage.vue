@@ -9,12 +9,12 @@
         <!--           v-bind:class="{selected_address:address.select}"-->
         <div class="address_list" v-for="(address,index) in addressList"
 
-             :key="address.id">
+             :key="address.addId">
           <div class="name">{{address.name}}
             <span style="float: right;font-size: 14px;color: #757575;">{{address.label}}</span>
           </div>
           <div class="tel">{{address.phone}}</div>
-          <div class="detail">{{address.addr}}</div>
+          <div class="detail">{{address.address}}</div>
           <div>
             <el-button @click="selectOrderAddress(index)">选择</el-button>
           </div>
@@ -64,7 +64,7 @@
         <div class="order_action">
           <div class="address_box">
             <p>{{address.name}} {{address.phone}}</p>
-            <p>{{address.addr}}<span class="height_text">修改</span></p>
+            <p>{{address.address}}<span class="height_text">修改</span></p>
           </div>
           <div class="action">
             <button class="plainBtn" style="background-color: #ff6600;color: white" @click="submitOrder">立刻下单</button>
@@ -75,29 +75,32 @@
     </div>
     <Footer></Footer>
 
-    <!--添加图书的弹出框-->
-    <el-dialog title="添加收货地址" v-model:visible="dialogVisible" width="30%"  center>
+    <!--添加地址的弹出框-->
+    <el-dialog title="添加收货地址" v-model="dialogVisible" width="30%"  center>
       <el-form ref="form" :model="address" >
         <el-form-item>
-          <el-input placeholder="姓名" v-model="address.name"></el-input>
+          <el-input placeholder="姓名" v-model="newAddress.name"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="手机号" v-model="address.phone"></el-input>
+          <el-input placeholder="手机号" v-model="newAddress.phone"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
+          <el-input type="textarea" placeholder="详细地址" v-model="newAddress.address"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input placeholder="地址标签" v-model="address.label"></el-input>
+        <el-form-item label="校区">
+          <el-select v-model="newAddress.area" placeholder="请选择校区">
+            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+            <el-option label="四牌楼校区" value="四牌楼校区"></el-option>
+            <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
-      <ChildComponent>
-        <template #footer>
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
-        </template>
-      </ChildComponent>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
+      </span>
     </el-dialog>
+
 
   </div>
 </template>
@@ -109,11 +112,11 @@ import Footer from "../../components/Common/FooTer.vue";
 import {reqAddAddress, reqGetAddressList} from "@/api/address";
 import {reqGetBook} from "@/api/book";
 import {reqAddOrder} from "@/api/order";
-import ChildComponent from "@/components/BuyPage/ChildComponent.vue";
+
 
 export default {
   name: "BuyPage",
-  components:{ ChildComponent, Nav,HeadNav,Footer},
+  components:{ Nav,HeadNav,Footer},
   data() {
     return {
       account: "",
@@ -121,7 +124,6 @@ export default {
       bookId:null,
       selectId: null,
       dialogVisible: false,
-      selectedAddressIndex: -1,
       addressList: [
         {
           id: 1,
@@ -147,7 +149,16 @@ export default {
         id: null,
         name: "",
         phone: "",
-        addr: "",
+        address: "",
+        area: null,
+      },
+
+      //新增地址
+      newAddress: {
+        id: null,
+        name: "",
+        phone: "",
+        address: "",
         area: null,
       },
     }
@@ -155,7 +166,7 @@ export default {
   created(){
     this.bookId = this.$route.params.bookId;
     this.account = this.$store.getters.getUser.account;
-    this.address.account = this.$store.getters.getUser.account;
+    this.address.id = this.$store.getters.getUser.id;
     this.getBook(this.bookId);
     this.getAddressList();
     console.log("接收到参数book："+ this.book);
@@ -180,6 +191,7 @@ export default {
     //处理添加操作
     handleAdd(){
       this.dialogVisible = true;
+      this.isEdit = false;
     },
 
     // 提交表单
@@ -187,13 +199,16 @@ export default {
       if (this.isEdit) {
         this.modifyAddress();
       } else {
+        this.address = this.newAddress;
         this.addAddress();
+        this.dialogVisible = false;
       }
     },
 
     //添加地址
     addAddress(){
       reqAddAddress(this.address).then(response=>{
+        console.log("传的地址中地址信息为："+this.address.address)
         console.log(response);
         if(response.data.code === 1){
           this.$message({
