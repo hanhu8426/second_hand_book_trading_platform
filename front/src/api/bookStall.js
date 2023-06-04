@@ -6,6 +6,7 @@ const BASE_URL = 'http://localhost:8080'
 
 //添加书籍
 export const reqAddBook = (book) => ajax(BASE_URL+'/addBook', {
+       image:book.image,
        name:book.name,
        author:book.author,
        isbn:book.isbn,

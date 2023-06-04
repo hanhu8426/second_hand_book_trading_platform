@@ -5,7 +5,7 @@
     <div class = "box book_box">
       <div class = "book_img">
         <!-- 放照片 -->
-        <CarouselBtn :imgList="book.image"></CarouselBtn>
+        <CarouselBtn :image="book.image"></CarouselBtn>
       </div>
       <div class="book_buy">
         <!-- 书籍的一些基本信息 -->
@@ -15,7 +15,7 @@
           <div class="book_list_content">类别：
             <span v-if="book.type === 1">历史 | 政治</span>
             <span v-if="book.type === 2">文学 | 艺术</span>
-            <span v-if="book.type === 3">科学 | 艺术</span>
+            <span v-if="book.type === 3">科学 | 技术</span>
             <span v-if="book.type === 4">商业 | 经济</span>
             <span v-if="book.type === 5">心理 | 自助</span>
             <span v-if="book.type === 6">旅游 | 地理</span>
@@ -37,15 +37,16 @@
         <div class="book_content">
           <el-button class="plainBtn" plain @click="goBuyPage(book.bookId)">立即购买</el-button>
         </div>
+        <div class="book_info">
+          <h3 style="text-align: left; margin-left: 0;">书籍描述</h3>
+          <textarea name="bookDes" style="width: 100%; text-align: left;" rows="10" v-model="book.description"></textarea>
+        </div>
       </div>
     </div>
     <!-- 下半部分 -->
     <div class="box">
       <!-- 书籍详情 -->
-      <div class="book_info">
-        <h3>书籍描述</h3>
-        <textarea name="bookDes" cols="300" rows="10" v-model="book.description"></textarea>
-      </div>
+
     </div>
     <Footer></Footer>
   </div>
@@ -137,18 +138,18 @@ export default{
   width: 1240px;
 }
 .book_box{
-  height: 400px;
+  height: 500px;
 }
 .book_img{
   margin: 10px;
-  width: 390px;
-  height: 390px;
+  width: 450px;
+  height: 480px;
   float: left;
 }
 .book_buy{
   margin: 10px;
   width: 700px;
-  height: 390px;
+  height: 480px;
   float: right;
   padding: 1px;
 }
@@ -167,7 +168,7 @@ export default{
   margin: 10px auto;
   width: 740px;
   line-height: 35px;
-  font-size: 25px;
+  font-size: 18px;
   overflow: hidden;
 }
 
@@ -177,12 +178,12 @@ export default{
   height: 20px;
   overflow: hidden;
   line-height: 20px;
-  font-size: 20px;
+  font-size: 15px;
 }
 .book_buy_info{
   width: 100%;
   line-height: 40px;
-  font-size: 20px;
+  font-size: 15px;
 }
 .book_buy_price{
   background-color: #f3f0e9;
@@ -211,6 +212,7 @@ export default{
   margin-top: 10px; /* 调整上边距 */
   margin-bottom: 10px; /* 调整下边距 */
   width: 900px;
+  font-size: 16px; /* 修改字体大小为16像素 */
 }
 .tab{
   width: 100%;
@@ -222,7 +224,7 @@ export default{
   height: 40px;
   line-height: 40px;
   background-color: #f3f0e9;
-  margin: 1px ;
+  margin: 1px 0px;
 }
 .tab_list{
   padding-left: 5px;
@@ -230,7 +232,7 @@ export default{
   height: 40px;
   line-height: 40px;
   background-color: #ffffff;
-  margin: 1px ;
+  margin: 1px 0px;
 }
 .tab_list:hover{
   background-color: #a0a9b1;

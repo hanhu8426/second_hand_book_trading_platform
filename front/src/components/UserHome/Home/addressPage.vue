@@ -13,7 +13,7 @@
                     <span style="float: right;font-size: 14px;color: #757575;">{{address.area}}</span>
                 </div>
                 <span class="tel">{{address.phone}}</span>
-                <span class="detail">{{address.addr}}</span>
+                <span class="detail">{{address.address}}</span>
                 <div class="foot">
                     <span style="float: right" @click="delAddress(address.addId)">删除</span>
                     <span style="float: right;margin-right: 10px" @click="handleMod(address)">修改</span>
@@ -31,13 +31,13 @@
                     <el-input placeholder="手机号" v-model="address.phone"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input type="textarea" placeholder="详细地址" v-model="address.addr"></el-input>
+                    <el-input type="textarea" placeholder="详细地址" v-model="address.address"></el-input>
                 </el-form-item>
                 <el-form-item prop="area">
                     <el-dropdown  style="width: 100%;">
                         <el-select v-model="address.area" placeholder="请选择校区">
-                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
-                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+                            <el-option label="九龙湖校区" value="九龙湖校区" ></el-option>
+                            <el-option label="四牌楼校区" value="四牌楼校区"></el-option>
                             <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
                         </el-select>
                     </el-dropdown>
@@ -67,8 +67,9 @@ export default {
                 addId:"",
                 name: "",
                 phone: "",
-                addr: "",
+                address: "",
                 area: "",
+
             },
         };
     },
@@ -94,7 +95,7 @@ export default {
             this.address.account = addr.account;
             this.address.name = addr.name;
             this.address.phone = addr.phone;
-            this.address.addr = addr.addr;
+            this.address.address = addr.address;
             this.address.label = addr.label;
         },
 

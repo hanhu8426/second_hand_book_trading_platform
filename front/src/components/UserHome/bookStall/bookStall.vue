@@ -67,7 +67,7 @@ export default {
             },
         };
     },
-    // 初始化构建组件
+    //初始化构建组件
     created() {
         console.log("开始生命构建")
         this.getBookList();
@@ -131,13 +131,12 @@ export default {
                 this.addBook();
             }
         },
-
      //得到用户书籍列表
     getBookList() {
             console.log("===获取的书籍列表：===" + this.$store.getters.getUser.account + "=====");
             reqGetBookList().then(response => {
                 console.log(response);
-                if (response.data.code == 1) {
+                if (response.data.code === 1) {
                     let bookList = response.data.data
                     console.log(bookList)
                     this.bookList = bookList
@@ -158,8 +157,9 @@ export default {
             console.log(this.TextForType)
             console.log("在向后端传送书籍的资料前进行赋值")
             this.book.status = 1
-            this.book.recommend= "boolean"
+            this.book.recommend= 1
             this.book.image= this.$refs.bookPaper.image
+            console.log(this.book.image)
             console.log(this.book)
             reqAddBook(this.book).then(response => {
                 console.log(response);
@@ -180,9 +180,13 @@ export default {
                 console.log(err);
             })
         },
-
+     // 加入bookId
+        getBookId(book){
+           this.book.bookId=book.BookId;
+        },
     //修改书籍
     modifyBook() {
+
         reqModBook(this.book).then(response => {
             console.log(response);
             if (response.data.code == 1) {
@@ -253,9 +257,9 @@ export default {
                     <p style="font-size: 14px">添加新的书籍</p>
                 </div>
             </div>
-            <div class="book_list" v-for="book in bookList" :key="book.bookId">
+            <div class="book_list" v-for="(book,Index) in bookList" :key="Index">
                 <div class="bookCover">
-                    <el-image  src="book.image"> alt="书籍封面"></el-image>
+                    <el-image  src="book.image" alt="书籍封面"></el-image>
                 </div>
                 <div class="bookName">{{book.name}}
                     <span style="float: right;font-size: 14px;color: #757575;">{{this.TextForType[2]}}</span>
@@ -270,7 +274,7 @@ export default {
         </div>
 
         <!--添加图书的弹出框-->
-        <el-dialog title="添加新的书籍" v-model="dialogVisible" width="50%"  center>
+        <el-dialog title="书籍变更" v-model="dialogVisible" width="50%"  center>
             <el-form ref="form" :model="book">
                 <upload-book ref="bookPaper"></upload-book>
                 <el-form-item>
@@ -300,8 +304,8 @@ export default {
                 <el-form-item prop="area">
                     <el-dropdown  style="width: 100%;">
                         <el-select v-model="book.campus" placeholder="请选择校区">
-                            <el-option label="四牌楼校区" value=1 ></el-option>
-                            <el-option label="九龙湖校区" value=2></el-option>
+                            <el-option label="九龙湖校区" value=1 ></el-option>
+                            <el-option label="四牌楼校区" value=2></el-option>
                             <el-option label="丁家桥校区" value=3></el-option>
                         </el-select>
                     </el-dropdown>
@@ -309,11 +313,14 @@ export default {
                 <el-form-item>
                     <el-input placeholder="价格" v-model="book.price"></el-input>
                 </el-form-item>
+                <el-form-item>
+                    <el-button @click="getBookId">初次确认</el-button>
+                </el-form-item>
             </el-form>
             <template v-slot:footer>
             <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
+        <el-button type="primary" @click="onSubmit('form')">再 次 确 定</el-button>
             </span></template>
         </el-dialog>
 

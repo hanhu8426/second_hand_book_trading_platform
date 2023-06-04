@@ -17,7 +17,7 @@
                                     {{orderItem.order.name}}
                                     <span>|</span>
                                     订单号：{{orderItem.order.orderId}}
-                                    <span style="float: right">实付金额： <span class="money">{{orderItem.book.price}} </span>元</span>
+                                    <span style="float: right">实付金额：{{orderItem.book.price}}</span>
                                 </p>
                             </div>
                             <div class="bookInfo">
@@ -25,43 +25,9 @@
                                     <el-image class="bookImg"  :src="orderItem.book.image" fit="fill"></el-image>
                                 </div>
                                 <div class="book_action">
-                                    <button class="plainBtn" v-show="orderItem.order.status===2" @click="handleChange(orderItem)">确认收货</button>
+                                    <button class="plainBtn" v-show="orderItem.order.status===1" @click="handleChange(orderItem)">确认收货</button>
                                     <br>
                                     <button class="plainBtn"  @click="goToOrderDetail(orderItem)">订单详情</button>
-                                    <br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="待收货" name="third">
-                    <div class="tab_box" v-show="total<1">
-                        <p class="noMesInfo" v-show="true">暂无数据</p>
-                    </div>
-                    <div class="tab_box" v-show="total>0">
-                        <div class="order_list" v-for="order in orderList" :key="order.id">
-                            <div class="order_summary">
-                                <p class="order_status">{{order.orderStatus}}</p>
-                                <p class="caption-info">
-                                    {{order.orderTime}}
-                                    <span>|</span>
-                                    {{order.address.name}}
-                                    <span>|</span>
-                                    订单号：{{order.orderId}}
-
-                                    <span style="float: right">实付金额： <span class="money">{{order.expense.finallyPrice}} </span>元</span>
-                                </p>
-                            </div>
-                            <div class="bookInfo">
-                                <div class="book_item">
-                                    <el-image class="bookImg" v-for="(img,index) in order.coverImgList" :src="img" :key="index" fit="fill"></el-image>
-                                </div>
-                                <div class="book_action">
-                                    <button class="plainBtn" @click="goToOrderDetail(order.id)">订单详情</button>
-                                    <br>
-                                    <button class="plainBtn" @click="changeStatus()">确认收货</button>
-                                    <br>
-                                    <button class="plainBtn">联系客服</button>
                                     <br>
                                 </div>
                             </div>
@@ -107,76 +73,33 @@ export default {
             orderAndBookList:[
                 {
                     order:{
-                        orderId:54564651321,
-                        buyerId:5,
-                        sellerId:2,
-                        name:'黄文敬',
-                        phone:'1235444755',
-                        address:'梅园一栋测试测试测试',
-                        bookId:'2',
-                        beginTime:'2020.2.21',
-                        endTime:'2020.3.21',
-                        status:2,
+                        // orderId:54564651321,
+                        // buyerId:5,
+                        // sellerId:2,
+                        // name:'黄文敬',
+                        // phone:'1235444755',
+                        // address:'梅园一栋测试测试测试',
+                        // bookId:'2',
+                        // beginTime:'2020.2.21',
+                        // endTime:'2020.3.21',
+                        // status:2,
                     },
                     book:{
-                        bookId: '2',
-                        name: "我的名字",
-                        author: "李贵林",
-                        isbn: "564564212",
-                        type: 1,
-                        description: "这是一本不知道用来干嘛的书",
-                        status: 0,
-                        image: "#",
-                        campus: "九龙湖校区",
-                        price: 15,
-                        recommend: "1",
-                        sellerID: "12346",
+                        // bookId: '2',
+                        // name: "我的名字",
+                        // author: "李贵林",
+                        // isbn: "564564212",
+                        // type: 1,
+                        // description: "这是一本不知道用来干嘛的书",
+                        // status: 0,
+                        // image: "#",
+                        // campus: "九龙湖校区",
+                        // price: 15,
+                        // recommend: "1",
+                        // sellerID: "12346",
                     },
                 },
             ],
-            orderList:[
-                {
-                    id:1,
-                    orderId:1,
-                    account:"刘德华",
-                    orderTime:10.21,
-                    shipTime:11.21,
-                    getTime:12.21,
-                    coverImgList:[],
-                    orderDetailDtoList:[
-                        {
-                            book:{
-                                id: 5,
-                                bookName: '我的名字',
-                                author: '李贵林',
-                                isbn: '123456798878',
-                                price: '52',
-                                description: '这是一本用来测试的书籍',
-                                put: true,
-                                coverImg: '',
-                            },
-                            num:1,
-                            price: 52,
-                        }
-                    ],
-                    expense:{
-                        orderId:846546545132,//订单编号
-                        productTotalMoney:52,//商品总价
-                        freight:null,//运费 默认为0元
-                        finallyPrice:null,//最终实付总额
-                    },
-                    address:{
-                        id: 1,
-                        account: "黄小龙",
-                        name: "小胖",
-                        phone: "18988798892",
-                        addr: "江西抚州市临川区西大街街道东华理工大学长江学院本部(330006)",
-                        label: "家",
-                        off: false,
-                    }
-                },
-            ],
-            beUserDelete: false
         };
     },
      created(){
@@ -209,10 +132,22 @@ export default {
         },
         //确认收货
         handleChange(orderItem){
-            this.$router.push({path:'/user/userOrder/userOrderDetail'});
-            console.log(this.showDetail)
             console.log(orderItem.order.status)
-            orderItem.orderStatus=1;
+            reqModOrderStatus(orderItem.order.orderId).then(response=>{
+                console.log(response)
+                if(response.data.code===1){
+                    console.log("修改订单状态成功")
+                }
+                else {
+                    console.log("状态码错误，失败")
+                    this.$message({
+                        type: 'waring',
+                        message: "获取订单失败"
+                    })
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
             console.log(orderItem.order.status)
             console.log(orderItem)
             console.log("收货成功")
