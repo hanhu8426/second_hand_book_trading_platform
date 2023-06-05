@@ -1,5 +1,6 @@
 package com.secondhandbookstore.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.secondhandbookstore.pojo.Order;
 import com.secondhandbookstore.pojo.OrderUtils;
 import com.secondhandbookstore.pojo.PageBean;
@@ -51,9 +52,14 @@ public class OrderController {
     }
 
     @RequestMapping("/GetOrderByOrderId")
-    public Result getOrderByOrderId(Integer orderId){
-        log.info("根据orderId查找订单信息，{}",orderId);
-        Order order=orderService.getOrderByOrderId(orderId);
+    public Result getOrderByOrderId(@RequestBody JSONObject object){
+        System.out.println("testing");
+        String s= object.getString("orderId");
+
+        Integer oId=Integer.valueOf(s);
+        log.info("根据orderId查找订单信息，{}",oId);
+        Order order=orderService.getOrderByOrderId(oId);
+        System.out.println(order);
         return Result.success(order);
     }
 
@@ -139,6 +145,7 @@ public class OrderController {
     @RequestMapping("/listUserOrders")
     public Result listUserOrders(@RequestHeader("Authorization")String jwt){
         Integer buyerId = JwtUtils.parseJWTAndGenerateId(jwt);
+        log.info("根据令牌获得对应所有订单列表");
         List<Order> orderList=orderService.listUserOrders(buyerId);
         return Result.success(orderList);
     }

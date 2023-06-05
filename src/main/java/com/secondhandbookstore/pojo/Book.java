@@ -24,7 +24,7 @@ public class Book {
     private String image;
     private Short campus;
     private Float price;
-    private Boolean recommend;
+    private Integer recommend;
     //private String buyerID;
     private Integer sellerId;
     //private int bookSort[];

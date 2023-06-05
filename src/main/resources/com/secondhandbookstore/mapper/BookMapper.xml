@@ -10,6 +10,7 @@
         select *
         from book
         <where>
+                status=1
             <if test="type!=null">
                 and type=#{type}
             </if>
