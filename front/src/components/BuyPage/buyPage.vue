@@ -264,38 +264,46 @@ export default {
     // },
 
     //提交订单
-    submitOrder(){
-      this.account = this.$store.getters.getUser.account;
-      console.log("====this.OrderInitDto.account===="+this.account+"=====")
-      console.log(this.bookId)
-      console.log(parseInt(this.bookId))
-      console.log("对比实验")
-      reqAddOrder(parseInt(this.selectId), parseInt(this.bookId)).then(response=>{
-        if(response.data.code ===1){
-          this.$message({
-            type: 'success',
-            message: response.data.msg,
-            duration: 1000
-          })
-          setTimeout(() => {
-            this.$router.push({path:'/user/userOrder'});
-          }, 1000);
-        }else if(response.data.code ===2){
-          this.$message({
-            message: "余额不足，请充值！！！",
-            type: "warning"
-          });
-          this.$router.push({ path: '/userInfo' }); // 跳转到充值页面
+    submitOrder() {
+        this.account = this.$store.getters.getUser.account;
+        console.log("====this.OrderInitDto.account====" + this.account + "=====")
+        console.log(this.bookId)
+        console.log(parseInt(this.bookId))
+        console.log("对比实验")
+        if (this.address.address === null) {
+            this.$message({
+                type: 'error',
+                message: ("订单缺失地址信息"),
+                duration: 1000
+            })
+
+        } else {
+            reqAddOrder(parseInt(this.selectId), parseInt(this.bookId)).then(response => {
+                if (response.data.code === 1) {
+                    this.$message({
+                        type: 'success',
+                        message: response.data.msg,
+                        duration: 1000
+                    })
+                    setTimeout(() => {
+                        this.$router.push({path: '/user/userOrder'});
+                    }, 1000);
+                } else if (response.data.code === 2) {
+                    this.$message({
+                        message: "余额不足，请充值！！！",
+                        type: "warning"
+                    });
+                    this.$router.push({path: '/userInfo'}); // 跳转到充值页面
+                }
+            }).catch(() => {
+                this.$message({
+                    message: "下单失败了",
+                    type: "warning"
+                })
+            })
         }
-      }).catch(()=>{
-        this.$message({
-          message: "下单失败了",
-          type: "warning"
-        })
-      })
+
     }
-
-
   }
 }
 </script>

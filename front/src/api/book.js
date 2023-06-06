@@ -55,7 +55,7 @@ export const reqModifyBook = (book) => ajax(BASE_URL+'/modifyBook', {
 export const reqGetBookList = (page,pageSize)=>ajax(BASE_URL+'/getBookList',{page, pageSize})
 
 
-export const reqGetRecBookList = (sort)=>ajax(BASE_URL+'/getRecBookList',{sort})
+export const reqGetRecBookList = ()=>ajax(BASE_URL+'/getRecBookList')
 
 
 
@@ -71,10 +71,6 @@ export const reqModifyPut = (bookId,put)=>ajax(BASE_URL+'/modifyPut',{bookId,put
 export const reqModifyRec = (bookId,recommend)=>ajax(BASE_URL+'/modifyRec',{bookId,recommend})
 export const reqModifyNew = (bookId,newProduct)=>ajax(BASE_URL+'/modifyNew',{bookId,newProduct})
 
-//getSortBookList
-// export const reqGetSortBookList = (type)=>ajax(BASE_URL+'/getSortBookList',{type})
-
-//getSortBookListBySort
 export const reqGetBookListBySort = (type,page,pageSize)=>ajax(BASE_URL+'/getBookListBySort',{type,page, pageSize})
 // export const reqGetBookListByName = (recSelect,input,page,pageSize)=>ajax(BASE_URL+'/getBookListByName',{input,page, pageSize})
 

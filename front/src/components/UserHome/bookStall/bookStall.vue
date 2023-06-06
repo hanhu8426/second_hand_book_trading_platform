@@ -18,36 +18,36 @@ export default {
                 "宗教和哲学类",
             ],
             bookList: [
-                {
-                    BookId: 1,
-                    name: "黄哥的恋爱节奏",
-                    author: "黄文敬",
-                    isbn: "",
-                    type: 1,
-                    description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
-                    status: "",
-                    image: "",
-                    campus: "",
-                    price: "25",
-                    newProduct: "",
-                    recommend: "",
-                    sellerID: "",
-                },
-                {
-                    bookId: 2,
-                    name: "算出来的秘密爱情",
-                    author: "胡丹婷",
-                    isbn: "",
-                    type: 2,
-                    description: "",
-                    status: "",
-                    image: "",
-                    campus: "",
-                    price: "",
-                    newProduct: "",
-                    recommend: "",
-                    sellerID: "",
-                },
+                // {
+                //     BookId: 1,
+                //     name: "黄哥的恋爱节奏",
+                //     author: "黄文敬",
+                //     isbn: "",
+                //     type: 1,
+                //     description: "讲述了黄哥的恋爱心路历程，惊心动魄，感人肺腑",
+                //     status: 0,
+                //     image: "",
+                //     campus: "",
+                //     price: "25",
+                //     newProduct: "",
+                //     recommend: "",
+                //     sellerID: "",
+                // },
+                // {
+                //     bookId: 2,
+                //     name: "算出来的秘密爱情",
+                //     author: "胡丹婷",
+                //     isbn: "",
+                //     type: 2,
+                //     description: "",
+                //     status: 1,
+                //     image: "",
+                //     campus: "",
+                //     price: "",
+                //     newProduct: "",
+                //     recommend: "",
+                //     sellerID: "",
+                // },
 
             ],
 
@@ -68,14 +68,14 @@ export default {
         };
     },
     //初始化构建组件
-    created() {
-        console.log("开始生命构建")
-        this.getBookList();
-    },
-    mounted() {
-        console.log("开始生命构建")
-        this.getBookList();
-    },
+    // created() {
+    //     console.log("开始生命构建")
+    //     this.getBookList();
+    // },
+    // mounted() {
+    //     console.log("开始生命构建")
+    //     this.getBookList();
+    // },
     methods: {
     //修改当前的标签值
     changeLable(){
@@ -112,6 +112,7 @@ export default {
         },
     //处理修改
     handleMod(book) {
+            console.log(book.BookId)
             this.dialogVisible = true;
             this.isEdit = true;
             this.book.bookId = book.bookId;
@@ -266,9 +267,14 @@ export default {
                 </div>
                 <div class="author">{{book.author}}</div>
                 <div class="Description">{{book.description}}</div>
+                <div class="bookStatus">
+                    <span  v-if="book.status===1">在售</span>
+                    <span  v-if="book.status===0">售出</span>
+
+                </div>
                 <div class="foot">
                     <span style="float: right" @click="delBook(book)">删除</span>
-                    <span style="float: right;margin-right: 10px" @click="handleMod">修改</span>
+                    <span style="float: right;margin-right: 10px" @click="handleMod(book)">修改</span>
                 </div>
             </div>
         </div>

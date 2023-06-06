@@ -23,8 +23,9 @@
                           :src="imgS2"
                           fit="fill"></el-image>
                 <div class="list_info">
-                    <p> <span class="title">待收货的订单:</span> <span class="num">0</span></p>
-                    <p> <span>查看待收货的订单></span></p>
+                    <router-link to="/user/userOrder">
+                    <p> <span class="title">查看订单:</span></p>
+                    </router-link>
                 </div>
             </div>
 

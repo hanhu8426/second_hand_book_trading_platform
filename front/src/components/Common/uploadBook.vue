@@ -46,7 +46,7 @@ export default {
     <div>
         <el-upload
             class="avatar-uploader"
-            action='http://localhost:8080/Upload'
+            action='http://8.140.52.224:8080/Upload'
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"

@@ -9,7 +9,13 @@
                         <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="请输入账号"></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input type="password" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
+                        <el-input
+                            type="password"
+                            v-model="ruleForm.password"
+                            autocomplete="off"
+                            placeholder="请输入密码"
+                            show-password
+                        ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="login('ruleForm')" style="width: 100%">登录</el-button>

@@ -3,7 +3,7 @@ import ajax from "./ajax";
 const BASE_URL = 'http://8.140.52.224:8080'
 
 //添加地址
-export const reqAddAddress = (addregitss) => ajax(BASE_URL+'/addUserAddress', {
+export const reqAddAddress = (address) => ajax(BASE_URL+'/addUserAddress', {
     name: address.name,
     phone: address.phone,
     address: address.address,

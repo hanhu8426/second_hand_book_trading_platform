@@ -210,8 +210,8 @@ export default {
                                 <el-form-item prop="area" label="校区">
                                     <el-dropdown  style="width: 100%;">
                                         <el-select v-model="InfoForm.area" placeholder="请选择校区">
-                                            <el-option label="四牌楼校区" value="四牌楼校区" ></el-option>
-                                            <el-option label="九龙湖校区" value="九龙湖校区"></el-option>
+                                            <el-option label="九龙湖校区" value="九龙湖校区" ></el-option>
+                                            <el-option label="四牌楼校区" value="四牌楼校区"></el-option>
                                             <el-option label="丁家桥校区" value="丁家桥校区"></el-option>
                                         </el-select>
                                     </el-dropdown>

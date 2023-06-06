@@ -15,7 +15,7 @@
                     <el-submenu index="/">
                         <template v-slot:title>登陆|注册</template>
                         <el-menu-item><router-link to="/Login">登录</router-link></el-menu-item>
-                        <el-menu-item index="/RegisterPage">注册</el-menu-item>
+                        <el-menu-item><router-link to="/RegisterPage">注册</router-link></el-menu-item>
                         <el-menu-item index="/user/bookStall">发布</el-menu-item>
 
                         <el-menu-item index="/Upload_3">测试</el-menu-item>
